@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>问题查询</title>
+		<style type="text/css">
+			*{ font-family:"Microsoft YaHei","微软雅黑","Helvetica Neue",Helvetica,STHeiTi,sans-serif; box-sizing:border-box;}
+			html,body,h1,h2,h3,h4,h5,h6,dl,dt,dd,p,ul,li,form,iframe,object,input{ margin:0px; padding:0px;}
+			a{ text-decoration:none;}
+			h1,h2,h3,h4,h5,h6,strong{ font-weight:normal;}
+			ul,ol,dl{list-style: none outside none;}
+			a:active, a:focus, input:active, input:focus, button:active, button:focus{ outline:none; -moz-outline:none;} /*去掉移动端firefox a标签的虚线框 PC chrome文本输入框的边框焦点时候的颜色 */
+			input[type="button"]::-moz-focus-inner, input[type="submit"]::-moz-focus-inner, button::-moz-focus-inner{ border:none;} /*去掉移动端firefox 按钮获得焦点显示虚线框的样式 */
+			table { border-collapse:collapse; border-spacing:0;}
+			html,body{ position:relative; height:100%; width:100%; overflow:hidden;}
+			.body{max-width: 1200px; margin: auto;}
+			.header{height: 44px; text-align: center;line-height: 44px; background-color: #f3f3f3;box-shadow: 0 2px 3px #ccc; font-size: 16px; position: relative;}
+			.header .logo{position: absolute; width: 80px; height: 44px; left: 0px; opacity: 0.5; background-image: url(../images/logo.png); background-repeat: no-repeat;background-position: 8px 10px; background-size: 66px 24px;}
+			
+			.footer{height: 44px; background-color: #F3F3F3;position: absolute; bottom: 0; width: 100%; box-shadow: 0px -2px 3px #ccc;}
+			
+			.content{ width: 100%; height:100%; padding-bottom: 80px; overflow: auto;}
+			.content .nav_c span{padding: 5px 5px; font-size: 12px; line-height: 34px; margin-left: 5px; color: #cc9933;}
+			.content .question_title{padding: 10px 10px; border-bottom: 7px solid #eee;font-size: 14px;}
+			.content .question_title span{font-weight:600;margin-right:15px; 	}
+			.content .nav_c{padding:0px 10px;}
+			.content .nav_c span:first-child{font-weight:600;color:#000; padding:0px;}
+			.content .nav_c .nac_c_title{color:#000;font-weight:600;}
+			.content .question_cont{padding: 10px 10px; font-size: 12px; color: #999999; line-height: 18px;}
+			.content .question_cont_top span{font-weight:600;color:#000; margin-right:2px;	}
+			.content .question_cont_top{border-bottom: 1px solid #ccc;padding: 5px;}
+			.content .question_cont_top img{max-width: 100%; display: block;margin: auto; padding: 5px; }
+			.content .question_cont_btm{padding: 5px;}
+			.content .question_cont_btm span{font-weight:600;color:#000;margin-right:2px;}
+		</style>
+	</head>
+	<body class="body">
+		<div class="header">
+			<span class="logo"></span>
+			问题查询(QA)
+		</div>
+		<div class="content" id="temp">
+			<div class="question_title"><span>问题名称:</span>###question###</div>
+			<div class="nav_c">
+				<span>所属标签:</span><span>###tag###</span>
+				<span class="nac_c_title">所属区域:</span><span>###region###</span>
+
+			</div>
+			<div class="question_cont">
+				<div class="question_cont_top"><span>问题描述:</span>					
+					###questionDesc###
+					<img src='###imageUrl###'/>
+				</div>
+				<div class="question_cont_btm"><span>问题答案:</span>
+					###answer###
+				</div>
+			</div>
+		</div>
+		<div class="footer" id="temp2">
+			
+		</div>
+	</body>
+</html>

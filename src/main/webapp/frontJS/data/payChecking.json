@@ -1,0 +1,185 @@
+{
+  "total":50,
+  "info":[
+    {
+      "order": "1",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "2",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "3",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "4",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "5",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "6",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "7",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },{
+      "order": "8",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "9",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "10",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "11",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "12",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "13",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "14",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    },
+    {
+      "order": "15",
+      "date": "2017.06.01",
+      "payNum": "2017060100001111",
+      "bankName": "中国银行",
+      "toNum": "2017060100002222",
+      "superviseMoney": "12,333,999",
+      "intoMoney": "12,333,999",
+      "payWay": "本行专账",
+      "state": "对账成功",
+      "handle": "查看"
+    }
+
+  ]
+}

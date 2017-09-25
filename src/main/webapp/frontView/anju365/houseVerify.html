@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html ng-app="houseVerifyApp">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="安居365" />
+    <meta name="description" content="安居365" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+    <link rel="Shortcut icon" href="../../image-xm/logo.ico">
+    <link rel="stylesheet" href="../../frontJS/anju365/webuploader/css/webuploader.css"></link>
+    <link rel="stylesheet" href="../../frontStyle/anju365/pubCSS.css"/>
+    <script type="text/javascript" src="../../frontJS/anju365/jquery.min-1.9.1.js"></script>
+    <script src="../../frontJS/anju365/angular/angular-1.2.27.js"></script>
+    <script src="../../frontJS/anju365/base.js"></script>
+    <script src="../../frontJS/anju365/houseVerify.js"></script>
+    <script src="../../frontJS/anju365/My97DatePicker/WdatePicker.js"></script>
+   <script src="../../frontJS/anju365/webuploader/webuploader.js"></script>
+   <script src="../../frontJS/anju365/webuploader/uploadImgPreview.js"></script>
+   <script src="../../frontJS/anju365/webuploader.js"></script>
+    <title>安居365-房源验证</title>
+</head>
+<body ng-controller="houseVerifyCtrl">
+
+<div class='nav'><img class='anjuText' src="../../frontStyle/image/anjuText.png" alt=""/></div>
+
+<div class="cont-xm">
+<div class='return'>
+	<div class="top-xm">
+	        <p class="p_after">
+	            <a class='afterArrow' href="../../anju365.html">首页</a>
+	            <a class='afterArrow' href="javascript:void(0)">房源验证</a>
+	            <a  href="javascript:window.location.reload();" class="reload">刷新</a>
+	        </p>
+	    </div>
+</div>
+ <form name="baseForm" novalidate class='anjuForm'>
+    <div class="top-xm">房源验证</div>
+    <div class="mid-xm">
+        <div  ng-click="ui.initErr()"  class="cond-container">
+            <div class="">
+                <div class="single-item no-border">
+                   <div class="item">
+                       <label>申请人姓名：</label>
+                       <div>
+                           <input  ng-pattern="pattern.name" required ng-model="dataModel.applicantList.applicantName" type="text" name="applicantName"/>
+                       </div>
+                         <span>*</span>
+                   </div>
+                   <div class="item">
+                       <label>性&ensp;&ensp;&ensp;&ensp;质：</label>
+                       <div>
+                           <select ng-disabled="!state.isShowSave" required ng-model="dataModel.applicantList.applicantNature" ng-options="item.key as item.value for item in dictionary.applicantNatureData"></select>
+                           <i>▼</i>
+                       </div>
+                        <span>*</span>
+                   </div>
+                   <div class="item">
+                       <label>证件类型：</label>
+                       <div>
+                           <select ng-disabled="!state.isShowSave" required ng-model="dataModel.applicantList.idType" ng-options="item.key as item.value for item in dictionary.idTypeData"></select>
+                           <i>▼</i>
+                       </div>
+                        <span>*</span>
+                   </div>
+               </div> 
+                <div class="single-item no-border">
+                    <div class="item">
+                        <label>证件号码：</label>
+                        <div>
+                            <input ng-disabled="!state.isShowSave" ng-pattern="pattern.identity" required ng-model="dataModel.applicantList.idNumber" type="text" name="idNumber"/>
+                        </div>
+                         <span>*</span>
+                    </div>
+                    <div class="item">
+                        <label>民&ensp;&ensp;&ensp;&ensp;族：</label>
+                        <div>
+                            <select ng-disabled="!state.isShowSave" required ng-model="dataModel.applicantList.nation" ng-options="item.key as item.value for item in dictionary.nationData"></select>
+                            <i>▼</i>
+                        </div>
+                        <span>*</span>
+                    </div>
+                     <div class="item">
+                        <label>联系方式：</label>
+                        <div>
+                            <input ng-disabled="!state.isShowSave" required ng-pattern="pattern.mobile" ng-model="dataModel.applicantList.mobile" type="text" name="mobile"/>
+                        </div>
+                         <span>*</span>
+                    </div>
+                    
+                    <div class="item item-long">
+                        <label>联系地址：</label>
+                        <div>
+                            <input ng-disabled="!state.isShowSave" ng-model="dataModel.applicantList.address" type="text" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="single-item no-border ver-sel">
+                    <div class="item">
+                        <label>是否已婚：</label>
+                        <div>
+                            <input ng-disabled="!state.isShowSave" ng-model="dataModel.applicantList.maritalStatus" class="isH" type="checkbox" /><label>已婚</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="dataModel.applicantList.maritalStatus" class="single-item no-border">
+                    <div class="item">
+                        <label>配偶姓名：</label>
+                        <div>
+                            <input ng-disabled="!state.isShowSave" ng-pattern="pattern.name"  required ng-model="dataModel.applicantList.mateName" type="text" name="mateName" />
+                        </div>
+                         <span>*</span>
+                    </div>
+                    <div class="item">
+                        <label>证件类型：</label>
+                        <div>
+                            <select ng-disabled="!state.isShowSave" required ng-model="dataModel.applicantList.mateIdtype" ng-options="item.key as item.value for item in dictionary.idTypeData"></select>
+                            <i>▼</i>
+                        </div>
+                         <span>*</span>
+                    </div>
+                    <div class="item">
+                        <label>证件号码：</label>
+                        <div>
+                            <input ng-disabled="!state.isShowSave" ng-pattern="pattern.identity" required ng-model="dataModel.applicantList.mateIdnumber" type="text"  name="mateIdnumber"/>
+                        </div>
+                         <span>*</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="single-item no-border" ng-repeat=" i in dataModel.litigantList track by $index" >
+                <div class="item">
+                    <label>权利人名称：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" ng-pattern="pattern.name" required ng-model="dataModel.litigantList[$index].ownerName" type="text" name="ownerNames"/>
+                    </div>
+                     <span>*</span>
+                </div>
+                <div class="item">
+                    <label>证件类型：</label>
+                    <div>
+                        <select ng-disabled="!state.isShowSave" required ng-model="dataModel.litigantList[$index].idType" ng-options="item.key as item.value for item in dictionary.idTypeData"></select>
+                        <i>▼</i>
+                    </div>
+                     <span>*</span>
+                </div>
+                <div class="item">
+                    <label>证件号码：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" ng-pattern="pattern.identity" required ng-model="dataModel.litigantList[$index].idNumber" type="text" name="idNumbers"/>
+                    </div>
+                     <span>*</span>
+                </div>
+              <a ng-click="ui.delUser()" ng-show="dataModel.litigantList.length == {{ $index+1 }} && dataModel.litigantList.length != 1" class="del" href="javascript:void(0);">-</a>
+                
+            </div>
+
+            <div class="single-item no-border">
+                <div class="item">
+                    <button ng-disabled="!state.isShowSave" ng-click="ui.addRightPeo()">增加权利人</button>
+                </div>
+            </div>
+
+            <div class="single-item no-border">
+            <div class="item">
+                    <label>产证号：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" required ng-model="dataModel.houseInfoList.ownershipNumber" type="text" name="ownershipNumber"/>
+                    </div>
+                     <span>*</span>
+                </div>
+               
+                <div class="item">
+                    <label>登记时间：</label>
+                    <div>
+                        <input id='registerDate' ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.registerDate" class="datePick" onclick="WdatePicker()" type="text" />
+                    </div>
+                </div>
+                 <div class="item">
+                    <label>总&ensp;层&ensp;数：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" ng-pattern="pattern.num" required ng-model="dataModel.houseInfoList.totalNumber"  type="text" name="totalNumber"/>
+                    </div>
+                     <span>*</span>
+                </div>
+               
+            </div>
+
+            <div class="single-item no-border">
+            
+                <div class="item">
+                    <label>所&ensp;在&ensp;层：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" ng-pattern="pattern.num" required ng-model="dataModel.houseInfoList.seatLayer"  type="text" name="seatLayer"/>
+                    </div>
+                     <span>*</span>
+                </div>
+                <div class="item">
+                    <label>建筑面积：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" required ng-model="dataModel.houseInfoList.buildingArea"  type="text" name="buildingArea"/>
+                    </div>
+                     <span>*</span>
+                </div>
+                <div class="item">
+                    <label>套内建筑面积：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" required ng-model="dataModel.houseInfoList.jacketArea"  type="text" name="jacketArea"/>
+                    </div>
+                     <span>*</span>
+                </div>
+            </div>
+
+            <div class="single-item no-border">
+            
+                <div class="item">
+                    <label>分摊面积：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" required ng-model="dataModel.houseInfoList.apportionedArea"  type="text" name="apportionedArea" />
+                    </div>
+                     <span>*</span>
+                </div>
+                <div class="item">
+                    <label>规划用途：</label>
+                    <div>
+                        <select ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.housingUse" ng-options="item.key as item.value for item in dictionary.housingUseData"></select>
+                        <i>▼</i>
+                    </div>
+                </div>
+                <div class="item">
+                    <label>房屋性质：</label>
+                    <div>
+                        <select ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.housingNature" ng-options="item.key as item.value for item in dictionary.housingNatureData"></select></select>
+                        <i>▼</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="single-item no-border">
+            
+                <div class="item">
+                    <label>地&ensp;&ensp;&ensp;&ensp;号：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.landCode"  type="text" />
+                    </div>
+                </div>
+                <div class="item">
+                    <label>房屋转让方式：</label>
+                    <div>
+                        <select ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.houseCseeion" ng-options="item.key as item.value for item in dictionary.houseCseeionData"></select></select>
+                        <i>▼</i>
+                    </div>
+                </div>
+                 <div class="item">
+                    <label>土地使用年限：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.landUsera"  type="text" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="single-item no-border">
+           
+                <div class="item">
+                    <label>修建年代：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.budingDate"  type="text" />
+                    </div>
+                </div>
+                <div class="item">
+                    <label>房屋结构：</label>
+                    <div>
+                        <select ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.buildingStructure"  ng-options="item.key as item.value for item in dictionary.buildingStructureData"></select>
+                        <i>▼</i>
+                    </div>
+                </div>
+                <div class="item">
+                    <label class="more">土地使用权取&ensp;&ensp;得方式：</label>
+                    <div>
+                        <select ng-disabled="!state.isShowSave" ng-model="dataModel.houseInfoList.landWay" ng-options="item.key as item.value for item in dictionary.houseCseeionData "></select>
+                        <i>▼</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="single-item no-border">
+                <div class="item item-long">
+                    <label>房屋坐落：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" required max-length='100' ng-model="dataModel.houseInfoList.houseAddress"  type="text" name="houseAddress"/>
+                    </div>
+                     <span>*</span>
+                </div>
+                <div class="item">
+                    <label>公示天数：</label>
+                    <div>
+                    	<input ng-disabled="true" required ng-model="dataModel.houseInfoList.publicDaysTwo"  type="text" name="publicDays"/>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="single-item no-border pic-singelItem">
+                <div class="item pic-item">
+                    <label>房屋照片：</label>
+                    <div class="pic-div">
+                      <div id="uploader"></div>
+                      <div class="choose-file-btn" id="choose_file">选择图片</div><div class=sendPicTip>(   最多可上传五张图片，单张图片大小小于1M！)</div>
+					  <div class="send-pic" id="upload_now" >上传图片</div>
+                    </div>
+                    
+                </div>
+            </div> -->
+
+            <div class="split fj">
+                <div class="item item-other">
+                    <label>附&ensp;&ensp;&ensp;&ensp;记：</label>
+                    <div>
+                        <textarea ng-disabled="!state.isShowSave" max-length='500'  ng-model="dataModel.houseInfoList.houseMemo" class="big-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="split ver-sel">
+                <div class="item ">
+                    <label>交易类型：</label>
+                    <div>
+                     	<input ng-disabled="!state.isShowSave" required ng-model="dataModel.houseInfoList.transType"  type="radio" name="type" value="1" /><label>委托交易</label>
+                        <input ng-disabled="!state.isShowSave" required ng-model="dataModel.houseInfoList.transType"  type="radio" name="type" value="0" /><label>自行交易</label>
+                    </div>
+                </div>
+                <div class="item">
+                    <label>是否挂牌：</label>
+                    <div>
+                        <input ng-disabled="!state.isShowSave" required ng-model="dataModel.houseInfoList.isOn"  class="no-border" type="radio" name="isover" value="1" /><label>是</label>
+                        <input ng-disabled="!state.isShowSave" required ng-model="dataModel.houseInfoList.isOn" class="no-border" type="radio" name="isover" value="0" /><label>否</label>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+    </div>
+    <div class="err-tip split" ng-bind="state.errTip"></div>
+            
+            <div class="save-xm split">
+                <button ng-disabled="isSucc" ng-click="ui.save()" >保存</button>
+            </div>
+    <div class="bottom-xm"></div>
+    </form>
+</div>
+<!-- <script>
+$(function (){
+	 var sendSuc=false;
+        var uploader = uploadImage({
+            wrap: jQuery("#uploader"), //包裹整个上传控件的元素，必须。可以传递dom元素、选择器、jQuery对象
+            /*预览图片的宽度，可以不传，如果宽高都不传则为包裹预览图的元素宽度，高度自动计算*/
+           	width: "148px",
+            height: "98px",//预览图片的高度
+            auto: false, //是否自动上传
+            method: "POST",//上传方式，可以有POST、GET
+            sendAsBlob: false,//是否以二进制流的形式发送
+            viewImgHorizontal: true,//预览图是否水平垂直居中
+            fileVal: "file", // [默认值：'file'] 设置文件上传域的name。
+            btns: {//必须
+                uploadBtn: $("#upload_now"), //开始上传按钮，必须。可以传递dom元素、选择器、jQuery对象
+                retryBtn: null, //用户自定义"重新上传"按钮
+                chooseBtn: '#choose_file',//"选折图片"按钮，必须。可以传递dom元素、选择器、jQuery对象
+                chooseBtnText: "选择图片" //选择文件按钮显示的文字
+            },
+            pictureOnly: true,//只能上传图片
+            datas: {
+                
+            }, //上传的参数,如果有参数则必须是一个对象
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！false为不压缩
+            resize: false,
+            //是否可以重复上传，即上传一张图片后还可以再次上传。默认是不可以的，false为不可以，true为可以
+            duplicate: true,
+            multiple: true, //是否支持多选能力
+            swf: "Uploader.swf", //swf文件路径，必须
+            url: "../../houseVerifi/houseAttSave.svc", //图片上传的路径，必须
+            maxFileNum: 5, //最大上传文件个数
+            maxFileTotalSize: 10485760, //最大上传文件大小，默认10M
+            maxFileSize: 2097152, //单个文件最大大小，默认2M
+            showToolBtn: true, //当鼠标放在图片上时是否显示工具按钮,
+            onFileAdd: null, //当有图片进来后所处理函数
+            onDelete: null, //当预览图销毁时所处理函数
+            /*当单个文件上传失败时执行的函数，会传入当前显示图片的包裹元素，以便用户操作这个元素*/
+            uploadFailTip: null,
+            onError: null, //上传出错时执行的函数
+            notSupport: null, //当浏览器不支持该插件时所执行的函数
+            /*当上传成功（此处的上传成功指的是上传图片请求成功，并非图片真正上传到服务器）后所执行的函数，会传入当前状态及上一个状态*/
+            onSuccess: function(){
+            	$("#upload_now").text("上传成功");
+            }
+        });
+        /*如果按钮开始是隐藏的，经过触发后才显示，则可以用这个方法重新渲染下*/
+        //uploader.refresh();//该方法可以重新渲染选择文件按钮
+       //uploader.upload();//调用该方法可以直接上传图片
+        //uploader.retry();//调用该方法可以重新上传图片
+       
+    });
+ 
+
+ </script> -->
+</body>
+</html>

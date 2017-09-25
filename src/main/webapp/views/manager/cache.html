@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>缓存信息</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    <style>
+        /* .mybutton{ height:30px; font-size:10px; width:30px; text-align:center; line-height:30px; cursor:pointer;} */
+    </style>
+</head>
+<body>
+<!-- 查询条件 -->
+<div id="cacheSearchbar"></div>
+<!-- 汇款信息 -->
+<table id="cache" class="easyui-datagrid">
+</table>
+<!-- 工具栏 -->
+<div id="toolbar">
+    <a href="javascript:clear(1);" class="easyui-linkbutton" iconCls="icon-edit" plain="true">清除所有</a>
+    <a href="javascript:clear(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true">清除</a>
+    <!--进度条-->
+    <div id="div_pb"
+         style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+        <img src="../../images/loading.gif"/>
+        <!-- <div id="pb" class="easyui-progressbar" style="width:400px;"></div> -->
+    </div>
+</div>
+<script type="text/javascript">
+    var size = 10;
+    var page = 1;
+    var conf = {
+        options: {
+            singleSelect: false,
+            ctrlSelect: true,
+            showFooter: true,
+            fit: true,
+            fitColumns: true,
+            checkOnSelect: true,
+            selectOnCheck: false,
+            toolbar: '#cacheSearchbar',
+            striped: true,
+            columns: [[
+                {field: 'ck', checkbox: true},
+                //{field: 'id', title: '序号', align: 'center', halign: 'center', resizable: true},
+                {field: 'cacheName', title: '缓存名称', align: 'center', halign: 'center', resizable: true},
+            ]],
+            pagination: true,
+            pageSize: size,
+            pageList: [size * 1, size * 2, size * 3, size * 5],
+            pageNumber: 1,
+            rownumbers: true,
+            onAfterEdit: function (rowIndex, rowData, changes) {
+            },
+            rowStyler: function (index, row) {
+            }
+        }
+    };
+    $(function () {
+        $('#pb').progressbar({
+            onChange: function (value) {
+                $('.progressbar-value').css('background-color', 'red');
+            }
+        });
+        $('#cache').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+        loadCacheByPage(page, size);
+        $('#cache').datagrid('getPager').pagination({
+            loadMsg: '正在加载数据...',
+            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+            onSelectPage: function (page, size) {
+                loadCacheByPage(page, size);
+
+            }
+        });
+    });
+    function loadCacheByPage(page, size) {
+        $('#cache').datagrid("loading");
+        var service = $.svc.getSVC("/cache/getCacheList");
+        service.setPage(page, size)
+                .setParam("question/qaArea", "问你")
+                .setParam("question/qaQuestion", "登录");
+//        {"question":{"qaArea":"问你","qaQuestion":"","qaAnswer":"","qaLabel":""}}
+        service.call(
+                function (response, status) {
+                    if (response.isSucc()) {
+                        if (response.getResult().rows.length == '0') {
+                            $('#cache').datagrid("loadData", []);
+                        } else {
+                            $('#cache').datagrid("loadData", response.getResult());
+                        }
+                    }
+                    $('#cache').datagrid("loaded");
+                });
+    }
+    function clear(flag) {
+        var rows = $('#cache').datagrid('getChecked');
+        var name = "";
+        if (flag == 0 && rows == '') {
+            $.messager.alert("提示信息", "请选择需要清除的缓存信息！", "error");
+            return;
+        }
+        if (flag == 0) {
+            $.each(rows, function (index) {
+                name += this.cacheName + ",";
+            });
+        }
+        if (window.confirm('你确定要执行此操作吗？')) {
+            var paramsJson = JSON.stringify(rows);
+            var delCacheSvc = $.svc.getSVC("/cache/delCacheList");
+            delCacheSvc.setParam("flag", flag)
+                    .setParam("name", name);
+            delCacheSvc.call(function (response, status) {
+                if (response.isSucc()) {
+                    $.messager.alert("提示信息", "缓存清除成功", "info");
+                    loadCacheByPage(1, size);
+                } else {
+                    $.messager.alert("提示信息", "缓存删除失败！", "error");
+                }
+            });
+        } else {
+            loadCacheByPage(1, size);
+        }
+    }
+</script>
+</body>
+</html>

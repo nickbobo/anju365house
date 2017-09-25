@@ -1,0 +1,43 @@
+{
+  "total":1,
+  "info":[
+    {
+      "order": "1",
+      "date": "2017.06.01",
+      "num": "2017060100001111",
+      "name": "程红",
+      "phone": "18817838865",
+      "sealUp": "0",  
+      "freeze": "0",
+      "pledge": "0",
+      "foreshow": "0",
+      "sign": "0",
+
+      "user_character":0,
+      "user_card_type":0,
+      "user_card_num":"34254325432543243323",
+      "user_nation":0,  
+      "user_address":"花果山水帘洞", 
+
+      "obligeeInfo":{
+        "obligee":[
+          {
+            "obligee_name":"权利人1",   
+            "obligee_card_type":0, 
+            "obligee_card_num":"45243254325432432"
+          }
+        ],
+        "common":{
+          "obligee_right_num":"43254324532432", 
+          "obligee_right_area":"433",
+          "obligee_inner_area":"233", 
+          "obligee_outer_area":"122", 
+          "obligee_level_count":"20",
+          "obligee_level":"12",  
+          "obligee_address":"遥远的地方"  
+        }
+      }
+
+    }
+  ]
+}

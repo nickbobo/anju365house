@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta name="description" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+
+    <title>乌鲁木齐市存量房交易系统-删除权限</title>
+
+    <link rel="stylesheet" type="text/css" href="../../frontJS/zTree_v3-master/css/zTreeStyle/zTreeStyle.css"/>
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/dialog.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/frame.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/countState.css" />
+    <script type="text/javascript" src="../../frontJS/jquery.min-1.9.1.js"></script>
+    <script type="text/javascript" src="../../frontJS/zTree_v3-master/js/jquery.ztree.all.js"></script>
+	<script type="text/javascript" src="../../frontJS/xtgl/rightDelManage.js"></script>
+</head>
+<body>
+	<div class="inner-container">
+		
+		<div class="top-xm">
+	        <p class="p_after">
+	            <a href="javascript:void(0)">系统管理</a>
+	            <a href="javascript:void(0)">删除权限</a>
+	            <a href="javascript:window.location.reload()" class="reload">刷新</a>
+	        </p>
+	    </div>
+
+	    <form name="baseForm" novalidate>
+			<div class="very-container">
+	
+				<div class="header">
+					<h1>删除权限</h1>
+				</div>
+				<div>
+					<table class="right-table">
+						<tr>
+							<td>
+								<div class="ztree-container">
+									<ul class="ztree" id="tree"></ul>
+									<div class="tip tip-left">注意：根目录（/）为主根目录，不可删除！点击保存即删除当前勾选的菜单项！</div>
+									<div id="search-err" class="err-tip"></div>
+								</div>
+								
+								<div id="add-err" class="err-tip"></div>
+								<div class="btn-content btn-content-left">
+									<a href="javascript:void(0)" id="cancel-btn">取消</a>
+									<a href="javascript:void(0)" id="save-btn">保存</a>
+								</div>
+							</td>
+							<!-- <td>
+							
+								<div class="add-container">
+									<table>
+										<tr>
+											<td>菜单名称：</td>
+											<td>
+												<input id="chName" type="text" />
+												<span>*</span>
+											</td>
+										</tr>
+										<tr>
+											<td>父级菜单CODE：</td>
+											<td>
+												<input id="parentCode" disabled="disabled" type="text" />
+											</td>
+										</tr>
+										<tr>
+											<td>菜单CODE：</td>
+											<td>
+												<input id="menuCode" disabled="disabled" type="text" />
+											</td>
+										</tr>
+										<tr>
+											<td>菜单级别：</td>
+											<td>
+												<input id="menuLevel" disabled="disabled" type="text" />
+											</td>
+										</tr>
+										<tr>
+											<td>菜单顺序：</td>
+											<td>
+												<input id="sortIndex" disabled="disabled" type="text" />
+											</td>
+										</tr>
+										<tr>
+											<td>菜单URL：</td>
+											<td>
+												<input id="menuUrl" type="text" />
+											</td>
+										</tr>
+									</table>
+									
+									<div class="tip">注意：添加菜单请点击左侧菜单栏，右侧输入的菜单将会是当前所选菜单下的子菜单</div>
+									
+								</div>
+								<div id="add-err" class="err-tip"></div>
+								<div class="btn-content">
+									<a href="javascript:void(0)" id="cancel-btn">取消</a>
+									<a href="javascript:void(0)" id="save-btn">保存</a>
+								</div>
+								
+							</td> -->
+						</tr>
+					</table>
+				</div>
+				<div class="footer"></div>
+				
+			</div>
+		</form>
+	</div>
+	
+	
+<div id="dialog-cover"></div>
+<div id="dialogMakeTrue" class="dialog">
+
+    <div class="dialog-container">
+        <div class="head">
+                                          系统提示
+            <!--<a href="#" class="add"></a>-->
+        </div>
+        <div class="item-container menu-item">
+        	<p>配置菜单权限成功！</p>
+        	<div class="menu-dialog-btn">
+        		<a class="btn" onclick="window.location.reload()">确定</a>
+        	</div>
+            
+        </div>
+
+    </div>
+
+</div>	
+
+
+</body>
+</html>

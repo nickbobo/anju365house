@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta name="description" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+
+    <title>乌鲁木齐市存量房交易系统-用户管理</title>
+
+	<link rel="stylesheet" type="text/css" href="../../frontJS/paging/paging.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/dialog.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/frame.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/countState.css" />
+    <script type="text/javascript" src="../../frontJS/jquery.min-1.9.1.js"></script>
+    <script type="text/javascript" src="../../frontJS/paging/paging.js"></script>
+	<script type="text/javascript" src="../../frontJS/base-config/base.js"></script>
+	<script type="text/javascript" src="../../frontJS/xtgl/userManageList.js"></script>
+</head>
+<body>
+<div class="tb_container">
+    <div class="top-xm fund-div">
+        <p class="fund-p">
+            <input id="userCodeInput" type="text" placeholder="按登录名搜索"/>
+            <input id="idNumberInput" type="text" placeholder="按证件号码搜索"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span>
+	                                          是否锁：
+	            <input type="radio" name="pass" value="1"/> <label>是</label>
+	            <input type="radio" name="pass" value="0"/> <label>否</label>
+            </span>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span>
+	                                          状态：
+	            <input type="radio" name="status" value="1"/> <label>有效</label>
+	            <input type="radio" name="status" value="0"/> <label>无效</label>
+            </span>
+            <a id="searchBtn" href="javascript:void(0)" class="big"></a>
+            <span class="search-fix">
+	             &nbsp;&nbsp;&nbsp;&nbsp;
+	            <span>
+		                                          所属角色：
+		            <select id="userCodeSelect"></select>
+	            </span>
+	            &nbsp;&nbsp;&nbsp;&nbsp;
+	            <span>
+		                                          所属公司：
+		            <select id="orgCodeSelect"></select>
+	            </span>
+	        </span>
+        </p>
+        <div id="errTip" class="err-tip"></div>
+        <p class="p_after">
+            <a href="javascript:void(0)" class="afterArrow">系统管理</a>
+            <a href="javascript:void(0)" class="afterArrow">用户管理</a>
+            <a href="javascript:window.location.reload();" class="reload">刷新</a>
+            <a onclick="allHandle(0)" href="javascript:void(0)" class="set reload">批量禁用</a>
+            <a onclick="allHandle(1)" href="javascript:void(0)" class="set reload">批量启用</a>
+            <a href="userManage.html" class="add reload">新增用户</a>
+        </p>
+    </div>
+    <div class="table-border">
+      <table>
+		<thead>
+			<tr class="tr_th">
+               <th>选择</th>
+               <th>序号</th>
+               <th>登录名</th>
+               <th>所属角色</th>
+               <th>创建时间</th>
+               <th>证件号码</th>
+               <th>状态</th>
+               <th>是否锁</th>
+               <th>操作</th>
+            </tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+      </table>
+      <!--底部分页-->
+      <div class="foot">
+          <p>共 <span class="totalCount"></span>条记录&nbsp&nbsp <span class="currentPage"></span>/<span class="totalPage"></span>页</p>
+          <div id="pageTool">
+
+          </div>
+      </div>
+    </div>
+    
+</div>
+
+<div id="dialog-cover"></div>
+<div id="dialogMakeTrue" class="dialog">
+
+    <div class="dialog-container">
+        <div class="head">
+                                          系统提示
+            <!--<a href="#" class="add"></a>-->
+        </div>
+        <div class="item-container menu-del">
+        	<p id="tip-info"></p>
+        	<div class="menu-dialog-btn">
+        		<a id="makeA" href="javascript:void(0)" class="btn">确定</a>
+        	</div>
+            
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

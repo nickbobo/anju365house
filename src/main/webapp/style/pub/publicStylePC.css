@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* 
+============= PC端页面公共样式库 ==============================
+m2016-4-26 
+============================================================================
+*/
+
+/* reset */
+*{ font-family:"Microsoft YaHei","微软雅黑","Helvetica Neue",Helvetica,STHeiTi,sans-serif; box-sizing:border-box;}
+html,body,h1,h2,h3,h4,h5,h6,dl,dt,dd,p,ul,li,form,iframe,object,input{ padding:0px; margin:0px;}
+a{ text-decoration:none;}
+h1,h2,h3,h4,h5,h6,strong{ font-weight:normal;}
+ul,ol,dl{list-style: none outside none;}
+a:active, a:focus, input:active, input:focus{ outline:none; -moz-outline:none;} /*去掉移动端firefox a标签的虚线框 PC chrome文本输入框的边框焦点时候的颜色 */
+input[type="button"]::-moz-focus-inner, input[type="submit"]::-moz-focus-inner{ border:none;} /*去掉移动端firefox 按钮获得焦点显示虚线框的样式 */
+table { border-collapse:collapse; border-spacing:0;}
+html,body{ width:100%; height:100%;}
+/* 清除现代IE浏览器的输入框和密码框的默认交互按钮 */
+::-ms-clear, ::-ms-reveal{display: none;}
+/* reset end */
+
+.t1{ font-size:12px;}
+.t2{ font-size:14px;}
+.t3{ font-size:16px;}
+.t4{ font-size:18px;}
+.t5{ font-size:20px;}
+.c1{ color:#000000;}
+.c2{ color:#333333;}
+.c3{ color:#666666;}
+.c4{ color:#999999;}
+.c5{ color:#cccccc;}
+.c6{ color:#ffffff;}
+.c7{ color:#fa4c4c;}
+
+.insideWidth{ width:100%; height:100%; margin:0px auto;}

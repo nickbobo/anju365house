@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>考试问题记录管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                            <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试人姓名：</label></td>
+	                        <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="userNameSerch" name="userName"></input></td>
+                            <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试名称：</label></td>
+	                        <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="examNameSerch" name="examName"></input></td>
+                        	<td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题标题：</label></td>
+	                        <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="questionTitleSerch" name="questionTitle"></input></td>
+                        	<td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题类型：</label></td>
+                            <td class="tbl-td-border"> 
+                         	‍‍<select class="easyui-combobox tbl-input-left"  id="questionTypeSerch" name ="questionType">
+                                <option value="" selected="selected">全部</option>
+								<option value="0">单选</option>
+								<option value="1">多选</option>
+                         	</select>
+                        	</td>
+                        </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                        <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadExamQuestionRecordPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<div id="toolbar">
+	    <!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addExam()" >新增</a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="publishExam()" >发布</a>
+	     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExam()" >删除</a> -->
+		<!--进度条-->
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+		</div>
+</div>
+
+    <script type="text/javascript">
+    
+    	var size = 10;
+    	var page = 1;
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '问题记录id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'userId', title: '考试人id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'userName', title: '考试人姓名',  align: 'left', halign: 'center'},
+                    {field: 'examName', title: '考试名称',  align: 'left', halign: 'center'},
+                    {field: 'examId', title: '考试id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'examRecordId', title: '考试记录id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'questionId', title: '问题id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'questionTitle', title: '问题标题',  align: 'left', halign: 'center'},
+                    {field: 'standardAnswer', title: '标准答案',  align: 'left', halign: 'center'},
+                    {field: 'questionType', title: '问题类型',  align: 'left', halign: 'center',
+                    	formatter: function(value, row, index) {
+                            if(value == '0') {
+                                 return "单选";
+                            } 
+                            if(value == '1') {
+                                 return "多选";
+                            }
+                        }   
+                    },
+                    {field: 'answer', title: '答案',  align: 'left', halign: 'center'},
+                    {field: 'options', title: '选项',  align: 'left', halign: 'center'},
+                    {field: 'createTime', title: '创建时间',  align: 'left', halign: 'center'}
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                }
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadExamQuestionRecordPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadExamQuestionRecordPage(page, size);
+
+                }
+            });
+        });
+        function loadExamQuestionRecordPage(page,size) {
+        	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            
+            var examName = $('#examNameSerch').val();
+            var userName = $('#userNameSerch').val();
+            var questionTitle = $('#questionTitleSerch').val();
+        	var questionType = $('#questionTypeSerch').combobox("getValue");
+      		
+            var service = $.svc.getSVC("/examManager/getAllUserExamQuestionsRecordPage");
+            service.setPage(page, size)
+            .setParam("questionTitle", questionTitle)
+            .setParam("questionType", questionType)
+            .setParam("examName", examName)
+            .setParam("userName", userName);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#examNameSerch').val(""); 
+        	$('#userNameSerch').val(""); 
+        	$('#questionTitleSerch').val(""); 
+        	$('#questionTypeSerch').combobox('setValue','');
+        	loadExamQuestionRecordPage();
+        })
+    </script>
+</body>
+</html>

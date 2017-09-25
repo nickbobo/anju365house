@@ -1,0 +1,198 @@
+@charset "utf-8";
+/* 
+============= relaxMobile 公共样式库 v1.1 from 2015-11 ================================
+m2016-3-14 
+ 由于输入框的焦点适应在移动端的测试情况，如果内容框的position为absolute的话，
+ 会导致某些移动端浏览器定位显示有问题，特别是UC，目前更改为普通定位，把头部
+ 和底部更改为fixed定位
+
+m2016-6-23
+ 为body增加了overflow:auto属性，如果滚动条在body上，通过这个可以使用js的屏蔽，设置body
+ 的overflow:hidden即可。否则即使设置这个属性，移动端依然可以滚动
+=======================================================================================
+*/
+
+/* reset */
+*{ font-family:"Microsoft YaHei","微软雅黑","Helvetica Neue",Helvetica,STHeiTi,sans-serif; box-sizing:border-box;}
+html,body,h1,h2,h3,h4,h5,h6,dl,dt,dd,p,ul,li,form,iframe,object,input{ margin:0px; padding:0px;}
+a{ text-decoration:none;}
+h1,h2,h3,h4,h5,h6,strong{ font-weight:normal;}
+ul,ol,dl{list-style: none outside none;}
+a:active, a:focus, input:active, input:focus, button:active, button:focus{ outline:none; -moz-outline:none;} /*去掉移动端firefox a标签的虚线框 PC chrome文本输入框的边框焦点时候的颜色 */
+input[type="button"]::-moz-focus-inner, input[type="submit"]::-moz-focus-inner, button::-moz-focus-inner{ border:none;} /*去掉移动端firefox 按钮获得焦点显示虚线框的样式 */
+table { border-collapse:collapse; border-spacing:0;}
+html,body{height:100%; width:100%; overflow:auto;}
+/* 清除现代IE浏览器的输入框和密码框的默认交互按钮 */
+::-ms-clear, ::-ms-reveal{display: none;}
+/* reset end */
+
+/* 文字大小及颜色公共样式 */
+/* t打头 文字大小 c打头 文字颜色 */
+.t6{ font-size:24px;font-size:24px !important;}
+.t5{ font-size:20px;font-size:20px !important;}
+.t4{ font-size:18px;font-size:18px !important;}
+.t3{ font-size:16px;font-size:16px !important;}
+.t2{ font-size:14px;font-size:14px !important;}
+.t1{ font-size:12px;font-size:12px !important;}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #aaa; font-size: 16px;line-height: 40px;vertical-align: middle;} 
+input:-moz-placeholder, textarea:-moz-placeholder { color: #aaa; font-size: 16px;line-height: 40px;vertical-align: middle;} 
+input::-moz-placeholder, textarea::-moz-placeholder { color: #aaa; font-size: 16px; line-height: 40px;vertical-align: middle;} 
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { color: #aaa; font-size: 16px; line-height: 40px;vertical-align: middle;} 
+/* button */
+.btn {display:block;height: 38px;line-height: 38px;text-align: center;background-color: #e3d0ad;border:1px solid #bdaa8c;color:#524437;border-radius: 6px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;cursor: pointer;} /* common btn - block */
+.inline-btn {display:inline-block;height: 38px;line-height: 38px;text-align: center;background-color: #e3d0ad;border:1px solid #bdaa8c;color:#524437;border-radius: 6px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;cursor: pointer;} /* common btn - inline */
+.btn:hover , .inline-btn:hover {background-color: #f8e4bf;color:#776350;border-color: #e2cba7;}
+.dis-btn , .dis-btn:hover {border-color: #ccc;color: #aaa;background-color: #eee;cursor: default;} /* 禁止按钮 */
+.non-btn {background-color: #fff;}/*背景空白的按钮*/
+.non-btn:hover {background-color: #fff;color:#776350;border-color: #e2cba7;}
+
+/* phone.html style */
+.container-xy {overflow: hidden;zoom:1;}
+.c {width: 100%;}
+.c:after , .c:before {display: table;content: '';clear: both;}
+.container {padding:0 10px 10px 10px;}
+.container:first-child {margin-top: 10px;}
+.container:after , .container:before {display: table;content: '';clear: both;}
+
+.audio-c {width: 120px;height: 36px;overflow: hidden;position: relative;float: right;background-color: #9f8b6c;border-radius: 6px;}
+.audio-c i {display: none;position: absolute;top:0;height: 36px;width: 36px;line-height:36px;text-align:center;background-color: #524437;color: #bdaa8c;transition: all 0.3s;}
+.audio-c .hideIcon {left: 0;border-top-left-radius: 6px;border-bottom-left-radius: 6px;}
+.audio-c .showIcon {right: 0;border-top-right-radius: 6px;border-bottom-right-radius: 6px;}
+.audio-close {display:none;position: absolute;top:0;right: 0;bottom: 0;width: 84px;line-height: 36px;color: #fff;text-align: center;}
+.audio-open {display:none;position: absolute;top:0;left: 0;bottom: 0;width: 84px;line-height: 36px;color: #fff;text-align: center;}
+.close .hideIcon , .close .audio-close , .open .showIcon , .open .audio-open {display: block;}
+.close .showIcon , .close .audio-open , .open .hideIcon , .open .audio-close {display: none;}
+
+/* main style */
+.inputClear {
+	width: 100%;
+	position:relative;
+	display: inline-block;
+}
+.inputClear > input {
+	/*width: auto; 
+	height: auto;*/ /*默认input的宽高可以同时结合width\height来重写input框的宽度/高度*/
+	/*line-height: 36px;*/ /*控制input框文字的高度可以同时结合height来重写input框文字的高度*/
+	padding-right: 36px !important;
+	padding-right: 36px;
+	padding-left: 36px;
+}
+.inputClear > .deleteEle {
+	display: none;
+	position: absolute;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	width: 24px;
+	top: 50%;
+	margin-top: -12px;
+	right: 6px;
+	z-index: 1;
+	cursor: pointer;
+	color: #9f8b6c;
+}
+input {
+	height: 40px;
+	line-height: 40px;
+	width: 100%;
+	background-color:#fff; 
+	border:1px solid #bdaa8c;
+	border-radius: 6px;
+	font-size: 24px;
+	color: #524437;
+}
+
+
+.inputStatus {margin-bottom: 40px;position: relative;}
+.inputStatus > i {display:block;position: absolute;top:0;left:10px;bottom:0;height: 40px;line-height:40px;width: 36px;text-align: center;}
+.errTip {height: 50px;line-height:50px;position: absolute;top:40px;left: 0;right: 0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;color: #e50505;}
+.okTip {height: 40px;line-height: 40px;position: absolute;top: -40px;left: 0;right: 0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding-left: 14px;color: #06a302;margin-right: 130px;}
+.resultTip {height: 50px;line-height:50px;position: absolute;top:40px;left: 0;right: 0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;color: #a3885f;}
+.resultTip img{ position:relative; top:5px; visibility:hidden;}
+.resultTip.loading img{ visibility:visible;}
+.resultText {height: 50px;line-height:50px;position: absolute;top:40px;left: 0;right: 0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;color: #bdaa8c;}
+.resultText span {color: #524437;}
+.errIcon {color: #e50505;}
+.okIcon {color: #06a302;}
+.loadingIcon {background:url(images/loading.gif) 50% 50%;background-repeat:no-repeat;background-size: 24px 24px;transition: all 0.3s;}
+.err input {border-color: #e50505;}
+.ok input {border-color: #06a302;}
+.errTip , .okTip , .resultTip , .resultText , .inputStatus > i {display: none;}
+.err .errIcon , .err .errTip {display: block;}
+.loading .loadingIcon {display: block;}
+.ok .okTip , .ok .okIcon {display: block;}
+.search .resultTip {display: block;}
+.result .resultText {display: block;}
+.result .resultText .yue {line-height:18px;white-space:normal;vertical-align:middle;display:inline-block;}
+.priceErr {display:none;color:#e50505;width:100%;transition: all 0.3s;overflow: hidden;margin-top: 10px;text-align: center; padding:0 10px;}
+.reGetPrice {color: #a3885f;cursor: pointer;text-decoration: underline;}
+
+ul.sel-c {width: 100%;}
+ul.sel-c:after , .sel-c:before {display: table;content: '';clear: both;}
+ul.sel-c li {float: left;/*width: calc(33.33% - 20px);margin:0 10px;*/width:28%;margin:0 2.66%;height: 40px;line-height: 40px;border:1px solid #bfac8f;text-align: center;color: #524437;border-radius: 6px;margin-bottom: 8px;overflow: hidden;zoom:1;text-overflow: ellipsis;white-space: nowrap;}
+ul.sel-c li.dis-sel {background-color: #eeeeee;color: #aaaaaa;border-color: #cdcdcd;}
+ul.sel-c li.sel {border-color: #e4393c;color: #e4393c;position:relative;cursor: pointer;}
+ul.sel-c li.sel:after {position: absolute;right:0px;bottom: 0;content: '\e62f';height: 18px;width: 18px; line-height:28px;text-align: right;z-index: 100;
+	font-family:"iconfont" !important;
+  	font-size:12px;
+  	font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;color: #fff;}
+ul.sel-c li.sel:before {position: absolute;right:-18px;background-color:#e4393c;bottom: 0;content: '';width: 0px;z-index: 10;height: 0px;border-right:18px solid transparent;border-top:18px solid #fff;border-bottom:18px solid transparent;border-left:18px solid #fff;font-size: 0px;line-height: 0px;}
+
+
+/* liuliang.html style */
+ul.sel-c li.other {min-width: 120px;position: relative;}
+ul.sel-c li.other select {border:none;outline: none;display: block;height:100%;line-height:36px;width:100%;position: absolute;top: 0;right: 0;left: 0;bottom: 0;text-align: center;background-color: #fff;}
+ul.sel-c li i {position: absolute;background-color: #fff;width: 34px;line-height:36px;top:-1px;bottom: -1px;right: -1px;border:1px solid #beac8e;border-left: none;border-top-right-radius: 6px;border-bottom-right-radius: 6px;z-index: 10;color: #bdaa8c;pointer-events:none;pointer-events:none;}
+ul.sel-c li.sel:after i , ul.sel-c li.sel:before i {display: none;}
+
+.splitBar {width: 100%;height: 12px;background-color: #e3d0ad;border-top:1px solid #9f8b6c;border-bottom: 1px solid #9f8b6c;margin-top: 20px;margin-bottom: 12px;}
+
+.input-c {padding:0 10px;}
+.input-meal > * {text-align: left;width:100%;padding-left: 10px;}
+.no-tip {display: none;}
+.input-meal > .sel-meal {padding-left: 0;}
+.input-meal > .sel-meal > * {margin-bottom: 10px;text-align: left;padding-left: 10px;}
+.input-meal > .sel-meal > *.sel {border-color: #e4393c;color: #e4393c;position:relative;cursor: pointer;}
+.input-meal > .sel-meal > *.sel:after {position: absolute;right: 0;bottom: 0;content: '\e62f';height: 18px;width: 18px; line-height:28px;text-align: right;z-index: 1000;
+	font-family:"iconfont" !important;
+  	font-size:12px;
+  	font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;color: #fff;}
+.input-meal > .sel-meal > *.sel:before {position: absolute;right:-18px;background-color:#e4393c;bottom: 0;content: '';width: 0px;z-index: 100;height: 0px;border-right:18px solid transparent;border-top:18px solid #fff;border-bottom:18px solid transparent;border-left:18px solid #fff;font-size: 0px;line-height: 0px;}
+.ok .no-tip , .no .sel-meal , .sel-meal {display: none;}
+.no .no-tip , .ok .sel-meal {display: block;}
+
+
+/* qbi.html style */
+.qbiTip {color: #9f8b6c;padding-left: 12px;margin-bottom: 14px;}
+.splitLine {margin:8px 10px 15px 10px;border-top:1px solid #bdaa8c;font-size: 0;}
+
+.input-xy {width: 100%;margin:0 auto;}
+.input-xy:after , .input-xy:before {display: table;content: '';clear: both;}
+.input-xy > label {display:block;width: 94px;height: 38px;line-height: 38px;text-align:center;overflow: hidden;float: left;color: #524437;}
+.float-r {float: right;}
+
+.numOp {height: 38px;line-height: 38px;overflow:hidden;zoom:1;display: inline-block;border:1px solid #bdaa8c;border-radius: 6px;position: relative;}
+.numOp > * {float:left;line-height:38px;display:inline-block;vertical-align: middle;}
+.numOp > a {height: 100%;width:38px;text-align: center;text-decoration:none;font-family:'微软雅黑';color:#999;transition:all 0.5s;background-color: #e3d0ad;color:#524437;}
+.numOp > a:hover {color:#000;}
+.numOp > input {height:38px;width:94px;padding:0 5px 0 20px;border:none;}
+.numOp > span {position: absolute;top:0;bottom: 0;right:38px;width: 36px;color: #bdaa8c;display: block;}
+#self-meal {display: none;}
+
+
+/* oil.html style */
+
+
+
+
+
+
+
+
+

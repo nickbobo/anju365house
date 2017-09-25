@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>盒子服务器管理</title>
+<link rel="stylesheet" type="text/css"
+	href="../../themes/bootstrap/easyui.css">
+<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../../css/default.css">
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+<script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+<script type="text/javascript" src="../../js/jquery-form.js"></script>
+<script type="text/javascript" src="../../js/app_new.js"></script>
+<!-- <script type="text/javascript" src="../../js/app.js"></script> -->
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/comm_check.js"></script>
+<script type="text/javascript" src="../../js/relax_function.js"></script>
+
+
+</head>
+<body>
+	<!-- 查询条件 -->
+	<div id="searchbar">
+		<fieldset>
+			<legend>查询条件</legend>
+			<table id="tblSearch" cellpadding="0" cellspacing="0" border="0"
+				class="tbl-border">
+				<tr>
+					<td class="tbl-td-bg-color tbl-td-border"><label
+						class="tbl-label-right">IP地址：</label></td>
+					<td class="tbl-td-border"><input
+						class="easyui-validatebox tbl-input-left" id="ipSerch" name="ip"></input></td>
+					<td class="tbl-td-bg-color tbl-td-border"><label
+						class="tbl-label-right">盒子类型：</label></td>
+					<td class="tbl-td-border"><input
+						class="easyui-validatebox tbl-input-left" id="boxTypeSerch"
+						name="boxType"></input></td>
+					<td class="tbl-td-bg-color tbl-td-border"><label
+						class="tbl-label-right">南北区域：</label></td>
+					<td class="tbl-td-border"><input
+						class="easyui-validatebox tbl-input-left" id="areaIdSerch"
+						name="area"></input></td>
+				</tr>
+			</table>
+			<div style="padding: 5px; text-align: center;">
+				<a href="#" class="easyui-linkbutton" icon="icon-search"
+					onclick="loadBoxServerPage()">查询</a> <a href="javascript:void(0)"
+					class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+			</div>
+		</fieldset>
+	</div>
+
+	<!-- 用户信息 -->
+	<table id="dg_cr" class="easyui-datagrid">
+	</table>
+
+	<!-- 工具栏 -->
+	<div id="toolbar">
+		<a href="javascript:void(0)" class="easyui-linkbutton"
+			iconCls="icon-edit" plain="true" onclick="addBox()">新增 </a>
+		<!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="publishExam()" >发布</a> -->
+		<a href="javascript:void(0)" class="easyui-linkbutton"
+			iconCls="icon-remove" plain="true" onclick="deleteBox()">删除</a>
+		<!--进度条-->
+		<div id="div_pb"
+			style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+			<img src="../../images/loading.gif" />
+		</div>
+	</div>
+
+	<!-- 弹出窗口定义 编辑信息 -->
+	<div id="tanchuang" class="easyui-dialog" title="编辑 信息"
+		data-options="iconCls:'icon-edit'" closed="true"
+		style="width: 450px; height: 350px; padding: 10px; align-content: true">
+		<form id="fm" method="post">
+			<input name="id" id="id" type='hidden' />
+			<table class="searchTable">
+				<tr>
+				<tr>
+					<td><label class="tbl-label-right">盒子类型：</label></td>
+					<td><input class="easyui-validatebox tbl-input-left"
+						id="boxTypeSerchTK" name="boxType"></input></td>
+				</tr>
+				<tr>
+					<td>区域:</td>
+					<td><input class="easyui-validatebox tbl-input-left"
+						id="areaIdSerchTK" name="areaId"></input></td>
+				</tr>
+				<tr>
+					<td>ip:</td>
+					<td><input class="easyui-validatebox tbl-input-left"
+						type="text" id="ipIdTK" name="ip" data-options="required:true" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center"><a href="javascript:void(0)"
+						class="easyui-linkbutton" iconCls="icon-ok"
+						onclick="saveOrUpdInfo()">确定</a></td>
+				</tr>
+			</table>
+		</form>
+
+	</div>
+	<script type="text/javascript">
+    
+    	var size = 10;
+    	var page = 1;
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: true,
+                selectOnCheck: true,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '盒子id',  align: 'left', halign: 'center',hidden:true,width:100},
+                    {field: 'boxType', title: '盒子类型',  align: 'left', halign: 'center',dict: 'boxType',width:100},
+                    {field: 'areaId', title: '区域',  align: 'left', halign: 'center',dict : 'areaId',width:100},
+                    {field: 'ip', title: 'ip地址',  align: 'left', halign: 'center',width:100},
+					{
+					 field : 'operRow',
+					 title : '操作列',
+					 halign : 'center',
+					 width : 100,
+					 align : 'center',
+					 formatter : function(value, row,
+								index) {
+							var name = '[修改]';
+							return "<a href='javascript:void(0)' onclick='editSupplier(\""
+									+ index
+									+ "\",\""
+									+ row
+									+ "\")' >"
+									+ name
+									+ "</a>";
+						}
+
+					} 
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                //rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                }
+                //onDblClickRow:onDbClick
+            }
+        }; 
+
+        
+        $('#boxTypeSerch').combobox({
+            valueField: 'key',
+            textField: 'value',
+            enitable:true,
+            onLoadSuccess: function (data) {
+                 if (data.length > 0) {
+                    $('#boxTypeSerch').combobox('select', data[0].key);
+                } else {
+                    $(this).combobox('select', []);
+                }  
+            }
+        });
+        
+        $('#areaIdSerch').combobox({
+            valueField: 'key',
+            textField: 'value',
+            enitable:true,
+            onLoadSuccess: function (data) {
+                 if (data.length > 0) {
+                    $('#areaIdSerch').combobox('select', data[0].key);
+                } else {
+                    $(this).combobox('select', []);
+                }  
+            }
+        });
+      /*查询盒子类型 ，外层查询条件*/
+      function getBoxType() {
+			var service = $.svc.getSVC("/boxServer/getBoxTypeList");
+			service.call(function(response, status) {
+				if (response.isSucc()) {
+					response.getResult().unshift({"key":'',"value":"全部"});
+					$('#boxTypeSerch').combobox("loadData", response.getResult());
+				} else {
+					$.messager.alert('提示', response.getResult(), 'error');
+				}
+			});
+		}
+      
+       /*查询区域,外层查询条件 */
+       function getAreaIdList() {
+			var service = $.svc.getSVC("/boxServer/getAreaIdList");
+			service.call(function(response, status) {
+				if (response.isSucc()) {
+					response.getResult().unshift({"key":'',"value":"全部"});
+					$('#areaIdSerch').combobox("loadData", response.getResult());
+				} else {
+					$.messager.alert('提示', response.getResult(), 'error');
+				}
+			});
+		}
+        
+       /*查询盒子类型 ，添加弹出框选择条件*/
+       function getBoxTypeTK() {
+ 			var service = $.svc.getSVC("/boxServer/getBoxTypeList");
+ 			service.call(function(response, status) {
+ 				if (response.isSucc()) {
+ 					//response.getResult().unshift({"key":'',"value":"请选择"});
+ 					$('#boxTypeSerchTK').combobox("loadData", response.getResult());
+ 				} else {
+ 					$.messager.alert('提示', response.getResult(), 'error');
+ 				}
+ 			});
+ 		}
+       
+        /*查询区域,添加弹出框选择条件 */
+        function getAreaIdListTK() {
+ 			var service = $.svc.getSVC("/boxServer/getAreaIdList");
+ 			service.call(function(response, status) {
+ 				if (response.isSucc()) {
+ 					//response.getResult().unshift({"key":'',"value":"请选择"});
+ 					$('#areaIdSerchTK').combobox("loadData", response.getResult());
+ 				} else {
+ 					$.messager.alert('提示', response.getResult(), 'error');
+ 				}
+ 			});
+ 		}
+        
+        $(function () {
+        	$('#dg_cr').datagrid(
+    				'service',
+    				{
+    					name : "/boxServer/getBoxServerList",
+    					query : function() {
+    			            var ip = $('#ipSerch').val();
+    			        	var boxType = $('#boxTypeSerch').combobox("getValue");
+    			        	var areaId = $('#areaIdSerch').combobox("getValue");
+    						var service = $('#dg_cr')
+    								.datagrid('service');
+    						service.setParam("ip", ip).setParam(
+    								"boxType", boxType).setParam(
+    	    								"areaId", areaId).send(
+    								function(response, status) {
+    									if (response.isSucc()) {
+    										$('#dg_cr').datagrid("loadData", response.getResult());
+    									} else {
+    										$.messager.alert('提示', response
+    												.getMessage(), 'error');
+    									}
+    									$('#dg_cr').datagrid("loaded");
+    								});
+    					}
+    				});
+        	
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadBoxServerPage();
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadBoxServerPage();
+
+                }
+            });
+            getAreaIdList(); 
+            getBoxType();
+        });
+
+		
+        function loadBoxServerPage() {
+            $('#dg_cr').datagrid("service").query();
+        }
+        //刷新页面
+        function refreshPage() {
+        	$('#ipSerch').val(""); 
+        	$('#areaIdSerch').combobox('setValue','');
+        	$('#boxTypeSerch').combobox('setValue','');
+        	loadBoxServerPage();
+        }
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#ipSerch').val(""); 
+        	$('#areaIdSerch').combobox('setValue','');
+        	$('#boxTypeSerch').combobox('setValue','');
+        	loadBoxServerPage();
+        })
+         
+          //添加按钮
+        function addBox(){
+
+          $('#fm input').removeAttr("disabled");
+          $('#fm').form('reset');
+          document.getElementById("id").value="";
+      	  $('#tanchuang').dialog('open').dialog('setTitle','添加');
+      	  
+          getBoxTypeTK();
+          getAreaIdListTK();
+      	   
+          $('#boxTypeSerchTK').combobox({
+              valueField: 'key',
+              textField: 'value',
+              enitable:true,
+              onLoadSuccess: function (data) {
+                   if (data.length > 0) {
+                      $('#boxTypeSerchTK').combobox('select', data[0].key);
+                  } else {
+                      $(this).combobox('select', []);
+                  }  
+              }
+          });
+          
+          $('#areaIdSerchTK').combobox({
+              valueField: 'key',
+              textField: 'value',
+              enitable:true,
+              onLoadSuccess: function (data) {
+                   if (data.length > 0) {
+                      $('#areaIdSerchTK').combobox('select', data[0].key);
+                  } else {
+                      $(this).combobox('select', []);
+                  }  
+              }
+          });
+        }
+     // 双击打开窗口（修改）
+    	  function editSupplier(rowIndex, rowData) {
+    		  $('#dg_cr').datagrid('selectRow',rowIndex); 
+    		  var row = $('#dg_cr').datagrid('getSelected');
+    		 $('#tanchuang').dialog('open').dialog('setTitle','修改');
+    		 $('#fm').form('load',row);
+    		 getBoxTypeTK(rowData);
+             getAreaIdListTK(rowData);
+             $('#boxTypeSerchTK').combobox({
+                 valueField: 'key',
+                 textField: 'value',
+                 enitable:true,
+                 onLoadSuccess: function (data) {
+                      if (data.length > 0) {
+                       //  $('#boxTypeSerchTK').combobox('select', data[0].value);
+                    	  $('#boxTypeSerchTK').combobox("setValue",row.boxType );
+                     } else {
+                         $(this).combobox('select', []);
+                     }  
+                 }
+             });
+             
+             
+             $('#areaIdSerchTK').combobox({
+                 valueField: 'key',
+                 textField: 'value',
+                 enitable:true,
+                 onLoadSuccess: function (data) {
+                      if (data.length > 0) {
+                         //$('#areaIdSerchTK').combobox('select', data[0].value);
+                    	  $('#areaIdSerchTK').combobox("setValue",row.areaId );
+                     } else {
+                         $(this).combobox('select', []);
+                     }  
+                 }
+             });
+             
+    	  }
+        // 编辑框 确定按钮
+        function saveOrUpdInfo(){
+        	
+          var id = $('#id').val();
+     	  var ip = $('#ipIdTK').val();
+     	  var boxType = $('#boxTypeSerchTK').combobox('getValues')[0];
+     	  var areaId = $('#areaIdSerchTK').combobox('getValues')[0];
+
+     	  
+     	 if (ip == ''|| ip==null) {
+             $.messager.alert("提示信息", "请输入ip！！！！");
+             return;
+          }
+     	 if (boxType == ''|| boxType==null) {
+             $.messager.alert("提示信息", "请输入盒子类型！！！！");
+             return;
+          }
+      	 if (areaId == ''|| areaId==null) {
+             $.messager.alert("提示信息", "请输入区域！！！！");
+             return;
+          }
+     	  
+      	  var service = $.svc.getSVC("/boxServer/saveOrUpdateBox");
+          service
+          .setParam("box/id", id)
+          .setParam("box/ip", ip)
+          .setParam("box/boxType", boxType)
+          .setParam("box/areaId", areaId);
+          service.call(
+              function (data, status) {
+            	  if (data.succ == true) {
+                	  $.messager.alert('提示', '保存成功!', 'info');
+                	  refreshPage();
+                      $('#tanchuang').dialog('close');
+                  } else {
+                	  $.messager.alert('提示', '保存失败!', 'error');
+                  }
+              }); 
+        }
+        
+     // 删除
+        function deleteBox() {
+           var row = $('#dg_cr').datagrid('getChecked');
+           if (row == '') {
+               $.messager.alert("提示信息", "请选择记录再删除！！！！", "error");
+               return;
+           }
+             $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {
+               if (data) {
+               	var service = $.svc.getSVC("/boxServer/delBox");
+       	        service
+       	        .setParam("idList", row);
+       	        service.call(
+                      function (data, status) {
+                   	   if (data.succ == true) {
+                        	  $.messager.alert('提示', '删除成功!', 'info');
+                        	  refreshPage();
+                          } else {
+                              $.messager.alert('提示', '删除失败!', 'error');
+                          }
+                      });
+               }
+           });
+           
+       }
+        function ValidateNumber(e, pnumber){
+        	if (!/^\d+$/.test(pnumber)){
+        	$(e).val(/^\d+/.exec($(e).val()));
+        	}
+        	return false;
+          }
+    </script>
+</body>
+</html>

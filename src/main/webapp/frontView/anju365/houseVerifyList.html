@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="安居365" />
+    <meta name="description" content="安居365" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+     <link rel="Shortcut icon" href="../../image-xm/logo.ico">
+     <link rel="stylesheet" href="../../frontJS/anju365/paging/paging.css"/>
+     <link rel="stylesheet" href="../../frontStyle/anju365/pubCSS.css"/>
+     <script type="text/javascript" src="../../frontJS/anju365/jquery.min-1.9.1.js"></script>
+     <script type="text/javascript" src="../../frontJS/anju365/My97DatePicker/WdatePicker.js"></script>
+     <script type="text/javascript" src="../../frontJS/anju365/houseVerifyList.js"></script>
+     <script type="text/javascript" src="../../frontJS/base-config/base.js"></script>
+     <script src="../../frontJS/anju365/paging/paging.js"></script>
+    <title>安居365-房源验证</title>
+ 
+
+</head>
+<body>
+<div class='nav'><img class='anjuText' src="../../frontStyle/image/anjuText.png" alt=""/></div>
+
+<div class="cont-xm houseVerifyList-cont">
+<div class='return'>
+	<div class="top-xm">
+	        <p class="p_after">
+	            <a class='afterArrow' href="../../anju365.html">首页</a>
+	            <a class='afterArrow' href="javascript:void(0)">房源验证结果</a>
+	            <a href="javascript:window.location.reload();" class="reload">刷新</a>
+	        </p>
+	    </div>
+</div>
+ 	<div class="top-xm fund-div">
+        <p class="fund-p">
+            <input id='houseNum' type="text" placeholder="按产权证号搜索"/>
+            <input id="startTime" onclick="WdatePicker()" type="text" placeholder="按验证日期查询(开始日期)" readonly="readonly"/>
+            <span class="line"></span>
+            <input id="endTime" onclick="WdatePicker()" type="text" placeholder="按验证日期查询(结束日期)" readonly="readonly"/>
+	            <input checked="checked" type="radio" name="pass" value="0"/> <label class='pass'>未验证</label>
+	            <input type="radio" name="pass" value="1"/> <label class='pass'>验证通过</label>
+	            <input type="radio" name="pass" value="2"/> <label class='pass'>未通过</label>
+            <span id="searchBtn" class="big"></span>
+        </p>
+       
+    </div>
+    
+    
+    <div class="mid-xm houseVerifyList">
+         <table>
+	         <thead>
+		           	<tr class="tr_th">
+                 		<th>序号</th>
+	                    <th>产权证号</th>
+	                    <th>验证日期</th>
+	                    <th>权利人</th>
+	                    <th>申请人</th>
+	                    <th>联系方式</th>
+	                    <th>交易类型</th>
+	                    <th>是否挂牌</th>
+	                    <th>验证状态</th>
+	                    <th>操作</th>
+                 	</tr>
+	            </thead>
+	            <tbody>
+	            </tbody>
+         </table>
+    </div>
+    <div class="bottom-xm">
+    	<p>共 <span class="totalCount"></span>条记录&nbsp&nbsp <span class="currentPage"></span>/<span class="totalPage"></span>页</p>
+            <div id="pageTool">
+            </div>
+    </div>
+</div>
+</body>
+</html>

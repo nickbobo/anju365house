@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sys.authority.dao.AuthorityMapper">
+	<!-- 角色菜单配置 -->
+	<insert id="addRoleMenu">
+        INSERT INTO role_menu SELECT
+        rowNum+1000+#{number} AS id,
+        #{roleCode},
+        c.menu_code,'','','',
+        #{userName},sysdate,#{userName},sysdate
+        FROM
+        (
+        SELECT
+        a.menu_code
+        FROM
+       menu a
+        WHERE
+        a.menu_code IN (${menuCode})
+        ) c
+        </insert>
+
+	<!-- 角色操作权限配置 -->
+	<insert id="addRoleFunction">
+		/*INSERT INTO role_function
+		SELECT @rowNum :=
+		CAST(@rowNum AS UNSIGNED) + 1 AS id, #{roleCode},c.fn_code,
+		#{userName},now(),#{userName},now()
+		FROM
+		(SELECT a.fn_code
+		FROM
+		hdcs_function a, (SELECT @rowNum := #{number}
+		) b
+		WHERE
+		a.fn_code IN
+		(${fnCode})
+		) c*/
+	</insert>
+	
+	<!--角色菜单权限配置查询 -->
+
+	
+	<!--角色操作权限查询  -->
+	<select id="getRoleFnPermsPage" resultType="com.sys.authority.entity.AuthorityEntity">
+		<!--SELECT
+		a.id,
+		a.role_code,
+		a.fn_code,
+		b.menu_code
+		FROM
+		role_function AS
+		a,
+		hdcs_function AS b
+		WHERE
+		a.fn_code = b.fn_code
+		<if test="roleCode != null and roleCode != ''">
+			and a.role_code = #{roleCode}
+		</if>
+		<if test="menuCode != null and menuCode != ''">
+			and b.menu_code = #{menuCode}
+		</if>
+-->
+	</select>
+	
+	<!-- 删除角色菜单权限配置 -->
+	<delete id="delRoleMenuPerms" >
+		delete from role_menu
+		where
+		role_code=#{roleCode}
+		and
+		menu_code in (${menuCode})
+	</delete>
+
+
+
+	<!-- 根据菜单code删除角色操作配置 -->
+	<delete id="delRoleFnPermsByMenuCd" parameterType="List">
+		<!--delete from
+		role_function
+		where fn_code in
+		(select
+		b.fn_code from
+		hdcs_function as b
+		where b.menu_code
+		in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item.menuCode}
+		</foreach>
+		)-->
+	</delete>
+	<!-- 删除角色操作权限配置 -->
+	<delete id="delRoleFnPerms" parameterType="List">
+	<!--	delete from role_function where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item.id}
+		</foreach>
+		-->
+	</delete>
+    <!--根据角色code查询该角色未配置菜单 -->
+    <select id="getUnSetMenuInfo" resultType="com.sys.menu.entity.MenuViewEntity">
+        SELECT menu_code as id,ch_name as name,parent_code as parentCode,menu_url as menuUrl,
+		sort_index as sortIndex, menu_level as menuLevel
+        FROM menu WHERE NOT EXISTS (
+        SELECT menu_code FROM role_menu
+        WHERE menu.menu_code=role_menu.menu_code
+		<if test="roleCode != null ">
+			AND role_menu.role_code=#{roleCode}
+		</if>
+
+        )
+    </select>
+	<!--角色菜单权限配置查询-->
+	<select id="getRoleMenuPerms" resultType="com.sys.menu.entity.MenuViewEntity" >
+		SELECT menu_code as id,ch_name as name,parent_code as parentCode,menu_url as menuUrl,
+		sort_index as sortIndex, menu_level as menuLevel
+        FROM menu WHERE  EXISTS (
+        SELECT menu_code FROM role_menu
+        WHERE menu.menu_code=role_menu.menu_code
+        AND role_menu.role_code=#{roleCode}
+        )
+	</select>
+	<!-- 根据code查询该层级所有上级-->
+	<select id="getMenuInfoByPcode" resultType="com.sys.menu.entity.MenuViewEntity">
+		SELECT menu_code as id,ch_name as name,parent_code as parentCode
+        FROM menu
+        WHERE #{parentCode} LIKE CONCAT(menu_code, '%')
+	</select>
+</mapper>

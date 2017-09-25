@@ -1,0 +1,205 @@
+{
+  "services": [
+    {
+      "name": "trench/getDealerList",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/commonInterFaceController.do?userList"
+      ],
+      "appendKeyPrefix": true
+    },
+      {
+      "name": "trench/getDealerDetail",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/commonInterFaceController.do?userDetail"
+      ],
+      "appendKeyPrefix": true
+    },
+      {
+      "name": "trench/saveDealerBoxLaying",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/commonInterFaceController.do?terminalLay"
+      ],
+       "appendKeyPrefix": true
+    },
+      {
+      "name": "trench/registerDealerInfo",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/commonInterFaceController.do?register"
+      ],
+       "appendKeyPrefix": true
+    } ,
+      {
+      "name": "trench/getOperators",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/tDRegionController.do?loadQj"
+      ],
+       "appendKeyPrefix": true
+    },
+      {
+      "name": "trench/saveDealerBoxRecycling",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/commonInterFaceController.do?unbinding"
+      ],
+       "appendKeyPrefix": true
+    },
+      {
+      "name": "trench/saveDealerBoxCanceling",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/commonInterFaceController.do?cancel"
+      ],
+       "appendKeyPrefix": true
+    } ,
+      {
+      "name": "trench/upload",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/commonInterFaceController.do?upload"
+      ],
+       "appendKeyPrefix": true
+    },
+      {
+      "name": "trench/editDealerInfo",
+      "urls": [
+        "http://122.144.133.37:9611/ebms/commonInterFaceController.do?edit"
+      ],
+       "appendKeyPrefix": true
+    },
+     { 
+     "name": "trench/checkUserCode",
+     "urls": [
+       "http://122.144.133.37:9611/ebms/commonInterFaceController.do?checkUserCode"
+      ],
+     
+      "appendKeyPrefix": true
+    },
+    {
+     "name": "trench/checkIdCard", 
+     "urls": [
+       "http://122.144.133.37:9611/ebms/commonInterFaceController.do?checkIdCard"
+    ],
+     
+     "appendKeyPrefix": true
+   },
+     {
+     "name": "trench/getUserList",
+     "urls": [
+     "http://122.144.133.37:9611/ebms/commonInterFaceController.do?userSelectList"
+     ],
+     
+      "appendKeyPrefix": true
+     } ,
+     {
+     "name": "trench/paveCard",
+     "urls": [
+     "http://122.144.133.37:9611/ebms/tSpecMoveInfoController.do?doPaveForApp"
+     ],
+      "appendKeyPrefix": true
+    },
+    {
+      "name": "trench/recoverCard",
+      "urls": [
+      "http://122.144.133.37:9611/ebms/tSpecMoveInfoController.do?doRecoverForApp"
+       ],
+      
+       "appendKeyPrefix": true
+     },
+    {
+      "name": "trench/shiftCard",
+      "urls": [
+      "http://122.144.133.37:9611/ebms/tSpecMoveInfoController.do?doShiftForApp"
+       ],
+      
+       "appendKeyPrefix": true
+     },
+    {
+      "name": "trench/getProdSku",
+      "urls": [
+      "http://122.144.133.37:9611/ebms/tSpecStoreInfoController.do?getProdSku"
+       ],
+      
+       "appendKeyPrefix": true
+     },
+    {
+      "name": "trench/getProd",
+      "urls": [
+      "http://122.144.133.37:9611/ebms/tSpecStoreInfoController.do?getProd"
+       ],
+      
+       "appendKeyPrefix": true
+     },
+    {
+      "name": "trench/getProdList",
+      "urls": [
+      "http://122.144.133.37:9611/ebms/tSpecStoreInfoController.do?getProdList"
+       ],
+      
+       "appendKeyPrefix": true
+     },{
+      "name": "sso.authTicket",
+      //      "protocol": "jsonrpc_http_normal",
+      //url的定义支持占位符定义，可替换为properties中的值
+      "urls": [
+        "${system.sso.server.auth}"
+      ],
+      "version": "1.0",
+      "includeMethod": false
+    },
+    {
+      "name": "operate.getOprtAreaByUid",
+      // 用户已经开通运营商接口
+      //url的定义支持占位符定义，可替换为properties中的值
+      "urls": [
+        "http://122.144.133.37:9613/oprt/webService.do?method=getOprtAreaByUid"
+      ],
+      "version": "1.0",
+	  "appendKeyPrefix": true,
+      "includeMethod": true
+    },
+    {
+      "name": "operate.getOprtAreaByregionCode",
+      //      用户没有开通运营商接口
+      //url的定义支持占位符定义，可替换为properties中的值
+      "urls": [
+        "http://122.144.133.37:9613/oprt/webService.do?method=getOprtAreaByregionCode"
+      ],
+      "version": "1.0",
+	  "appendKeyPrefix": true,
+      "includeMethod": true
+    },
+    {
+      "name": "operate.upVendorArea",
+      //  通知运营商
+      //url的定义支持占位符定义，可替换为properties中的值
+      "urls": [
+      "http://122.144.133.37:9613/oprt/webService.do?method=upVendorArea"
+      ],
+      "version": "1.0",
+	  "appendKeyPrefix": true,
+      "includeMethod": true
+    },
+    {
+      "name": "sendMessage.url",
+      //      "protocol": "jsonrpc_http_normal",
+      //url的定义支持占位符定义，可替换为properties中的值
+      "urls": [
+        "http://122.144.133.37:9596/eshop-frame-sms/sysSms/sendMessage.svc"
+      ],
+      "version": "1.0",
+	  "wrap" : false,
+	  "appendKeyPrefix": false,
+      "includeMethod": true
+    },
+    {
+      "name": "getSpecStoreInfoPage",
+      //      "protocol": "jsonrpc_http_normal",
+      //url的定义支持占位符定义，可替换为properties中的值
+      "urls": [
+        "http://localhost:8080/eoms/tspecMoveInfo/getSpecStoreInfoPage.svc"
+      ],
+      "version": "1.0",
+      "wrap" : false,
+      "appendKeyPrefix": false,
+      "includeMethod": true
+    }
+
+  ]
+}

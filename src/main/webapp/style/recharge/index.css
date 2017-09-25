@@ -1,0 +1,145 @@
+/* reset */
+*{ font-family:"Microsoft YaHei","微软雅黑","Helvetica Neue",Helvetica,STHeiTi,sans-serif; /*font-family:tahoma,arial,'Hiragino Sans GB','\5b8b\4f53',sans-seri; */box-sizing:border-box;}
+html,body,h1,h2,h3,h4,h5,h6,dl,dt,dd,p,ul,li,form,iframe,object,input{ margin:0px; padding:0px;}
+a{ text-decoration:none;}
+h1,h2,h3,h4,h5,h6,strong{ font-weight:normal;}
+ul,ol,dl{list-style: none outside none;}
+a:active, a:focus, input:active, input:focus, button:active, button:focus{ outline:none; -moz-outline:none;}
+input[type="button"]::-moz-focus-inner, input[type="submit"]::-moz-focus-inner, button::-moz-focus-inner{ border:none;}
+table { border-collapse:collapse; border-spacing:0;}
+html,body{ position:relative; height:100%; width:100%;}
+/* 清除现代IE浏览器的输入框和密码框的默认交互按钮 主要用于设定自己的清空按钮和密码可见按钮时不冲突 */
+::-ms-clear, ::-ms-reveal{display: none;}
+/* reset end */
+
+
+/* index style */
+.container-xy {width: 100%;overflow: hidden;background-color: #f2eadd;height:700px;position: relative;}
+.allHeight {height:100%;}
+.top-xy {overflow: hidden;height: 80px;border-bottom: 8px solid #f2eadd;background-color: #e3d0ad;position: relative;}
+.top-xy:before {position: absolute;background-color: #a31523;content:'';height: 50px;width: 50px;top:0;left:0;z-index: 1;}
+.top-xy:after {position: absolute;background-color: #e3d0ad;content: '';height: 100px;width: 100px;top:0;left:0;z-index: 2;border-radius: 100px;}
+.top-xy img {position:absolute; z-index:3; top:4px; left:31px;}
+.top-xy h2 {font-size: 24px;color: #524437;position: absolute;top:0;height: 72px;line-height: 72px;left: 154px;}
+.top-xy h2 span {color: #a31523;}
+.top-xy ul {margin-left: 360px;height: 56px;margin-top: 16px;overflow: hidden;}
+.top-xy ul li {height:56px;line-height:52px;font-size: 18px;width: 126px;margin-right: 10px;color: #524437;float: left;text-align: center;cursor: pointer;position: relative;}
+.top-xy ul li span {display: block;height: 22px;width: 22px;background-color: #b13945;border-radius: 22px;position: absolute;top:2px;right: 12px;line-height: 22px;text-align: center;font-size: 12px;color: #fff;}
+.top-xy ul li.sel {border-top:3px solid #af333f;color: #b13844;background-color: #f2eadd;}
+.top-xy .myStatus{ position:absolute; top:50%; margin-top:-12px; right:5%; padding-right:55px;}
+/* modify by relax 2017/5/10 账户余额及积分的样式*/
+.myStatus .icon-gerenxinxi{ color:#a99061;}
+#userRealname{ margin-right:10px;}
+.userAccount,.userPoint{ margin-right:3px; font-size:14px; color:#9e824d;}
+#userAccount,#userPoint{ padding-left:3px; font-size:17px; color:#f52f2f;}
+#userAccount:after{ content:'元'; color:#999; font-size:0.6em; padding-left:3px;}
+#userRefresh{ position:absolute; top:50%; margin-top:-12px; right:0; font-size:14px; height:24px; width:46px; line-height:22px; text-align:center; background-color:#f7e4c1; border-radius:6px; border:1px solid #cead6f; cursor:pointer;}
+#userRefresh:hover{ background-color:#b99c68; color:#fff; border-color:#b99c68;}
+#userRefresh:after{ content:"刷新";}
+#userRefresh.loading{ background-color:transparent; border:none; background:url(image/loading.gif) no-repeat left center;}
+#userRefresh.loading:after{ content:"";}
+.bottom-xy {overflow: hidden;position: absolute;top:80px;left: 0;right: 0;bottom:10px;}
+.left-xy {width: 100px;overflow: hidden;background-color: #524437;position: absolute;top:0;bottom:0;left: 0;}
+.left-xy ul {width: 100px;overflow: hidden;}
+.left-xy ul li {width: 100px;overflow: hidden;height: 100px;text-align: center;border-bottom: 1px solid #bdaa8c;cursor: pointer;}
+.left-xy ul li i {font-size: 36px;display: block;height: 44px;overflow: hidden;margin-top: 16px;color: #bdaa8c;}
+.left-xy ul li.sel {
+    background: -webkit-linear-gradient(#b5434e, #a31523); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#b5434e, #a31523); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#b5434e, #a31523); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#b5434e, #a31523);
+    background-color: #a92633;
+}
+.left-xy ul li.sel i {color: #f2eadd;}
+.left-xy ul li.sel div {color: #f2eadd;}
+.left-xy ul li div {font-size: 18px;color: #bdaa8c;text-align: center;}
+.right-xy {overflow: hidden;position: absolute;top:0;right: 0;left: 100px;bottom: 0;}
+.inner-xy {overflow: hidden;height: 100%;position: relative;}
+.normal > * {display:inline-block;float:left;overflow: hidden;}
+.normal .l {width: 52%;height: 100%;position: relative;}
+.normal .r {width: 48%;height: 100%;background-color: #fff;border:1px solid #d3c5ae;}
+.asideLeftBtn {width: 20px;background-color: #f2eadd;position: absolute;top: 0;right:0;bottom: 0;cursor: pointer;border-left:1px solid #d3c5ae;}
+.asideLeftBtn span {height: 20px;line-height:20px;font-size:30px;width: 20px;text-align: center;position: absolute;top:50%;margin-top: -10px;left:-5px;}
+.asideTopBtn {height: 20px;background-color: #f2eadd;width: 100%;display: none;cursor: pointer;position: absolute;bottom: 0;left: 0;right: 0;border-top:1px solid #d3c5ae;}
+.content-xy {overflow: hidden;height: 100%;background-color: #fff;border:1px solid #d3c5ae;}
+.hide {display: none !important;}
+.change .l {width: 100%;height: 100%;}
+
+.normal .asideLeftBtn .icon-arrowright {display: block;}
+.change .asideLeftBtn .icon-arrowright {display: none;}
+.normal .asideLeftBtn .icon-arrowleft {display: none;}
+.change .asideLeftBtn .icon-arrowleft {display: block;}
+
+.normal .l .content-xy {margin-right: 19px;}
+.change .l .content-xy {margin-right: 19px;}
+
+iframe {background-color:transparent;}
+
+@media screen and (max-width: 1350px){
+    .normal .l {height: 60%;width: 100%;}
+    .normal .r {height: 40%;width: 100%;}
+    .asideLeftBtn {display: none;}
+    .asideTopBtn {display: block;}
+    .business-xy {padding-bottom: 20px;}
+    .change .l {height: 100%;width: 100%;}
+
+    .normal .asideTopBtn .icon-arrowdown {display: block;}
+    .change .asideTopBtn .icon-arrowdown {display: none;}
+    .normal .asideTopBtn .icon-arrowup {display: none;}
+    .change .asideTopBtn .icon-arrowup {display: block;}
+
+    .asideTopBtn span {font-size: 30px;position:absolute;height: 20px;line-height:20px;width: 20px;top:0;left: 50%;margin-left: -10px;}
+
+
+    .normal .l .content-xy {margin-right: 0;}
+    .change .l .content-xy {margin-right: 0;}
+}
+
+
+
+/*.business-xy , .search-xy {display: none;}*/
+#business-xy-phone , #search-xy-phone {display: block;}
+
+/* 帮助部分的css样式*/
+#help{ display:none;}
+.helpFrame{ border:1px solid #d3c5ae; background-color:#eeeeee; height:100%;}
+.helpContent{ background-color:#fff; width:80%; max-width:1024px; min-width:600px; margin:0px auto; height:100%; overflow:auto;}
+.helpContent ul{ padding:10px;}
+.helpRows{ margin-top:10px; border-bottom:1px solid #e3d0ad; padding:5px 0 10px 0;}
+.helpRows:first-child{ margin-top:0;}
+.helpRows:active{ background-color:#f2eadd; cursor:pointer;}
+.helpRows .index{ float:left; margin-left:5px; height:20px; width:20px; text-align:center; line-height:19px; background-color:#9f8b6c; color:#fff;}
+.helpRows .title{ display:block; margin-left:30px; color:#bdaa8c; margin-bottom:5px;}
+.helpRows div{ margin-left:30px; color:#666;}
+.helpRows strong{ color:#aa2734; font-weight:600;}
+.helpContent .template{ display:none;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

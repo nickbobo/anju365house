@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html ng-app="loanApp">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta name="description" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+
+    <title>乌鲁木齐市存量房交易系统-贷款预受理</title>
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/countState.css" />
+	<script type="text/javascript" src="../../frontJS/jquery.min-1.9.1.js"></script>
+	<script type="text/javascript" src="../../frontJS/angular/angular-1.2.27.js"></script>
+	<script type="text/javascript" src="../../frontJS/base-config/base.js"></script>
+	<script type="text/javascript" src="../../frontJS/dkysl/loanApply.js"></script>
+</head>
+<body ng-controller="loanCtrl" ng-cloak>
+<form name="baseForm" novalidate>
+    <div class="tb_container">
+        <div class="top-xm fund-div">
+            <p class="p_after">
+                <a href="javascript:void(0);" class="afterArrow">贷款预受理</a>
+                <a href="javascript:void(0);" class="afterArrow">贷款申请</a>
+                <a href="javascript:window.location.reload();" class="reload">刷新</a>
+            </p>
+        </div>
+        <div class="table-border sign-div fund-border ">
+            <p class="blue_p">申请人信息</p>
+            <div ng-click="ui.initErr()" class="cond-container">
+                <div class="single-item">
+                    <div class="split">
+                        <div class="item">
+                            <label>申请人姓名：</label>
+                            <div>
+                                <input required ng-pattern="pattern.name" ng-model="dataModel.applicantName" type="text" name="applicantName"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                        <div class="item">
+                            <label>联系电话：</label>
+                            <div>
+                                <input required ng-pattern="pattern.mobile" ng-model="dataModel.applicantPhone" type="text" name="applicantPhone" maxLength="11"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                        <div class="item">
+                            <label>证件类型：</label>
+                            <div>
+                                <select required ng-model="dataModel.idType" ng-options="item.key as item.value for item in dictionary.idTypeData">
+                                </select>
+                                <i>▼</i>
+                            </div>
+							<span>*</span>
+                        </div>
+                    </div>
+                    <div class="split">
+                        <div class="item">
+                            <label>证件号码：</label>
+                            <div>
+                                <input required ng-pattern="pattern.identity" ng-model="dataModel.idNumber" type="text" name="idNumber"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                        <div class="item">
+                            <label>月收入(税前)：</label>
+                            <div>
+                                <input required ng-model="dataModel.include" type="text" name="include"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                        <div class="item">
+                            <label>公积金账号：</label>
+                            <div>
+                                <input required ng-pattern="pattern.num" ng-model="dataModel.housingFund" type="text" name="housingFund"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                        <div class="item">
+                            <label>房屋总价：</label>
+                            <div>
+                                <input required ng-model="dataModel.price" type="text" name="price"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                        <div class="item">
+                            <label>首&ensp;付&ensp;款：</label>
+                            <div>
+                                <input required ng-model="dataModel.firstPay" type="text" name="firstPay"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                    </div>
+                    <div class="split">
+                        <div class="item item-long">
+                            <label>工作单位：</label>
+                            <div>
+                                <input required ng-model="dataModel.workAddress" class="big" type="text" name="workAddress"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                    </div>
+                    <div class="split">
+                        <div class="item item-long">
+                            <label>联系地址：</label>
+                            <div>
+                                <input required ng-model="dataModel.contactAddress" class="big" type="text" name="contactAddress"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                    </div>
+
+                    <div class="split ver-sel">
+
+                        <div class="item">
+                            <label>婚姻状况：</label>
+                            <div>
+                                <input required ng-model="dataModel.maritalStatus" type="radio" name="type" value="0" /><label>未婚</label>
+                                <input required ng-model="dataModel.maritalStatus" type="radio" name="type" value="1" /><label>已婚</label>
+                                <input required ng-model="dataModel.maritalStatus" type="radio" name="type" value="2" /><label>离异</label>
+                            </div>
+							<span>*</span>
+                        </div>
+
+                    </div>
+
+                    <div ng-show="dataModel.maritalStatus == 1" class="split">
+                        <div class="item">
+                            <label>配偶姓名：</label>
+                            <div>
+                                <input required ng-pattern="pattern.name" ng-model="dataModel.mateName" type="text" name="mateName"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                        <div class="item">
+                            <label>证件类型：</label>
+                            <div>
+                                <select required ng-model="dataModel.mateIdtype" ng-options="item.key as item.value for item in dictionary.idTypeData">
+                                </select>
+                                <i>▼</i>
+                            </div>
+							<span>*</span>
+                        </div>
+                        <div class="item">
+                            <label>证件号码：</label>
+                            <div>
+                                <input required ng-pattern="pattern.identity" ng-model="dataModel.mateIdnumber" type="text" name="mateIdnumber"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                    </div>
+
+                     <div class="split readonly">
+                        <div class="item item-long">
+                            <label>婚姻状况证明：</label>
+                            <div>
+                                <input class="big" type="file" />
+                            </div>
+							<span>*</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <p class="blue_p">贷款信息</p>
+            <div ng-click="ui.initErr()" class="cond-container">
+            <div class="single-item">
+                <div class="split">
+                    <div class="item">
+                        <label>申请银行：</label>
+                        <div>
+                            <select required ng-model="dataModel.applicantBank" ng-options="item.key as item.value for item in dictionary.bankData">
+                            </select>
+                            <i>▼</i>
+                        </div>
+						<span>*</span>
+                    </div>
+                    <div class="item">
+                        <label>申请金额：</label>
+                        <div>
+                            <input required ng-model="dataModel.applicantMoney" type="text" name="applicantMoney"/>
+                        </div>
+						<span>*</span>
+                    </div>
+
+                    <div class="item">
+                        <label>贷款年限：</label>
+                        <div>
+                            <input required ng-pattern="pattern.num" ng-model="dataModel.loanTerm" type="text" name="loanTerm"/>
+                        </div>
+						<span>*</span>
+                    </div>
+
+                    <div class="item">
+                        <label>还款方式：</label>
+                        <div>
+                            <select required ng-model="dataModel.payMenthod" ng-options="item.key as item.value for item in dictionary.payMenthodData">
+                                </select>
+                                <i>▼</i>
+                        </div>
+						<span>*</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <p class="blue_p">房源信息</p>
+            <div ng-click="ui.initErr()" class="cond-container">
+                <div class="readonly single-item">
+                    <div class="split confirm-div">
+                        <button ng-click="ui.check()" class="confirm">验证</button>
+                        <div class="item">
+                            <label>房源验证码：</label>
+                            <div>
+                                <input required ng-model="dataModel.proCode" class="border-input" type="text" name="proCode"/>
+                            </div>
+							<span>*</span>
+                        </div>
+                    </div>
+                    <div ng-repeat="item in dataModel." class="split">
+                        <div class="item">
+                            <label>权利人名称：</label>
+                            <div>
+                                <input ng-model="item." type="text" />
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>证件类型：</label>
+                            <div>
+                                <input ng-model="item." type="text"/>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>证件号码：</label>
+                            <div>
+                                <input ng-model="item." type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="split">
+                        <div class="item">
+                            <label>房权证号：</label>
+                            <div>
+                                <input ng-model="dataModel." type="text" />
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>产权面积(m²)：</label>
+                            <div>
+                                <input ng-model="dataModel." type="text" />
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>套内面积(m²)：</label>
+                            <div>
+                                <input ng-model="dataModel." type="text" />
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>分摊面积(m²)：</label>
+                            <div>
+                                <input ng-model="dataModel." type="text" />
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>总&ensp;层&ensp;数：</label>
+                            <div>
+                                <input ng-model="dataModel." type="text" />
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>所&ensp;在&ensp;层：</label>
+                            <div>
+                                <input ng-model="dataModel." type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="split">
+                        <div class="item">
+                            <label>房屋地址：</label>
+                            <div>
+                                <input ng-model="dataModel." type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+            
+            <div class="err-tip" ng-bind="state.errTip"></div>
+            
+            <div>
+               <div class="split-xm margin-r">
+                   <!--<button ng-click="ui.callback()">受理回执单</button>-->
+                   <button ng-click="ui.submit()">提交</button>
+                   <span class="bookLink"><input type="checkbox" name="" /><a>个人征信查询授权书</a></span>
+                   <button>上传</button>
+               </div>
+            </div>
+
+            <div>
+                <p class="blue_p">银行反馈意见信息</p>
+                <div class="cond-container">
+
+                    <div class="single-item">
+                        <div class="split">
+                            <div class="item item-other">
+                                <label>反馈信息：</label>
+                                <div>
+                                    <textarea ng-model="dataModel." class="big-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="split">
+                            <div class="item item-other">
+                                <label>贷款预审批表：</label>
+                                <div>
+                                    <img src="image/dkspd.jpg" />
+                                    <button>打印贷款预审批表</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+
+            <div class="foot">
+
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<web-app
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        version="2.4">
+    <display-name>anju_365</display-name>
+    <!-- JNDI -->
+    <resource-ref>
+        <description>dataSource</description>
+        <res-ref-name>dataSource</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+    <!-- 初始化Web 上下文 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:app-context.xml,
+            classpath:app-service.xml
+        </param-value>
+    </context-param>
+    <!-- 项目执行路劲 -->
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>anju_365.root</param-value>
+    </context-param>
+    <!-- 监听加载 -->
+    <listener>
+        <listener-class>com.eshop.frame.web.listener.InitBeforeSpringListener
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+    <!--<listener>-->
+        <!--<listener-class>com.eshop.motan.AppStartupListener-->
+        <!--</listener-class>-->
+    <!--</listener>-->
+
+    <!-- 过滤器 -->
+    <filter>
+        <!-- Shiro Filter -->
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter
+        </filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- SQL监控过滤器=====start -->
+    <filter>
+        <filter-name>DruidWebStatFilter</filter-name>
+        <filter-class>com.alibaba.druid.support.http.WebStatFilter
+        </filter-class>
+        <init-param>
+            <param-name>exclusions</param-name>
+            <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*
+            </param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>DruidWebStatFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- SQL监控过滤器=====end -->
+    <!-- servlet -->
+    <servlet>
+        <servlet-name>DruidStatView</servlet-name>
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DruidStatView</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:app-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>*.rsvc</url-pattern>
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.svc</url-pattern>
+        <url-pattern>*.SVC</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RandCodeImage</servlet-name>
+        <servlet-class>com.eshop.frame.web.servlet.RandCodeImageServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RandCodeImage</servlet-name>
+        <url-pattern>/randCodeImage</url-pattern>
+    </servlet-mapping>
+
+    <!-- session -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <!-- 欢迎页面 -->
+    <welcome-file-list>
+        <welcome-file>frontView/anju365/housePubList.html</welcome-file>
+    </welcome-file-list>
+</web-app>

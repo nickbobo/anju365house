@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>销售拜访管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+    <style type="text/css">.notes{color:#0000FF; font-size: 12px;}</style> 
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">地区：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="regionCodeSerch"name="regionCode"></input></td>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">销售名称：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="salerNameSerch"name="salerName"></input></td>
+	                       <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">经销商名称：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="dealerNameSerch" name="dealerName"></input></td>
+	                       <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">经销商电话：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="dealerTelSerch" name="dealerTel"></input></td>
+	                      
+                           </tr>
+                           <tr> 
+                            <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">经销商地址：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="dealerAddressSerch" name="dealerAddress"></input></td>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">拜访状态：</label></td>
+                           <td class="tbl-td-border"> 
+                         	‍‍<select class="easyui-combobox tbl-input-left"  id="isNormalSerch" name = "isNormal">
+                                <option value="" selected="selected">全部</option>
+								<option value="0">异常拜访</option>
+								<option value="1">正常拜访</option>
+								<option value="3">人工拜访</option>
+                         	</select>
+                         </td>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">拜访时间：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-datetimebox tbl-input-left" id="visitTimeBeg" name="visitTimeBeg"></input></td>
+	                       <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">至：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-datetimebox tbl-input-left" id="visitTimeEnd" name="visitTimeEnd"></input></td>
+                          
+                      <!--    <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">拜访时间：</label></td>
+               			 <td class="tbl-td-border" colspan="3" ><input class="easyui-datetimebox" id="visitTimeBeg" name="visitTimeBeg" editable="false" "></input>~~
+			        		 <input class="easyui-datetimebox" id="visitTimeEnd" name="visitTimeEnd" editable="false" ></input>
+	           			 </td> -->
+                        </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                         <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadVisitPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-export"  onclick="exportExcel()">导出</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<div id="toolbar">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="updateIsNormal()" >人工拜访</a>
+		<!--进度条-->
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+		</div>
+</div>
+    <script type="text/javascript">
+    
+    	var size = 10;
+    	var page = 1;
+    	var nowDate=new Date();
+   		var nowYear = nowDate.getFullYear();
+   		var nowMonth = nowDate.getMonth()+1;
+   		var nowDay = nowDate.getDate();
+   		if(nowMonth<10){ nowMonth = "0" + nowMonth;}
+   		if(nowDay<10){nowDay = "0" + nowDay;}
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '拜访id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'isNormal', title: '拜访状态',  align: 'left', halign: 'center',
+                    	formatter: function(value, row, index) {
+                    		if(value == '0') {
+                                var valueName =  "异常拜访";
+                                return '<font color="red">' + valueName + '</font>';
+                            }
+                    		if(value == '1') {
+                                return "正常拜访";
+                                
+                            } 
+                            
+                            if(value == '3') {
+                            	 var valueName =  "人工拜访";
+                            	 return '<font color="blue">' + valueName + '</font>';
+                            }
+                        }   
+                    },
+                    {field: 'visitDate', title: '拜访时间',  align: 'left', halign: 'center'},
+                    {field: 'salerId', title: '销售id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'salerName', title: '销售名称',  align: 'left', halign: 'center'},
+                    {field: 'regionCode', title: '分公司地区编码',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'regionName', title: '地区',  align: 'left', halign: 'center'},
+                    {field: 'dealerId', title: '经销商id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'dealerName', title: '经销商名称',  align: 'left', halign: 'center'},
+                    {field: 'dealerAddress', title: '经销商地址', align: 'left', halign: 'center'},
+                    {field: 'visitAddress', title: '拜访地址', align: 'left', halign: 'center'},
+                    {field: 'dealerTel', title: '经销商电话',align: 'left', halign: 'center'},
+                    {field: 'longitude', title: '经度', align: 'left', halign: 'center'},
+                    {field: 'latitude', title: '纬度',  align: 'left', halign: 'center'},
+                    {field: 'accessMethod', title: '获取方式', align: 'left', halign: 'center',hidden:true},
+                    {field: 'accessType', title: '获取类型', align: 'left', halign: 'center',hidden:true},
+                    {field: 'ip', title: 'ip地址',  align: 'left', halign: 'center'},
+                    {field: 'imei', title: '手机串号', align: 'left', halign: 'center'},
+                    {field: 'sn', title: 'SN编号', align: 'left', halign: 'center'},
+                    {field: 'mac', title: 'Mac地址',  align: 'left', halign: 'center'},
+                    {field: 'notes',title:'地图',align:'left',sortable:true, formatter:function(value,rowData,index){
+			        	   return "<a href='#'  onclick=\"findMap('"+rowData["salerId"]+"','"+rowData["visitDate"]+"','"+rowData["longitude"]+"','"+rowData["latitude"]+"')\" class='notes' >查看地图</a>";  
+			          } },
+			          {field:"caozuo",title:"操作",align:'center',sortable:true, formatter:function(value,rowData,index){
+			        	   return "<a href='#' onclick=findAnswerDetail('"+ rowData["id"] +"') class='notes' >查看答题详情</a>";  
+			          } }
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                }
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadVisitPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadVisitPage(page, size);
+
+                }
+            });
+        });
+        function loadVisitPage(page,size) {
+         	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var salerName = $('#salerNameSerch').val();
+            var dealerName = $('#dealerNameSerch').val();
+            var dealerTel = $('#dealerTelSerch').val();
+            var dealerAddress = $('#dealerAddressSerch').val();
+      		var isNormal = $('#isNormalSerch').combobox("getValue");
+      		var regionCode = $('#regionCodeSerch').combobox("getValue");
+      		
+      		var visitTimeBeg = $('#visitTimeBeg').datebox("getValue");//开始时间
+  		    var visitTimeEnd = $('#visitTimeEnd').datebox("getValue");//结束时间
+      		
+            var service = $.svc.getSVC("/visit/getVisitLogsPage");
+            service.setPage(page, size)
+            .setParam("salerName", salerName)
+            .setParam("dealerName", dealerName)
+            .setParam("dealerTel", dealerTel)
+            .setParam("dealerAddress", dealerAddress)
+            .setParam("visitTimeEnd", visitTimeEnd)
+            .setParam("isNormal", isNormal)
+            .setParam("visitTimeBeg", visitTimeBeg)
+            .setParam("regionCode", regionCode);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#salerNameSerch').val(""); 
+        	$('#dealerNameSerch').val(""); 
+        	$('#dealerTelSerch').val(""); 
+        	$('#dealerAddressSerch').val(""); 
+        	$('#isNormalSerch').combobox('setValue','')
+        	$('#regionCodeSerch').combobox('setValue','')
+        	
+        	$('#visitTimeEnd').datebox('setValue','')
+        	$('#visitTimeBeg').datebox('setValue','')
+        	loadVisitPage();
+        })
+         
+     // 更新
+        function updateIsNormal() {
+         	var row = $('#dg_cr').datagrid('getChecked');
+             if (row == '') {
+               $.messager.alert("提示信息", "请选择异常拜访的数据！！！！", "error");
+               return;
+              }
+            var idList='';
+ 			for(var i=0;i<row.length;i++){
+ 				var id = row[i].id;
+ 				var isNormal=row[i].isNormal;
+ 				 if(isNormal==1 || isNormal==3){
+ 	            	 $.messager.alert("提示信息", "请选择异常拜访的数据！！！！", "error");
+ 	                 return;
+ 	             }
+ 				 if(i==row.length-1){
+ 					idList+= id;
+ 				 }else{
+ 					idList+= id+",";
+ 				 }
+ 				
+ 			}
+            
+             $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {
+               if (data) {
+               	var service = $.svc.getSVC("/visit/updateIsNormal");
+       	        service
+       	        .setParam("visit/idList", idList);
+       	        service.call(
+                      function (data, status) {
+                   	   if (data.succ == true) {
+                        	  $.messager.alert('提示', '更新成功!', 'info');
+                        	  loadVisitPage();
+                          } else {
+                              $.messager.alert('提示', '更新失败!', 'error');
+                          }
+                      });
+               }
+           });
+           
+       }
+        
+        /*查询地区    */
+     	  getRegionCodeSerch();
+        
+     	  $('#regionCodeSerch').combobox({
+            valueField: 'regionCode',
+            textField: 'regionName',
+            enitable:true,
+            onLoadSuccess: function (data) {
+                 if (data.length > 0) {
+                    $('#regionCodeSerch').combobox('select', data[0].userTypeName);
+                } else {
+                    $(this).combobox('select', []);
+                }  
+            }
+        });
+     	  
+         /* 加载地区*/
+   	   function getRegionCodeSerch() {
+         var service = $.svc.getSVC("/visit/getRegionCode");
+         service.call(
+                 function (response, status) {
+                     if (response.succ=true) {
+                    	       response.result.unshift({"regionCode":"","regionName":"全部"});
+  	                       $('#regionCodeSerch').combobox('loadData', response.result);
+  	                       $('#regionCodeSerch').combobox('setValue','');
+                     } else {
+                     	  $.messager.alert('提示', '加载标签失败!', 'error');
+                     }
+                 });
+  	    }
+        
+        
+        function findMap(salerId,visitDate,longitude,latitude){
+        	var visitTime = visitDate.substring(0,10);
+        	if(longitude==''||latitude==''||longitude=='null'||latitude=='null'||longitude=='undefined'||latitude=='undefined'){
+        		$.messager.alert("提示信息", "没有经纬度,不能进行地图定位！！", "error");
+                return false;
+        	}else{
+        		var url = ctx+"/views/visit/map.html?salerId="+salerId+"&visitDate="+visitTime;
+            	window.open(url,null,"width=700,height=500,top=150,left=400,status=no,location=no")
+        	}
+        }
+        
+        function findAnswerDetail(id){
+        	var url = ctx+"/views/visit/answerDetail.html?id="+id;
+        	window.open(url,null,"width=700,height=500,top=150,left=400,status=no,scrollbars=yes") 
+        }
+     	// 导出
+        function exportExcel() {
+     	    var salerName = encodeURI(encodeURI($('#salerNameSerch').val()));
+      		var dealerName = encodeURI(encodeURI($('#dealerNameSerch').val()));
+      	    var dealerTel = encodeURI(encodeURI($('#dealerTelSerch').val()));
+      	    var dealerAddress = encodeURI(encodeURI($('#dealerAddressSerch').val()));
+      	    var isNormal = encodeURI(encodeURI($('#isNormalSerch').combobox("getValue")));
+      	    var regionCode = $('#regionCodeSerch').combobox("getValue");
+      	   
+      	    var visitTimeBeg = $('#visitTimeBeg').datetimebox('getValue');
+      	    var visitTimeEnd = $('#visitTimeEnd').datetimebox('getValue');
+      	    
+      		var params = 'params={"salerName":"' + salerName
+ 			+ '","dealerName":"' + dealerName
+ 			+ '","regionCode":"' + regionCode
+ 			+ '", "dealerTel":"' + dealerTel + '", "dealerAddress":"' + dealerAddress + '", "isNormal":"' + isNormal + '", "visitTimeBeg":"' + visitTimeBeg + '", "visitTimeEnd":"' + visitTimeEnd + '"}';	
+       	    window.location = '../../visit/expoprtExcel.svc?'+params;
+       } 
+    </script>
+</body>
+</html>

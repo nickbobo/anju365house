@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sys.menu.dao.MenuMapper">
+
+	<!-- 菜单信息添加 -->
+	<insert id="addMenu">
+		insert into menu
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				id,
+			</if>
+			<if test="menuCode != null" >
+				menu_code,
+			</if>
+			<if test="chName != null" >
+				ch_name,
+			</if>
+			<if test="parentCode != null" >
+				parent_code,
+			</if>
+			<if test="menuUrl != null" >
+				menu_url,
+			</if>
+			<if test="sortIndex != null" >
+				sort_index,
+			</if>
+			<if test="menuLevel != null" >
+				menu_level,
+			</if>
+			<if test="createName != null" >
+				create_name,
+			</if>
+			<if test="createName != null" >
+				create_date,
+			</if>
+			<if test="createName != null" >
+				update_name,
+			</if>
+			<if test="createName != null" >
+				update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				#{id},
+			</if>
+			<if test="menuCode != null" >
+				#{menuCode},
+			</if>
+			<if test="chName != null" >
+				#{chName},
+			</if>
+			<if test="parentCode != null" >
+				#{parentCode},
+			</if>
+			<if test="menuUrl != null" >
+				#{menuUrl},
+			</if>
+			<if test="sortIndex != null" >
+				#{sortIndex},
+			</if>
+			<if test="menuLevel != null" >
+				#{menuLevel},
+			</if>
+			<if test="createName != null" >
+				#{createName},
+			</if>
+			<if test="createName != null" >
+				sysdate,
+			</if>
+			<if test="createName != null" >
+				#{createName},
+			</if>
+			<if test="createName != null" >
+				sysdate,
+			</if>
+
+		</trim>
+	</insert>
+	<update id="updateNumByPCode">
+		UPDATE menu SET num=num+1 WHERE menu_code=#{parentCode}
+	</update>
+	<!-- 菜单信息更新 -->
+	<update id="updateMenu">
+		update menu set
+		ch_name=#{chName},
+		<if test="menuUrl != null and menuUrl != '' ">
+			menu_url=#{menuUrl},
+		</if>
+		update_name=#{createName},update_date=sysdate where menu_code=#{menuCode}
+	</update>
+	<!-- 菜单信息删除 -->
+	<delete id="deleteMenu">
+		DELETE  FROM menu
+		WHERE menu_code LIKE '${menuCode}%'
+
+	</delete>
+
+	<!--根据菜单code删除操作按钮 -->
+	<delete id="delFnByMenuCode" parameterType="List">
+		delete from
+		hdcs_function
+		where menu_code in
+		(select
+		menu_code from
+		hdcs_menu
+		where menu_code
+		in
+		<foreach collection="list" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item.menuCode}
+		</foreach>
+		)
+	</delete>
+
+	<!-- 根据角色查询该角色未配置的菜单权限信息 -->
+	<select id="getUnMenuPermsInfo" resultType="com.sys.menu.entity.MenuEntity">
+		select
+		a.id,a.menu_code as menuCode, a.ch_name as
+		chName ,a.parent_code as
+		parentCode,a.menu_url,
+		a.sort_index as
+		sortIndex ,a.menu_level as
+		menuLevel from hdcs_menu as a
+		where not
+		exists(select b.menu_code from
+		hdcs_role_menu as b where
+		b.role_code=#{roleCode} )
+	</select>
+
+
+	<select id="getMenuInfo" resultType="com.sys.menu.entity.MenuViewEntity">
+		select
+		a.menu_code as id, a.ch_name as	name ,
+		a.parent_code as	parentCode,a.menu_url as menuUrl,
+		a.sort_index as	sortIndex ,a.menu_level as	menuLevel,
+		to_char(a.create_date ,'yyyy-MM-dd')as createDate,
+		a.num
+		from menu  a
+	</select>
+
+	<!--菜单管理查询列表 -->
+	<select id="getMenuInfoPage" resultType="com.sys.menu.entity.MenuViewEntity">
+		select
+		a.menu_code as id, a.ch_name as	name ,
+		a.parent_code as	parentCode,a.menu_url as menuUrl,
+		a.sort_index as	sortIndex ,a.menu_level as	menuLevel,
+		to_char(a.create_date ,'yyyy-MM-dd')as createDate,
+		a.num
+		from menu  a
+		where
+		a.menu_code != '-1'
+		<if test="menuCode != null and menuCode != '' ">
+			AND a.menu_code = #{menuCode}
+		</if>
+		<if test="chName != null and chName != '' ">
+			AND a.ch_name = #{chName}
+		</if>
+
+	</select>
+
+	<select id="menuCodeIsPro" resultType="java.lang.Long">
+	SELECT COUNT (0) FROM menu WHERE menu_code=#{menuCode}
+
+	</select>
+	<!--根据菜单code删除URL-->
+	<update id="delUrlBycode">
+		UPDATE menu SET menu_url='' WHERE menu_code=#{menuCode}
+	</update>
+</mapper>

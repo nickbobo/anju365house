@@ -1,0 +1,47 @@
+*{margin:0;padding:0;}
+body{width:100%;height:100%;}
+.container{position:relative;background:url("image/anjuBackground.png") repeat 0 0;background-size:100%;width:100%;position:fixed;height:100%;margin:0 auto;}
+.container .cont{width:100%;height:100%;margin:0 auto;}
+.head{height: 232px;text-align: center;}
+.head img{display:inline-block;margin:68px auto;}
+.body{position:relative;height:100%;overflow: hidden;width:100%;}
+.body .left{background:url("image/leftLogo.png") no-repeat 0 center;width:400px;height:363px;position: absolute;top:50%;right:50%;margin-top:-182px;margin-right:150px;}
+.body .right{width:380px;height:310px;position:absolute;top:50%;left:50%;margin-top:-155px;margin-left:200px;}
+ 
+.nav{width:100%;height:130px;background:url("image/anjuLogo.png") no-repeat 200px center;margin:0 auto;}
+
+.body .right .loginBox{position:relative;width:380px;height:310px;background:#4b5e6f;border-radius: 30px;padding:40px 24px;box-sizing: border-box;top:0;left:0;right:0;bottom:0;margin:auto;}
+#messageTips {position:absolute;top:0;left:0;padding:0 24px;width:380px;box-sizing:border-box;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;color:#1f93ff;margin:0;height:50px;line-height:50px; background:none 5px 50% no-repeat; border:1px solid transparent;}
+#messageTips.error{ color:#ff3c3c;}
+#messageTips.normal{ color:#1f93ff;}
+#messageTips.ok{ color:#28ae03;}
+#messageTips.warning{ color:#ff9c00;}
+.body .right .loginBox > div{ cursor:pointer; color:white;font-size:20px;line-height: 30px;margin-bottom:20px;width:40%;height:52px;margin:10px auto;background:#05548f;border:1px solid #ffffff;border-radius:6px;padding-left:70px;line-height:52px;}
+.body .right .loginBox > div.div1:hover{background-color:#05548f;border:1px solid #05548f;}
+.body .right .loginBox > div.div2:hover{background-color:#05548f;border:1px solid #05548f;}
+.body .right .loginBox > div.div3:hover{background-color:#05548f;border:1px solid #05548f;}
+.body .right .loginBox > div.div1{background:url("image/div3.png") no-repeat 20px center;margin-top:16px;}
+.body .right .loginBox > div.div2{background:url("image/div1.png") no-repeat 20px center;margin-top:16px;}
+.body .right .loginBox > div.div3{background:url("image/div2.png") no-repeat 20px center;margin-top:84px;}
+.body .right .loginBox > div input[type="text"] , .body .right .loginBox > div input[type="password"] , .body .right .loginBox > div input[type="text"]:focus , .body .right .loginBox > div input[type="password"]:focus {color:#999;font-size:14px;width:100%;height:100%;border:none;outline: none;border-radius: 5px;padding:0 40px;box-sizing: border-box }
+.body .right .loginBox > div input.count{padding-top:10px;line-height:50px; background:white url("image/login/count.png") no-repeat 10px center}
+.body .right .loginBox > div input.pwd{background:white url("image/login/pwd.png") no-repeat 10px center}
+.body .right .loginBox > div i{display: inline-block;width:10px;height: 10px;background: white;}
+
+.body .right .loginBox > div input[type="checkbox"]{vertical-align: middle; margin-right:20px;background: white;display: inline-block;}
+.body .right .loginBox > div a{text-decoration: none; color:white;font-size:14px;margin-left:10px; }
+.body .right .loginBox > div a.findPwd{color:#ef8320;float:right;}
+.body .right .loginBox > div button{width:100%;height:100%;background:#2da8e1;color:white;font-size: 14px;border: none;border-radius: 5px;}
+.foot p{width:100%;height:50px;font-size: 24px;text-align: center;color:#074673;}
+
+
+.v-c { height:40px; line-height:40px;position:relative;}
+#verifyInput{ height: 32px; line-height: 30px; width: 100px; padding:0 10px; border:1px solid #c7c7c7; width:100px; *width:80px; position:absolute; left:0px; top:2px; *top:0px;}
+#verifyInput:focus,#verifyInput.sel{ border-color:#73b9e1;}
+#verifyInput.error{ border-color:#fa4c4c;}
+.v-c > .v-p { float:left; height: 35px; width:105px; margin-left: 105px; overflow:hidden;}
+.v-c > .v-p > img {}
+.v-c > a { float: right; height: 32px; line-height: 34px; font-size: 12px; color: #666; cursor: pointer; }
+.v-c > a:hover { color:#333; }
+#changeButton:hover{ color:#fa4c4c;}
+#verifyImage{ cursor:pointer;}

@@ -1,0 +1,99 @@
+@charset "utf-8";
+/*
+z序
+.topBar 500
+.mainBar 450
+.menu 400
+.menuItem 300
+#moveButton 280
+#frameContent 200
+#backMask 1000
+#dialog 1100
+*/
+/* 用于页面模板 */
+.template{ display:none; }
+.topBar{ position:absolute; height:30px; top:0px; left:0px; z-index:500; width:100%; background-image:linear-gradient(#efefef,#dcdcdc); background-color:#efefef;}
+.topBar > *{ position:relative;}
+.mainBar{ position:absolute; height:72px; top:30px; left:0px; z-index:450; width:100%; background-color:#fa4c4c;}
+.mainBar > *{ position:relative;}
+.mainContent{ position:absolute; top:102px; left:0px; width:100%; bottom:0px; padding:10px 0px 5px 0px; background-color:#f5f5f5; overflow:hidden;}
+.mainContent > *{ position:relative;}
+
+.menu{ width:180px; margin-right:10px; float:left; background-color:#dddddd; border:1px solid #cccccc; border-left:none; height:100%; overflow:auto; z-index:400;}
+.content{ margin-left:190px; height:100%; position:relative;}
+.content .menuItem{ position:absolute; left:0px; top:0px; height:36px; right:80px; z-index:300; overflow:hidden;}
+.content #moveButton{ position:absolute; right:0px; top:0px; height:36px; width:80px; text-align:center; z-index:280;}
+.content #frameContent{ border:1px solid #cccccc; border-right:none; position:absolute; width:100%; left:0px; top:35px; bottom:0px; background-color:#ffffff; z-index:200;}
+
+.topBar .tips{ line-height:30px; padding-left:10px;}
+.topBar .tips strong{ color:#fa4c4c;}
+.topBar .positionBlock{ position:absolute; top:0px; height:100%; right:50px;}
+.topBar .topPart{ float:left; height:18px; line-height:18px; margin:6px 0px 0px 10px; padding-left:10px; border-left:1px solid #c2c2c2;}
+.topBar .topPart:first-child{ border-left:none;}
+.topBar .topPart a{ color:#666666;}
+.topBar .topPart a:hover{ color:#fa4c4c;}
+.topBar #myUsername{ color:#333333; font-weight:500;}
+.topBar #myAccount{ padding-left:5px;}
+.topBar #myAccount strong{ font-weight:600; cursor:pointer;}
+.topBar #myAccount strong:hover span{ color:red;}
+.topBar .message{ position:relative; padding-right:16px;}
+.topBar #myMessage{ position:absolute; top:1px; right:-6px; height:16px; width:16px; text-align:center; line-height:16px; background-color:#e60412; color:#ffffff; border-radius:8px; overflow:hidden; cursor:pointer;}
+.topBar #myMessage:hover{ background-color:#fa4c4c;}
+.topBar .exit{ position:relative; padding-right:10px;}
+.topBar .exit:after{ content:'◆'; position:absolute; top:0px; width:5px; height:18px; overflow:hidden; right:0px; font-weight:600; font-size:18px; line-height:18px; text-indent:-5px; transition-property:right; transition-duration:0.5s; color:#666666;}
+.topBar .exit:hover:after{ right:-8px; transition-property:right; transition-duration:0.5s; color:#fa4c4c;}
+
+.mainBar h1{ position:absolute; top:18px; right:20px; height:36px; line-height:34px; padding-left:42px; background:url(images/VIP.png) no-repeat;}
+.mainBar #logo{ position:absolute; top:50%; margin-top:-20px; left:10px;}
+.mainBar .nav{ position:absolute; top:50%; margin-top:-18px; left:240px; right:180px; height:36px; overflow:hidden; text-align:center; }
+.nav > *{ float:left; height:100%; padding:0px 15px; cursor:pointer; margin-left:15px; line-height:36px; min-width:60px; max-width:160px; overflow:hidden; color:#ffffff;}
+.nav > *:hover{ border-bottom:2px solid #ffffff;}
+.nav > *.sel{ border-radius:6px; background-color:#b7000b;}
+.nav > *.sel:hover{ border:none;}
+
+.menu .level1 > .txt{ display:block; padding-left:15px; height:36px; line-height:38px; border-bottom:1px solid #cccccc; padding-left:15px; background-color:#efefef; cursor:pointer; position:relative; font-weight:500; overflow:hidden; padding-right:20px; color:#666666;}
+.menu .level1 > .txt:after{ position:absolute; right:10px; top:6px; line-height:24px; content:'◣'; font-size:14px; color:#fa4c4c; transform:rotate(225deg); transition-property:transform; transition-duration:0.3s; }
+.menu .level1 > .txt:hover{ background-image:linear-gradient(#ebebeb,#dbdada); background-color:#dbdada;}
+.menu .level1 > .txt[href]:after{ content:'';}
+.menu .level1 .level2{ display:none; border-bottom:1px solid #cccccc; padding:5px 0px; background-color:#ffffff;}
+.menu .level2 > .txt{ height:24px; line-height:24px; cursor:pointer; padding-left:15px; display:block; color:#000000; padding-right:15px; overflow:hidden; color:#333333;}
+.menu .level2 > .txt.sel{ color:#fa4c4c; font-weight:500;}
+.menu .level2 > .txt:hover{ background-color:#fa4c4c; color:#ffffff;}
+.menu .level1.sel > .txt:after{ transform:rotate(315deg);}
+.menu .level1.sel > .level2{ display:block;}
+
+#menuItemList{ width:auto; height:100%; overflow:hidden;}
+#menuItemList li{ float:left; height:100%; padding:0px 15px; position:relative; cursor:default; border:1px solid #cccccc; margin-left:5px; background-color:#e6e6e6; line-height:36px; min-width:50px; max-width:130px; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+#menuItemList li:first-child{ margin-left:5px;}
+#menuItemList li .close{ position:absolute; font-size:14px; color:#333333; top:-2px; right:0px; line-height:14px; cursor:pointer; visibility:hidden;}
+#menuItemList li .close:hover{ font-weight:600; color:#ff0000;}
+#menuItemList li:hover .close{ visibility:visible;}
+#menuItemList li.sel{ background-color:#ffffff; color:#000000; border-bottom-color:#ffffff;}
+#menuItemList li:hover{ background-color:#efefef;}
+#menuItemList li.sel:hover{ background-color:#ffffff;}
+#menuItemList li.template{ display:none;}
+
+#moveButton span{ display:inline-block; width:28px; height:26px; line-height:26px; color:#ffffff; background-color:#fa4c4c; font-weight:600; border-radius:6px; margin-top:5px; cursor:pointer;}
+#moveButton span:hover{ background-color:#e60412;}
+#moveButton span.unuse{ background-color:#999999;}
+
+#frameContent iframe{ width:100%; height:100%; border:10px solid #ffffff; border-right:none;}
+
+#backMask{ position:absolute; top:0px; left:0px; right:0px; bottom:0px; background:#000000; opacity:0.5; z-index:1000; filter\0: progid:DXImageTransform.Microsoft.Alpha(opacity=50); display:none;}
+#dialog{ position:fixed; top:0px; left:0px; right:0px; bottom:0px; z-index:1100; display:none;}
+#dialog .inside{ margin:100px auto; background:#ffffff; border-radius:6px; box-shadow:0px 0px 10px #000000; width:80%; max-width:600px; min-width:300px; padding:15px 10px; border\0:1px solid #333333;}
+#dialog .dTitle{ padding-bottom:10px; margin-bottom:10px; border-bottom:1px solid #cccccc; position:relative;}
+#dialog .close{ cursor:pointer;}
+#dialog .dTitle .close{ position:absolute; top:-5px; right:10px; color:#fa4c4c; font-size:24px; font-weight:600;}
+#dialog .dTitle .close:hover{ font-size:28px; top:-9px; right:9px;}
+#dialog .dContent{ padding:0px 5px 10px 5px;}
+#dialog .dContent.center{ text-align:center;}
+#dialog .dContent .center{ text-align:center;}
+#dialog .dContent strong{ color:#fa4c4c;}
+#dialog .dButtonBar{ margin-top:10px; text-align:center;}
+#dialog .dButtonBar .use{ background-color:#fa4c4c;}
+#dialog .dButtonBar .use:hover{ background-color:#e53030;}
+#dialog .dButtonBar .unuse{ background-color:#aaaaaa;}
+#dialog .dButtonBar > *{ display:inline-block;}
+#dialog .buttonBlock{ height:36px; width:80%; max-width:200px; min-width:60px; line-height:36px; font-size:14px; color:#ffffff; box-shadow:0px 1px 2px #333333; border-radius:6px; margin:0px 10px; cursor:pointer;}
+#dialog .buttonBlock:hover{ box-shadow:none;}

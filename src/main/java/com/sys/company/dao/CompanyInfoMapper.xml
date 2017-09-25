@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sys.company.dao.CompanyInfoMapper">
+
+	<!-- 经济公司信息添加 -->
+	<insert id="addCompany">
+		insert into company_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="orgCode != null">
+				org_code,
+			</if>
+			<if test="shortName != null">
+				short_name,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="pOrgCode != null">
+				p_org_code,
+			</if>
+			<if test="sortIndex != null">
+				sort_index,
+			</if>
+			<if test="orgLevel != null">
+				org_level,
+			</if>
+			<if test="createName != null">
+				create_name,
+			</if>
+			<if test="createName != null">
+				create_date,
+			</if>
+			<if test="createName != null">
+				update_name,
+			</if>
+			<if test="createName != null">
+				update_date,
+			</if>
+			<if test="telephone != null">
+				telephone,
+			</if>
+			<if test="pAbstract != null">
+				p_abstract,
+			</if>
+			<if test="pLPerson != null">
+				p_l_person,
+			</if>
+			<if test="pAdress != null">
+				p_adress,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="orgCode != null">
+				#{orgCode},
+			</if>
+			<if test="shortName != null">
+				#{shortName},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="pOrgCode != null">
+				#{pOrgCode},
+			</if>
+			<if test="sortIndex != null">
+				#{sortIndex},
+			</if>
+			<if test="orgLevel != null">
+				#{orgLevel},
+			</if>
+			<if test="createName != null">
+				#{createName},
+			</if>
+			<if test="createName != null">
+				sysdate,
+			</if>
+			<if test="createName != null">
+				#{createName},
+			</if>
+			<if test="createName != null">
+				sysdate,
+			</if>
+			<if test="telephone != null">
+				#{telephone},
+			</if>
+			<if test="pAbstract != null">
+				#{pAbstract},
+			</if>
+			<if test="pLPerson != null">
+				#{pLPerson},
+			</if>
+			<if test="pAdress != null">
+				#{pAdress},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 经纪公司信息更新 -->
+	<update id="updateCompany">
+		update company_info set
+		<if test="shortName != null and shortName != '' ">short_name=#{shortName}, </if>
+		<if test="name != null and name != '' ">name=#{name}, </if>
+		<if test="createName != null and createName != '' ">create_name=#{createName}, </if>
+		<if test="createDate != null and createDate != '' ">create_date=sysdate,</if>
+		<if test="createName != null and createName != '' ">update_name=#{createName}, </if>
+		<if test="createDate != null and createDate != '' ">update_date=sysdate, </if>
+		<if test="pAdress != null and pAdress != '' ">p_adress=#{pAdress}</if>
+		<if test="pAbstract != null and pAbstract != '' ">p_abstract=#{pAbstract}</if>
+		<if test="telephone != null and telephone != '' ">telephone=#{telephone}</if>
+		where org_code=#{orgCode}
+	</update>
+
+	<!-- 经纪公司信息删除 -->
+	<update id="deleteCompany">
+		update company_info set is_del=1,create_name=#{createName} where
+		org_code=#{orgCode}
+	</update>
+
+
+	<!--经纪公司管理查询页面 -->
+	<select id="getCompanyInfo" resultType="com.sys.company.entity.CompanyInfoEntity">
+		SELECT id,org_code AS orgCode,name,
+		short_name AS shortName,sort_index
+		AS sortIndex,org_level AS orgLevel,
+		create_name AS createName,
+		create_date AS createDate,
+		is_del AS isDel,telephone, 
+		p_abstract as pAbstract, p_l_person as pLPerson,p_adress as pAdress
+		FROM COMPANY_INFO WHERE 1=1 and org_code!=-1
+		<if test="isDel != null ">
+			and is_del=#{isDel}
+		</if>
+		<if test="shortName != null and shortName != '' ">
+			and short_name like '%${shortName}%'
+		</if>
+		 	order by create_Date desc
+	</select>
+
+
+	<!-- 经济公司添加check -->
+	<select id="companyCodeCount" resultType="java.lang.Long">
+		SELECT COUNT(1) from
+		COMPANY_INFO where P_ORG_CODE=#{orgCode} and is_del=0
+	</select>
+	
+	<!-- 查询该公司下是否拥有用户 -->
+	<select id="companyPersonCheck" resultType="java.lang.Long">
+		SELECT COUNT(1) from
+		user_info where ORG_CODE=#{orgCode} and user_status=1 and is_lock=0
+	</select>
+	
+	<!--经济公司管理新增列表 -->
+	<select id="getCompanyList" resultType="com.sys.company.entity.CompanyInfoEntity">
+		SELECT org_code AS id,name,p_org_code as pOrgCode,
+		SHORT_NAME AS shortName,sort_index
+		AS sortIndex,org_level AS orgLevel,
+		create_name AS createName,
+		create_date AS createDate,
+		is_del AS isDel,telephone, p_abstract as pAbstract, 
+    	p_l_person as pLPerson,p_adress as pAdress,num
+		from company_info  where is_del=0		
+	</select>
+	
+	<!-- num修改 -->
+	<update id="updateNumByPCode">
+		UPDATE company_info SET num=num+1 WHERE org_code=#{pOrgCode}
+	</update>
+	
+	<!--经济公司管理查询详情 -->
+	<select id="getCompanyForCode" resultType="com.sys.company.entity.CompanyInfoEntity">
+		SELECT id,org_code AS orgCode,p_org_code as pOrgCode ,name,
+		short_name AS shortName,sort_index
+		AS sortIndex,org_level AS orgLevel,
+		create_name AS createName,
+		create_date AS createDate,
+		is_del AS isDel,telephone, 
+		p_abstract as pAbstract, p_l_person as pLPerson,p_adress as pAdress
+		FROM COMPANY_INFO WHERE org_code=#{orgCode}	
+	</select>
+	
+	<!--经济公司管理查询详情树形结构图 -->
+	<select id="getCompanyForList" resultType="com.sys.company.entity.CompanyInfoEntity">
+		select org_code AS id,name,p_org_code as pOrgCode,
+		SHORT_NAME AS shortName,sort_index
+		AS sortIndex,org_level AS orgLevel,
+		create_name AS createName,
+		create_date AS createDate,
+		is_del AS isDel,telephone, p_abstract as pAbstract, 
+    	p_l_person as pLPerson,p_adress as pAdress,num 
+    	from company_info 
+    	where org_code=#{orgCode} or p_org_code=#{orgCode}
+	</select>
+	
+</mapper>

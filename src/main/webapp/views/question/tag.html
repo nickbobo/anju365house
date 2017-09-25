@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>标签管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                         <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">标签名称：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="tagNameSerch" 
+	                                 name="tagName"></input></td>
+	                      <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">标签类型：</label></td>
+                         <td class="tbl-td-border"> 
+                         	‍‍<select class="easyui-combobox tbl-input-left"  id="tagTypeSerch" name = "tagType">
+                                <option value="" selected="selected">全部</option>
+								<option value="1">主标签</option>
+								<option value="0">非主标签</option>
+                         	</select>
+                         </td>
+                        </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                        <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadTagPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<div id="toolbar">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addUserInfo()" >添加</a>
+    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="exec4Delete()">删除</a>
+    	
+		<!--进度条-->
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+			<!-- <div id="pb" class="easyui-progressbar" style="width:400px;"></div> -->
+		</div>
+</div>
+
+    <!-- 弹出窗口定义 编辑信息 -->
+	<div id="tanchuang" class="easyui-dialog" title="编辑 信息" data-options="iconCls:'icon-edit'" closed="true" style="width:380px;height:300px;padding:10px;align-content: true">
+	    <form id="fm" method="post">
+	    	<input name="id" id="id" type='hidden'/>
+	        <table class="searchTable">
+	            <tr>
+				  <tr>
+	                <td >标签名称:</td>
+	                <td><input class="easyui-validatebox" type="text" id="tagName" name="tagName" data-options="required:true" maxlength="20"></input></td>
+	             </tr>
+	             <tr>
+	                <td >标签排序:</td>
+	                <td><input class="easyui-validatebox" type="text" id="sortNo" name="sortNo" onKeyUp="this.value=this.value.replace(/\D/g,'')" onkeyup="return ValidateNumber($(this),value)"  placeholder="请输入正整数"  maxlength="4"></input></td>
+	             </tr>
+				 <tr>
+	                <td >标签类型:</td>
+	                <td>
+	                 <input  type = "radio"  name="tagType"  value = "1" checked = "checked" />主标签
+                     <input  type = "radio"  name="tagType"  value = "0" />非主标签
+                    </td>
+	            <tr>
+				<tr>
+	                <td colspan="2" align="center">
+	                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrUpdInfo()">确定</a>
+	                </td>
+	            </tr>
+	        </table>
+	    </form>
+	</div>
+	
+    <script type="text/javascript">
+    
+        getTag();
+    	var size = 10;
+    	var page = 1;
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '标签id', align: 'center', halign: 'center',hidden:true},
+                    {field: 'tagName', title: '标签名称',  align: 'center', halign: 'center'},
+                    {field: 'tagType', title: '标签类型',  align: 'center', halign: 'center',
+                  		formatter: function(value, row, index) {
+                            if(value == '1') {
+                                return "主标签";
+                            } else {
+                                return "非主标签";
+                            }
+                        }   },
+                    {field: 'sortNo', title: '排序',  align: 'center', halign: 'center'},
+                    {field: 'opt', title: '操作',align: 'center', halign: 'center',
+                    	formatter: function(value, row, index) {
+                    		var id = row.id;
+                    		var optionBtn = '<a href="javascript:void(0)" style="color:blue" onclick="parent.showItem(event,$(this),\'标签关系管理\',\'\',\'views/question/tagRelation.html?tagId='+id+'\')">关联标签</a>';
+                    		return optionBtn;
+                    		}
+                    	}
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                },
+                onDblClickRow:onDbClick
+            }
+        }; 
+        
+        $('#qaTag').combobox({
+            valueField: 'id',
+            textField: 'tagName',
+            enitable:true,
+            multiple:true,
+            onLoadSuccess: function (data) {
+                 if (data.length > 0) {
+                    $(this).combobox('select', data[0].tagName);
+                } else {
+                    $(this).combobox('select', []);
+                }  
+            }
+        });
+        
+        /* 加载标签 */
+   	  function getTag() {
+         var service = $.svc.getSVC("/tag/getAllTagsPage");
+         service.call(
+                 function (response, status) {
+                     if (response.succ=true) {
+ 	                       $('#qaTag').combobox('loadData', response.result);
+ 	                       $('#qaTag').combobox("setValue",'');
+                     } else {
+                     	  $.messager.alert('提示', '加载运营商失败!', 'error');
+                     }
+                 });
+ 	    }
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadTagPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadTagPage(page, size);
+
+                }
+            });
+        });
+        function loadTagPage(page,size) {
+        	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var tagName = $('#tagNameSerch').val();
+      		var tagType = $('#tagTypeSerch').combobox("getValue");
+      		
+            var service = $.svc.getSVC("/tag/getAllTagsPage");
+            service.setPage(page, size)
+            .setParam("tagName", tagName)
+            .setParam("tagType", tagType);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        
+        
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#tagNameSerch').val(""); 
+        	$('#tagTypeSerch').combobox('setValue','')
+        	loadTagPage();
+        })
+        
+       //添加按钮
+        function addUserInfo(){
+          $('#fm input').removeAttr("disabled");
+          $('#fm').form('reset');
+          document.getElementById("id").value="";
+      	  $('#tanchuang').dialog('open').dialog('setTitle','添加');
+		 
+        }
+        
+  	  // 双击打开窗口（修改）
+  	  function onDbClick(rowIndex, rowData) {
+  		$('#fm').form('reset');
+  		  obj = null;
+  		  if (rowData){
+  			$('#fm input').removeAttr("disabled");
+  			$('#tanchuang').dialog('open').dialog('setTitle','编辑');
+          	$('#fm').form('load',rowData);
+  	          obj = rowData;
+  	          if(!obj)obj = new Object();
+  	          //为页面赋值
+  	          $('#fm').form('load',obj);
+  	      }
+  	  }
+        
+        // 编辑框 确定按钮
+        function saveOrUpdInfo(){
+          var id = $('#id').val();
+     	  var tagName = $('#tagName').val();
+     	  var sortNo = $('#sortNo').val();
+     	  var tagType = $("input[name='tagType']:checked").val();
+     	  
+     	 if (tagName == ''|| tagName==null) {
+             $.messager.alert("提示信息", "请输入标签名称！！！！");
+             return;
+         }
+     	  
+     	/*   var tagRelationId='';
+     	  var tagsrc = $('#qaTag').combobox('getValues');
+   	      var tagRelationName = $('#qaTag').combobox('getText'); 
+   	      if(tagsrc.length>0){
+		     for(var i=0;i<tagsrc.length;i++){
+	        	 if(i==tagsrc.length-1){
+	        		 tagRelationId+=tagsrc[i];
+	        	 }else{
+	        		 tagRelationId+=tagsrc[i]+",";
+	        	 }
+	          }
+	       } */
+      	  var service = $.svc.getSVC("/tag/saveOrUpdateTag");
+          service
+          .setParam("tag/id", id)
+          .setParam("tag/tagName", tagName)
+          .setParam("tag/tagType", tagType)
+          .setParam("tag/sortNo", sortNo);
+         /*  .setParam("tag/tagRelationName", tagRelationName)
+		  .setParam("tag/tagRelationId", tagRelationId); */
+          service.call(
+              function (data, status) {
+            	  console.log(data);
+            	  if (data.succ == true) {
+                	  $.messager.alert('提示', '保存成功!', 'info');
+                	 loadTagPage();
+                      $('#tanchuang').dialog('close');
+                  } else {
+                	  $.messager.alert('提示', '保存失败!', 'error');
+                  }
+              });
+        }
+         
+     // 删除
+        function exec4Delete() {
+         	var row = $('#dg_cr').datagrid('getChecked');
+           if (row == '') {
+               $.messager.alert("提示信息", "请选择记录再删除！！！！", "error");
+               return;
+           }
+           var idList='';
+			for(var i=0;i<row.length;i++){
+				var id = row[i].id;
+				if(i==row.length-1){
+					idList+= id;
+				}else{
+					idList+= id+",";
+				}
+			}
+             $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {
+               if (data) {
+               	var service = $.svc.getSVC("/tag/delTag");
+       	        service
+       	        .setParam("tag/idList", idList);
+       	        service.call(
+                      function (data, status) {
+                   	   if (data.succ == true) {
+                        	  $.messager.alert('提示', '删除成功!', 'info');
+                        	  loadTagPage();
+                          } else {
+                              $.messager.alert('提示', '删除失败!', 'error');
+                          }
+                      });
+               }
+           });
+           
+       }
+        function ValidateNumber(e, pnumber){
+          	if (!/^\d+$/.test(pnumber)){
+          	$(e).val(/^\d+/.exec($(e).val()));
+          	}
+          	return false;
+            }
+    </script>
+</body>
+</html>

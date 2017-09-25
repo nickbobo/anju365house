@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>题库管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                        	<td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题标题：</label></td>
+	                        <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="titleSerch" name="title"></input></td>
+                        	<td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题类型：</label></td>
+                            <td class="tbl-td-border"> 
+                         	‍‍<select class="easyui-combobox tbl-input-left"  id="typeSerch" name ="type">
+                                <option value="" selected="selected">全部</option>
+								<option value="0">单选</option>
+								<option value="1">多选</option>
+                         	</select>
+                        	</td>
+                        	<td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">归属地域：</label></td>
+               			    <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="regionNameSerch"
+                                                  maxlength="20"
+                                                 name="regionName"></input></td>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试人员类型：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="userTypeSerch" name="userType"></input></td>
+                        	
+                        </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                        <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadExamQuestionRecordPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<div id="toolbar">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addQuestion()" >新增</a>
+	     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteQuestion()" >删除</a>
+		<!--进度条-->
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+		</div>
+</div>
+<!-- 弹出窗口定义 编辑信息 -->
+<div id="tanchuang" class="easyui-dialog" title="编辑 信息" data-options="iconCls:'icon-edit'" closed="true" style="width:500px;height:350px;padding:10px;align-content: true">
+		<form id="fm" method="post">
+	    	<input name="id" id="id" type='hidden'/>
+	        <table class="searchTable">
+	            <tr>
+				  <tr>
+	                <td >问题标题:</td>
+	                <td><input class="easyui-validatebox" type="text" id="title" style="width:280px;" name="title" data-options="required:true"/></td>
+	              </tr>
+	             <!--  <tr>
+	                <td >地区:</td>
+	                <td><input class="easyui-validatebox" type="text" id="regionName" style="width:250px;" name="regionName" data-options="required:true"/></td>
+	              </tr> -->
+	             <!--  <tr>
+	                <td >问题版本:</td>
+	                <td><input class="easyui-validatebox" type="text" id="edition" style="width:250px;" name="edition" data-options="required:true"/></td>
+	              </tr> -->
+	              <tr>
+	                <td>所属地区:</td>
+	                <td><input class="easyui-validatebox" editable="false" type="text" id="qaRegion" name="regionName"
+	                           style="width:220px;"></input>
+	                    <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-remove"
+	                       onclick="resetRegion()">清除</a>
+	                </td>
+            	  </tr>
+	              <tr>
+	                <td style="color: red">地区选择:</td>
+	                <td>省:<select class="easyui-combobox" id="qaRegionProv" name="qaRegionProv" style="width:95px;">
+	                </select>
+	                	    市:<select class="easyui-combobox" id="qaRegionCity" name="qaRegionCity" style="width:95px;">
+	                    </select>
+	                    <span><a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok"
+	                             onclick="selectProCity()">添加</a></span>
+	                </td>
+           		 </tr>
+	              <tr>
+	                <td >问题排序:</td>
+	                <td><input class="easyui-validatebox" type="text" id="sortId" style="width:280px;" name="sortId" data-options="required:true" onkeyup="return ValidateNumber($(this),value)"/></td>
+	              </tr>
+	              <tr>
+	                <td >考试人员类型:</td>
+	                <td><input class="easyui-validatebox" type="text" id="examUserType" style="width:282px;" name="examUserType" data-options="required:true"/></td>
+	              </tr>
+	               <tr>
+	                <td >问题类型:</td>
+	                <td>
+	                 <input  type = "radio"  name="type"  value = "0" checked = "checked" />单选
+                     <input  type = "radio"  name="type"  value = "1" />多选
+                    </td>
+	              </tr>
+				<tr>
+	                <td colspan="2" align="center">
+	                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrUpdInfo()">确定</a>
+	                </td>
+	            </tr>
+	        </table>
+	    </form>
+</div>
+    <script type="text/javascript">
+    	getAllUserType();
+    	getRegion();
+    	var regionAlls = '';
+        var regionAllsId = '';
+    	var size = 10;
+    	var page = 1;
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '问题id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'title', title: '问题标题',  align: 'left', halign: 'center'},
+                    {field: 'type', title: '问题类型',  align: 'left', halign: 'center',
+                    	formatter: function(value, row, index) {
+                            if(value == '0') {
+                                 return "单选";
+                            } 
+                            if(value == '1') {
+                                 return "多选";
+                            }
+                        }   
+                    },
+                    {field: 'regionName', title: '地区',  align: 'left', halign: 'center'}, 
+                    {field: 'standardAnswer', title: '标准答案',  align: 'left', halign: 'center'},
+                    {field: 'examUserType', title: '考试人员类型',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'userTypeName', title: '考试人员类型',  align: 'left', halign: 'center'},
+                    {field: 'sortId', title: '排序序号',  align: 'left', halign: 'center'},
+                    {field: 'opt', title: '操作',align: 'center', halign: 'center',
+                    	formatter: function(value, row, index) {
+                    		var id = row.id;
+                    		var optionBtn = '<a href="javascript:void(0)" style="color:blue" onclick="parent.showItem(event,$(this),\'问题选项管理\',\'\',\'views/exam/questionOptions.html?questionId='+id+'\')">问题选项管理</a>';
+                    		return optionBtn;
+                    		}
+                    	}
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                },
+                onDblClickRow:onDbClick
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadExamQuestionRecordPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadExamQuestionRecordPage(page, size);
+
+                }
+            });
+        });
+        function loadExamQuestionRecordPage(page,size) {
+         	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            
+            var title = $('#titleSerch').val();
+            var regionName = $('#regionNameSerch').val();
+        	var type = $('#typeSerch').combobox('getValue');
+        	
+        	var examUserType = $('#userTypeSerch').combobox('getValue');
+            var service = $.svc.getSVC("/examManager/getAllQuestionsPage");
+            service.setPage(page, size)
+            .setParam("title", title)
+            .setParam("examUserType", examUserType)
+            .setParam("regionName", regionName)
+            .setParam("type", type);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#titleSerch').val(""); 
+        	$('#regionNameSerch').val(""); 
+        	$('#typeSerch').combobox('setValue','');
+        	$('#userTypeSerch').combobox('setValue','');
+        	loadExamQuestionRecordPage();
+        })
+         //选择省市
+    function selectProCity() {
+	        var regionProv = $('#qaRegionProv').combobox('getValues');
+	        var regionNameProv = $('#qaRegionProv').combobox('getText');
+	        var regionCity = $('#qaRegionCity').combobox('getValues');
+	        var regionNameCity = $('#qaRegionCity').combobox('getText');
+	        if (regionProv == '' || regionProv == null) {
+	            $.messager.alert('提示', '请选择省市!');
+	            return;
+	        } else {
+	            if (regionCity != '' && regionCity != null) {
+	                if (regionAlls == '') {
+	                    regionAlls = regionNameProv + "" + regionNameCity;
+	                    regionAllsId = regionCity;
+	                } else {
+	                    regionAlls = regionAlls + "," + regionNameProv + "" + regionNameCity;
+	                    regionAllsId = regionAllsId + "," + regionCity;
+	                }
+	            } else {
+	                if (regionAlls == '') {
+	                    regionAlls = regionNameProv;
+	                    regionAllsId = regionProv;
+	                } else {
+	                    regionAlls = regionAlls + "," + regionNameProv;
+	                    regionAllsId = regionAllsId + "," + regionProv;
+	                }
+	            }
+	            if (regionAllsId.length == 1)regionAllsId = regionAllsId[0];
+	            $("#qaRegion").val(regionAlls)//赋值
+	        }
+	    }
+        function resetRegion() {
+            regionAlls = '';
+            regionAllsId = '';
+            $("#qaRegion").val("");//赋值
+        }
+        
+        $('#qaRegionProv').combobox({
+            valueField: 'id',
+            textField: 'regionName',
+            enitable: true,
+            //multiple:true,
+            onChange: function (province) {
+                if (province == null || province != '') {
+                    getRegionCodeAreaFlow(province);
+                }
+            }
+
+        });
+        $('#qaRegionCity').combobox({
+            valueField: 'id', //值字段
+            textField: 'regionName', //显示的字段
+            editable: true
+        });
+
+        function getRegionCodeAreaFlow(province) {
+            var service = $.svc.getSVC("/region/getAllRegionCitys");
+            service.setParam("pId", province)
+            service.call(
+                    function (response, status) {
+                        if (response.succ = true) {
+                            $('#qaRegionCity').combobox('clear')
+                            $('#qaRegionCity').combobox('loadData', response.result);
+                        } else {
+                            $.messager.alert('提示', '加载城市失败!', 'error');
+                        }
+                    });
+        }
+        /* 加载区域 */
+        function getRegion() {
+            var service = $.svc.getSVC("/region/getAllRegionProvinces");
+            service.call(
+                    function (response, status) {
+                        if (response.succ = true) {
+                            $('#qaRegionProv').combobox('loadData', response.result);
+                        } else {
+                            $.messager.alert('提示', '加载区域失败!', 'error');
+                        }
+                    });
+        }
+           //添加按钮
+        function addQuestion(){
+          $('#fm input').removeAttr("disabled");
+          $('#fm').form('reset');
+          document.getElementById("id").value="";
+      	  $('#tanchuang').dialog('open').dialog('setTitle','添加');
+		 
+        }
+     // 双击打开窗口（修改）
+    	  function onDbClick(rowIndex, rowData) {
+    		$('#fm').form('reset');
+    		  obj = null;
+    		  if (rowData){
+    			$('#fm input').removeAttr("disabled");
+    			$('#tanchuang').dialog('open').dialog('setTitle','编辑');
+            	$('#fm').form('load',rowData);
+    	          obj = rowData;
+    	          if(!obj)obj = new Object();
+    	          //为页面赋值
+    	          $('#fm').form('load',obj);
+    	      }
+    	  }
+        // 编辑框 确定按钮
+        function saveOrUpdInfo(){
+          var id = $('#id').val();
+          var title = $('#title').val();
+          var type = $("input[name='type']:checked").val();
+        /*   var edition = $('#edition').val(); */
+          var examUserType = $('#examUserType').combobox("getValue");
+          var sortId = $('#sortId').val();
+          
+          
+          if (title == ''|| title==null) {
+              $.messager.alert("提示信息", "请输入问题标题！！！！");
+              return;
+           }
+          if (type == ''|| title==type) {
+              $.messager.alert("提示信息", "请选择考试人员类型！！！！");
+              return;
+           }
+          
+     	  var service = $.svc.getSVC("/examManager/saveOrUpdateQuestion");
+          service
+          .setParam("question/id", id)
+          .setParam("question/title", title)
+          .setParam("question/type", type)
+         /*  .setParam("question/edition", edition) */
+          .setParam("question/examUserType", examUserType) 
+          .setParam("question/sortId", sortId)
+          .setParam("question/regionId", regionAllsId)
+          .setParam("question/regionName", regionAlls);
+          service.call(
+              function (data, status) {
+            	  if (data.succ == true) {
+                	  $.messager.alert('提示', '保存成功!', 'info');
+                	  loadExamQuestionRecordPage();
+                      $('#tanchuang').dialog('close');
+                  } else {
+                	  $.messager.alert('提示', '保存失败!', 'error');
+                  }
+              }); 
+        }
+        
+        
+        $('#userTypeSerch').combobox({
+            valueField: 'id',
+            textField: 'userTypeName',
+            enitable:true,
+            onLoadSuccess: function (data) {
+                 if (data.length > 0) {
+                    $('#userTypeSerch').combobox('select', data[0].userTypeName);
+                } else {
+                    $(this).combobox('select', []);
+                }  
+            }
+        });
+        
+        /* 加载考试人员类型 */
+   	  function getAllUserType() {
+         var service = $.svc.getSVC("/examManager/getAllUserType");
+         service.call(
+                 function (response, status) {
+                     if (response.succ=true) {
+                    	   response.result.unshift({"userType":"","userTypeName":"全部"});
+ 	                       $('#userTypeSerch').combobox('loadData', response.result);
+ 	                       $('#userTypeSerch').combobox('setValue','');
+                     } else {
+                     	  $.messager.alert('提示', '加载标签失败!', 'error');
+                     }
+                 });
+ 	    }
+        
+   	getAllUserTypeAdd();
+		
+    $('#examUserType').combobox({
+        valueField: 'id',
+        textField: 'userTypeName',
+        enitable:true,
+        onLoadSuccess: function (data) {
+             if (data.length > 0) {
+                $('#examUserType').combobox('select', data[0].userTypeName);
+            } else {
+                $(this).combobox('select', []);
+            }  
+        }
+    });
+    
+    /* 加载考试人员类型 */
+	  function getAllUserTypeAdd() {
+     var service = $.svc.getSVC("/examManager/getAllUserType");
+     service.call(
+             function (response, status) {
+                 if (response.succ=true) {
+	                       $('#examUserType').combobox('loadData', response.result);
+                 } else {
+                 	  $.messager.alert('提示', '加载标签失败!', 'error');
+                 }
+             });
+	    }
+        
+   // 删除
+      function deleteQuestion() {
+       	var row = $('#dg_cr').datagrid('getChecked');
+         if (row == '') {
+             $.messager.alert("提示信息", "请选择记录再删除！！！！", "error");
+             return;
+         }
+         var idList='';
+			for(var i=0;i<row.length;i++){
+				var id = row[i].id;
+				if(i==row.length-1){
+					idList+= id;
+				}else{
+					idList+= id+",";
+				}
+			}
+           $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {
+             if (data) {
+             	var service = $.svc.getSVC("/examManager/deleteQuestion");
+     	        service
+     	        .setParam("question/idList", idList);
+     	        service.call(
+                    function (data, status) {
+                 	   if (data.succ == true) {
+                      	  $.messager.alert('提示', '删除成功!', 'info');
+                      	  loadExamQuestionRecordPage();
+                        } else {
+                            $.messager.alert('提示', '删除失败!', 'error');
+                        }
+                    });
+             }
+         });
+         
+     }
+      function ValidateNumber(e, pnumber){
+      	if (!/^\d+$/.test(pnumber)){
+      	$(e).val(/^\d+/.exec($(e).val()));
+      	}
+      	return false;
+        }
+    </script>
+</body>
+</html>

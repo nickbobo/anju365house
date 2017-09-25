@@ -1,0 +1,57 @@
+/* reset style */
+button, a{ border-radius: 6px !important; }
+a:active, a:focus, input:active, input:focus{ outline:none; -moz-outline:none; }
+a , a:hover { text-decoration: none; }
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color:#ccc !important; }
+input:-moz-placeholder, textarea:-moz-placeholder { color:#ccc !important; }
+input::-moz-placeholder, textarea::-moz-placeholder { color:#ccc !important; }
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { color:#ccc !important; }
+.insideWidth{ width:1024px; position:relative;}
+
+/* login page style */
+.login-c{ position:absolute; height:640px; width:100%; top:50%; margin-top:-320px; left:0px;}
+.login-t{ position:absolute; height:40px; padding-top:40px; z-index:1000; left:50%; margin-left:-512px;}
+.login-t #logo{ margin-left:10px; display:block;}
+
+.login-content{ height:450px; width:100%; min-width:1024px; position:absolute; left:0px; top:95px; background:url(images/backArrow.png) no-repeat 0px 70px; background:url(images/backArrow.png) no-repeat 0px 70px, linear-gradient(#e5e5e5,#c6c6c6); background-color:#e1e1e2; border:2px solid #fa4c4c; border-left:none; border-right:none;}
+.login-content .back1{ position:absolute; left:0px; top:50%; margin-top:-90px; width:100%; height:180px; background-color:#ffffff; opacity:0.2; filter\0: progid:DXImageTransform.Microsoft.Alpha(opacity=20);}
+.login-content h1{ position:absolute; left:10px; top:50%; margin-top:-20px; height:40px; line-height:40px; font-size:36px; color:#ffffff; background:url(images/VIP.png) no-repeat 0px 5px; padding-left:40px; z-index:100;}
+
+.login-b { position: absolute; height: 68px; left:50%; margin-left:-512px; bottom: 0; text-align: center; }
+.login-b > * { font-size: 12px; color: #666; line-height: 23px; }
+.login-b > a { cursor: pointer; }
+.login-b > a:hover { color: #333; }
+.l-c { position: relative; top: 0; bottom: 0; left: 0; right: 0; height: 100%; }
+.all-c-m { position: absolute; z-index:500; top: 50%; right: 50%; margin-right: -174px; margin-top: -180px; width: 348px; height: 360px; border:1px solid #efefef; box-shadow: 0 0 10px rgba(100,100,100,.2), 0 0 10px rgba(100,100,100,.2); background-color:#ffffff;}
+.all-c-r { position:absolute; z-index:500; top: 50%; right: 10px; margin-top:-180px; width:348px; height:360px; border:1px solid #efefef; box-shadow:0 0 10px rgba(100,100,100,.2), 0 0 10px rgba(100,100,100,.2); background-color:#ffffff;}
+.all-c .barblock { display:block; margin-left:24px; margin-right:24px; margin-bottom:10px;}
+.all-c h2 { font-size:24px; line-height:40px; margin-top:20px; margin-bottom:15px;}
+#messageTips{ height: 28px; line-height: 27px; text-indent:2em; margin-bottom: 20px; background:none 5px 50% no-repeat; border:1px solid transparent;}
+#messageTips.error{ color:#ff3c3c; border-color:#fa4c4c; background-image:url(images/err.png); background-color:#ffebeb; }
+#messageTips.normal{ color:#1f93ff; border-color:#1f93ff; background-image:url(images/normal.png); background-color:#dbf3ff; }
+#messageTips.ok{ color:#28ae03; border-color:#28ae03; background-image:url(images/ok.png); background-color:#e9ffe3; }
+#messageTips.warning{ color:#ff9c00; border-color:#ff9c00; background-image:url(images/warning.png); background-color:#fff1cb;}
+
+.all-c input{ background-repeat:no-repeat; background-position:0 50%; padding-left: 52px; padding-right:10px; font-size:14px; color:#333333; height:42px; line-height:40px; border:1px solid #c7c7c7; width:298px; *width:236px;}
+input[name="userInput"] { background-image:url('images/user.png');}
+input[name="userInput"]:focus,input.sel[name="userInput"]{ background-image:url(images/userd.png); border-color:#73b9e1;}
+input[name="userInput"].error { background-image:url(images/usere.png); border-color:#fa4c4c;}
+input[name="pwdInput"] { background-image:url('images/pwd.png');}
+input[name="pwdInput"]:focus,input.sel[name="pwdInput"]{ background-image:url(images/pwdd.png); border-color:#73b9e1; }
+input[name="pwdInput"].error { background-image:url(images/pwde.png); border-color:#fa4c4c;}
+
+.all-c .v-c { height: 32px; line-height: 32px; margin-bottom:25px; position:relative;}
+#verifyInput{ height: 32px; line-height: 30px; width: 100px; padding:0 10px; border:1px solid #c7c7c7; width:100px; *width:80px; position:absolute; left:0px; top:2px; *top:0px;}
+#verifyInput:focus,#verifyInput.sel{ border-color:#73b9e1;}
+#verifyInput.error{ border-color:#fa4c4c;}
+.v-c > .v-p { float:left; height: 35px; width:105px; margin-left: 105px; overflow:hidden;}
+.v-c > .v-p > img {}
+.v-c > a { float: right; height: 32px; line-height: 34px; font-size: 12px; color: #666; cursor: pointer; }
+.v-c > a:hover { color:#333; }
+.all-c button { display:block; height: 42px; line-height: 40px; text-align: center; background-color: #fa4c4c; color: #fff; font-size: 20px; border: none !important; border-radius: 0 !important; box-shadow:0px 2px 3px #666666; width:100%; max-width:298px;}
+.all-c button:hover{ background-color:#e60412;}
+.all-c button:focus{ box-shadow:none;}
+.all-c button.load{ background-color:#999999; color:#cccccc;}
+
+#changeButton:hover{ color:#fa4c4c;}
+#verifyImage{ cursor:pointer;}

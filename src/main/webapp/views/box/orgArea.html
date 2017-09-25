@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>机构对应地区管理</title>
+<link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css" /> 
+  <link rel="stylesheet" type="text/css" href="../../themes/icon.css" /> 
+  <link rel="stylesheet" type="text/css" href="../../css/default.css" /> 
+  <link rel="stylesheet" type="text/css" href="../../themes/search-term.css" /> 
+  <script type="text/javascript" src="../../js/jquery.min.js"></script> 
+  <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script> 
+  <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script> 
+  <script type="text/javascript" src="../../js/jquery-form.js"></script> 
+  <script type="text/javascript" src="../../js/app_new.js"></script> 
+  <script type="text/javascript" src="../../js/common.js"></script> 
+  <script type="text/javascript" src="../../js/comm_check.js"></script> 
+  <script type="text/javascript" src="../../js/relax_function.js"></script> 
+  <script type="text/javascript" src="../../js/relax_ajax.js"></script> 
+
+
+</head>
+<body>
+	<!-- 查询条件 -->
+	<div id="searchbar">
+		<fieldset>
+			<legend>查询条件</legend>
+			<table id="tblSearch" cellpadding="0" cellspacing="0" border="0"
+				class="tbl-border">
+				<tr>
+					<td class="tbl-td-bg-color tbl-td-border"><label
+						class="tbl-label-right">组织机构：</label></td>
+					<td class="tbl-td-border"><input
+						class="easyui-validatebox tbl-input-left" id="orgType"
+						name="orgType"></input></td>
+
+					<td class="tbl-td-bg-color tbl-td-border"><label
+						class="tbl-label-right">地区：</label></td>
+					<td class="tbl-td-border"><input
+						class="easyui-validatebox tbl-input-left" id="areaId"
+						name="areaId"></input></td>
+
+				</tr>
+			</table>
+			<div style="padding: 5px; text-align: center;">
+				<a href="#" class="easyui-linkbutton" icon="icon-search"
+					onclick="getBoxAreaPage()">查询</a> <a href="javascript:void(0)"
+					class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+			</div>
+		</fieldset>
+	</div>
+	<!-- 交易详情 -->
+	<table id="list_vendors" class="easyui-datagrid">
+	</table>
+	<div id="toolbar">
+		<div style="margin-bottom: 5px">
+			<a href="javascript:void(0)" onclick="addSupplier()"
+				class="easyui-linkbutton" iconcls="icon-edit">新增</a> <a
+				href="javascript:void(0)" onclick="deleteOrgArea()"
+				class="easyui-linkbutton" iconcls="icon-ok">删除</a>
+		</div>
+	</div>
+	<!-- 新增和编辑窗口  -->
+	<div id="dlgSupplier" class="easyui-window" title="供应商操作"
+		data-options="iconCls:'icon-save',modal: true" closed="true"
+		style="width: 320px; height: 300px; padding: 10px;">
+		<form id="supplierFrm" method="post">
+			<input id="tdid" type="hidden" name="id" value="" />
+			<table cellpadding="4" cellspacing="3" border="0">
+				<tbody>
+					<tr>
+						<td align="right">组织机构：</td>
+						<td><input id="tdOrgId" name="orgId__name__" class="easyui-combotree" style="width: 150px"/></td>
+					</tr>
+					<tr>
+						<td align="right">地区：</td>
+						<td><input class="easyui-combotree" id="addAreaId"
+							name="areaId" style="width: 150px" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<div style="text-align: center; padding-top: 30px">
+			<a href="javascript:void(0)" class="easyui-linkbutton"
+				iconcls="icon-save" onclick="addChargerVendor()">保存</a> <a
+				href="javascript:void(0)" class="easyui-linkbutton"
+				iconcls="icon-cancel"
+				onclick="javascript:$('#dlgSupplier').dialog('close');">取消</a>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		var page_size = 10;
+		var page_index = 1;
+		var vencodeTmp = '';
+		$(function() {
+			getAreaIdList('areaId',0);
+			showCombotree();
+			$('#list_vendors')
+					.datagrid(
+							{
+								singleSelect : false,
+								ctrlSelect : true,
+								showFooter : true,
+								fit : true,
+								fitColumns : true,
+								checkOnSelect : true,
+								selectOnCheck : false,
+								striped : true,
+								footer : '#toolbar',
+								toolbar : '#searchbar',
+								striped : true,
+								columns : [ [
+										{
+											field : 'ck',
+											checkbox : true
+										},
+										{
+											field : 'id',
+											title : 'id',
+											hidden : true
+										},
+										{
+											field : 'orgId',
+											title : '组织机构',
+											halign : 'center',
+											align : 'center',
+											width : 100,
+											dict : 'orgname'
+										},
+										{
+											field : 'areaId',
+											title : '地区',
+											halign : 'center',
+											width : 100,
+											align : 'center',
+											dict : 'areaId'
+										},
+										{
+											field : 'operRow',
+											title : '操作列',
+											halign : 'center',
+											width : 100,
+											align : 'center',
+											formatter : function(value, row,
+													index) {
+												var name = '[修改]';
+												return "<a href='javascript:void(0)' onclick='editSupplier(\""
+														+ index
+														+ "\",\""
+														+ row
+														+ "\")' >"
+														+ name
+														+ "</a>";
+											}
+
+										} ] ],
+								pagination : true,
+								pageSize : page_size,
+								pageList : [ page_size * 1, page_size * 2,
+										page_size * 3, page_size * 4 ],
+								pageNumber : 1,
+								rownumbers : false,
+								rowStyler : function(index, row) {
+									if (row.endTime == '0000-00-00'
+											|| row.over == '-9999.99') {
+										return 'background-color:#6293BB;color:#fff;';
+									}
+								}
+							});
+
+			$('#list_vendors').datagrid(
+					'service',
+					{
+						name : "/boxServer/getOrgAreaPage",
+						query : function() {
+							var orgId = $('#orgType').combobox("getValues").join(',');//组织机构
+							var areaId = $('#areaId').combobox("getValue");
+							var service = $('#list_vendors')
+									.datagrid('service');
+							service.setParam("orgId", orgId).setParam(
+									"areaId", areaId).send(
+									function(response, status) {
+										if (response.isSucc()) {
+
+										} else {
+											$.messager.alert('提示', response
+													.getMessage(), 'error');
+										}
+									});
+						}
+					});
+
+		});
+
+		//查询组织机构配置信息
+		function getBoxAreaPage() {
+			$('#list_vendors').datagrid("service").query();
+		}
+
+		//==编辑
+		function editSupplier(rowIndex, rowData) {
+			$('#tdOrgId').combo('readonly');
+			$('#list_vendors').datagrid('unselectAll');  
+			$('#list_vendors').datagrid('selectRow', rowIndex);
+			$('#list_vendors').datagrid('selectRow',rowIndex);  
+			var node = $('#list_vendors').treegrid('getSelected');
+			getAreaIdList('addAreaId',2,node.areaId);
+			var title = '修改供组织机构区域配置';
+			var win = $('#dlgSupplier').window('open')
+					.window('setTitle', title);
+			$('#supplierFrm').form('load', node);
+			console.log(node);
+
+			//$('#dlgSupplier').window('refresh');//刷新页面
+		}
+		//==打开窗口
+		function addSupplier() {
+			showDoOrgList();
+			getAreaIdList('addAreaId',1);
+			$('#tdid').val('');
+			$('#tdOrgId').removeAttr("readonly");
+			var title = '添加组织机构区域配置';
+			$('#dlgSupplier').window('open').window('setTitle', title);
+			$('#dlgSupplier').window('refresh');//刷新页面
+			
+		}
+		//删除组织机构区域配置
+		function deleteOrgArea(){
+			  var service = $.svc.getSVC("/boxServer/deleteOrgArea");
+			  var rows = $('#list_vendors').datagrid('getChecked');
+			 if ( rows == '') {
+		    	$.messager.alert("提示信息", "请选择要删除记录!", "info");   
+		    	return;
+		    	 }
+			 service.setParam("tboxOrgAreaEntity",rows);
+			 if(window.confirm('你确定要执行删除操作吗？')){
+				 service.call(function (response, status) {
+		               if (response.isSucc()) {
+		            	   $.messager.show({
+		            			title:'提示信息',
+		            			msg:'删除成功！',
+		            			timeout:5000,
+		            			showType:'slide'
+		            		});
+		            	   getBoxAreaPage();
+		               } else {
+		                   $.messager.alert("提示信息", response.message, "error");
+		               }
+		           });
+			 }
+			
+			
+		}
+		//添加 保存
+		function addChargerVendor() {
+
+			var areaId = $('#addAreaId').combobox("getValue");
+			var orgId = $('#tdOrgId').combobox("getValues").join(',');
+			if (orgId == null || orgId == '') {
+				$.messager.alert("提示信息", '请选择组织机构！', "error");
+				return;
+			}
+			if (areaId == null || areaId == '') {
+				$.messager.alert("提示信息", '请选择区域！', "error");
+				return;
+			}
+			var param={};
+			param["orgId"] =orgId;
+			param["areaId"] =areaId;
+			param["id"] =document.getElementById("tdid").value
+			var service = $.svc.getSVC("/boxServer/saveOrUpdate");
+			service.setParams(param);
+			service.call(function(response, status) {
+				if (response.isSucc()) {
+					   $.messager.show({
+	            			title:'提示信息',
+	            			msg:'操作成功！',
+	            			timeout:5000,
+	            			showType:'slide'
+	            		});
+					getBoxAreaPage();
+					$('#dlgSupplier').dialog('close');
+				} else {
+					$.messager.alert("提示信息", response.getResult(), "error");
+				}
+			});
+
+		}
+
+		//查询组织机构树
+		function showCombotree() {
+			// 加载组织机构树
+			$('#orgType').combotree({
+				url : '../../boxServer/getOrgList.svc?isSearch='+true,
+				lines : true, // 定义是否显示树控件上的虚线。
+				animate : true, // 定义节点在展开或折叠的时候是否显示动画效果。
+				checkbox : true, // 定义是否在每一个借点之前都显示复选框。
+				//multiple : true, //定义是否支持多选。	
+				panelWidth : 200,
+				cascadeCheck:false, //禁止联动选择
+				loadFilter : function(data) {
+					if (data.result.length > 0) {
+						var rows = data.result;
+						return converttree(rows);
+					} else {
+						$.messager.alert("提示信息", "组织机构加载失败", "error");
+					}
+				},
+				onClick : function(node) { //节点的点击事件
+				},
+			});
+			var span = $('#orgType').siblings("span")[0];
+			var targetInput = $(span).find("input:first");
+			if (targetInput) {
+				$(targetInput).attr("placeholder", '-----请选择-----');
+			}
+		}
+		//
+		function showDoOrgList() {
+			// 加载组织机构树
+			$('#tdOrgId').combotree({
+				url : '../../boxServer/getOrgList.svc?isSearch='+false,
+				lines : true, // 定义是否显示树控件上的虚线。
+				animate : true, // 定义节点在展开或折叠的时候是否显示动画效果。
+				checkbox : true, // 定义是否在每一个借点之前都显示复选框。
+				multiple : true, //定义是否支持多选。	
+				panelWidth : 200,
+				cascadeCheck:false, //禁止联动选择
+				loadFilter : function(data) {
+					if (data.result.length > 0) {
+						var rows = data.result;
+						return converttree(rows);
+					} else {
+						$.messager.alert("提示信息", "组织机构加载失败", "error");
+					}
+				},
+				onClick : function(node) { //节点的点击事件
+				},
+			});
+			var span = $('#tdOrgId').siblings("span")[0];
+			var targetInput = $(span).find("input:first");
+			if (targetInput) {
+				$(targetInput).attr("placeholder", '-----请选择-----');
+			}
+		}
+		function converttree(rows) {
+			function exists(rows, pId) {
+				for (var i = 0; i < rows.length; i++) {
+					if (rows[i].orgId == pId)
+						return true;
+				}
+				return false;
+			}
+
+			var nodes = [];
+			// 得到顶层节点  
+			for (var i = 0; i < rows.length; i++) {
+				var row = rows[i];
+				if (!exists(rows, row.pId)) {
+					nodes.push({
+						id : row.orgId,
+						text : row.orgName,
+						//state: "closed",
+						state : "open",
+						iconCls : ""
+					});
+				}
+			}
+
+			var toDo = [];
+			for (var i = 0; i < nodes.length; i++) {
+				toDo.push(nodes[i]);
+			}
+			for (j = 0; j < rows.length; j++) {
+				var node = toDo.shift(); // 父节点   
+				// 得到子节点   
+				for (var i = 0; i < rows.length; i++) {
+					var row = rows[i];
+					if (row.pId == node.id) {
+						var child = {
+							id : row.orgId,
+							text : row.orgName
+						};
+						if (node.children) {
+							node.children.push(child);
+						} else {
+							node.children = [ child ];
+						}
+						toDo.push(child);
+					}
+				}
+			}
+			return nodes;
+		}
+		//区域列表
+		function getAreaIdList(idValue,type,value) {
+			var service = $.svc.getSVC("/boxServer/getAreaIdList");
+			service.call(function(response, status) {
+				if (response.isSucc()) {
+					if(0==type){
+						response.getResult().unshift({
+							"key" : '',
+							"value" : "全部"
+						});
+					}
+					$('#' + idValue + "").combobox({
+						valueField : 'key',
+						textField : 'value',
+						editable : false,
+						onLoadSuccess : function(data) {
+							if (data.length > 0) {
+								if(0==type||1==type){
+									$(this).combobox('select', data[0].key);	
+								}else{
+									$(this).combobox('setValue',value );		
+								}
+							} else {
+								$(this).combobox('select', []);
+							}
+						}
+					});
+					
+					$('#' + idValue + "").combobox("loadData", response.getResult());
+				} else {
+					$.messager.alert('提示', response.getResult(), 'error');
+				}
+			});
+		}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta name="description" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+
+    <title>乌鲁木齐市存量房交易系统-菜单管理</title>
+
+	<link rel="stylesheet" type="text/css" href="../../frontJS/paging/paging.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/dialog.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/frame.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/countState.css" />
+    <script type="text/javascript" src="../../frontJS/jquery.min-1.9.1.js"></script>
+    <script type="text/javascript" src="../../frontJS/paging/paging.js"></script>
+	<script type="text/javascript" src="../../frontJS/xtgl/menuManageList.js"></script>
+</head>
+<body>
+<div class="tb_container">
+    <div class="top-xm fund-div">
+        <p>
+            <input id="menuCode" type="text" placeholder="按菜单code搜索"/>
+            <input id="chName" type="text" placeholder="按菜单名称搜索"/>
+            <a id="searchBtn" href="javascript:void(0)" class="big"></a>
+        </p>
+        <p class="p_after">
+            <a href="javascript:void(0)" class="afterArrow">系统管理</a>
+            <a href="javascript:void(0)" class="afterArrow">菜单管理</a>
+            <a href="javascript:window.location.reload();" class="reload">刷新</a>
+            <a href="menuManage.html" class="add reload">新增菜单</a>
+        </p>
+    </div>
+    <div class="table-border">
+      <table>
+		<thead>
+			<tr class="tr_th">
+               <th>序号</th>
+               <th>菜单code</th>
+               <th>菜单名称</th>
+               <th>菜单地址</th>
+               <th>创建时间</th>
+               <th>操作</th>
+            </tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+      </table>
+      <!--底部分页-->
+      <div class="foot">
+          <p>共 <span class="totalCount"></span>条记录&nbsp&nbsp <span class="currentPage">1</span>/<span class="totalPage"></span>页</p>
+          <div id="pageTool">
+
+          </div>
+      </div>
+    </div>
+    
+</div>
+
+<div id="dialog-cover"></div>
+<div id="dialogDel" class="dialog">
+
+    <div class="dialog-container">
+        <div class="head">
+                                          系统提示
+            <!--<a href="#" class="add"></a>-->
+        </div>
+        <div class="item-container menu-del">
+        	<p id="tip-info"></p>
+        	<div class="menu-dialog-btn">
+        		<a class="btn" onclick="delMenu()">确定</a>
+        		<a class="btn" onclick="closePop()">取消</a>
+        	</div>
+            
+        </div>
+
+    </div>
+
+</div>
+<div id="dialogModify" class="dialog">
+
+    <div class="dialog-container">
+        <div class="head">
+        	菜单修改
+            <!--<a href="#" class="add"></a>-->
+        </div>
+        <div class="item-container">
+            <div class="subItem">
+                <label>菜单名称：</label>
+                <div>
+                    <input id="chNameInput" maxlength="6" type="text" name="" />
+                </div>
+                <span>*</span>
+            </div>
+            <div class="subItem">
+                <label>菜单地址：</label>
+                <div>
+                    <input id="menuUrlInput" type="text" name="" />
+                </div>
+            </div>
+            <div id="add-err" class="err-tip"></div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <button onclick="closePop()">取消</button>
+        <button onclick="modifyMenu()">确定</button>
+    </div>
+
+</div>
+
+</body>
+</html>

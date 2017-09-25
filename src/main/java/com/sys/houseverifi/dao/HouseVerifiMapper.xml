@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sys.houseverifi.dao.HouseVerifiMapper">
+    <!--房屋信息添加 -->
+    <insert id="addHouseInfo">
+        insert into house_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="ownershipNumber != null">
+                ownership_number,
+            </if>
+            <if test="registerDate != null">
+                register_date,
+            </if>
+            <if test="totalNumber != null">
+                total_number,
+            </if>
+            <if test="seatLayer != null">
+                seat_layer,
+            </if>
+            <if test="buildingArea != null">
+                building_area,
+            </if>
+            <if test="jacketArea != null">
+                jacket_area,
+            </if>
+            <if test="apportionedArea != null">
+                apportioned_area,
+            </if>
+            <if test="housingUse != null">
+                housing_use,
+            </if>
+            <if test="housingNature != null">
+                housing_nature,
+            </if>
+            <if test="landCode != null">
+                land_code,
+            </if>
+            <if test="houseCseeion != null">
+                house_cseeion,
+            </if>
+            <if test="landUsera != null">
+                land_usera,
+            </if>
+            <if test="budingDate != null">
+                buding_date,
+            </if>
+            <if test="landWay != null">
+                land_way,
+            </if>
+            <if test="buildingStructure != null">
+                building_structure,
+            </if>
+            <if test="houseAddress != null">
+                house_address,
+            </if>
+            <if test="houseMemo != null">
+                house_memo,
+            </if>
+            <if test="transType != null">
+                trans_type,
+            </if>
+            <if test="houseNumber != null">
+                house_number,
+            </if>
+            <if test="isOn != null">
+                is_on,
+            </if>
+
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="createName != null">
+                create_date,
+            </if>
+            <if test="createName != null">
+                update_name,
+            </if>
+            <if test="createName != null">
+                update_date,
+            </if>
+            <if test="orgCode != null">
+                org_code,
+            </if>
+            <if test="roleCode != null">
+                role_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="ownershipNumber != null">
+                #{ownershipNumber},
+            </if>
+            <if test="registerDate != null">
+                #{registerDate},
+            </if>
+            <if test="totalNumber != null">
+                #{totalNumber},
+            </if>
+            <if test="seatLayer != null">
+                #{seatLayer},
+            </if>
+            <if test="buildingArea != null">
+                #{buildingArea},
+            </if>
+            <if test="jacketArea != null">
+                #{jacketArea},
+            </if>
+            <if test="apportionedArea != null">
+                #{apportionedArea},
+            </if>
+            <if test="housingUse != null">
+                #{housingUse},
+            </if>
+            <if test="housingNature != null">
+                #{housingNature},
+            </if>
+            <if test="landCode != null">
+                #{landCode},
+            </if>
+            <if test="houseCseeion != null">
+                #{houseCseeion},
+            </if>
+            <if test="landUsera != null">
+                #{landUsera},
+            </if>
+            <if test="budingDate != null">
+                #{budingDate},
+            </if>
+            <if test="landWay != null">
+                #{landWay},
+            </if>
+            <if test="buildingStructure != null">
+                #{buildingStructure},
+            </if>
+            <if test="houseAddress != null">
+                #{houseAddress},
+            </if>
+            <if test="houseMemo != null">
+                #{houseMemo},
+            </if>
+            <if test="transType != null">
+                #{transType},
+            </if>
+            <if test="houseNumber != null">
+                #{houseNumber},
+            </if>
+            <if test="isOn != null">
+                #{isOn},
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createName != null">
+                sysdate,
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createName != null">
+                sysdate,
+            </if>
+            <if test="orgCode != null">
+                #{orgCode},
+            </if>
+            <if test="roleCode != null">
+                #{roleCode},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--申请人信息添加-->
+    <insert id="addProposerInfo">
+        INSERT INTO proposer_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="ownershipNumber != null">
+                ownership_number,
+            </if>
+            <if test="houseNumber != null">
+                house_number,
+            </if>
+            <if test="applicantName != null">
+                applicant_name,
+            </if>
+            <if test="applicantNature != null">
+                applicant_nature,
+            </if>
+            <if test="idType != null">
+                idtype,
+            </if>
+            <if test="idNumber != null">
+                idnumber,
+            </if>
+            <if test="nation != null">
+                nation,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="maritalStatus != null">
+                marital_status,
+            </if>
+            <if test="mateName != null">
+                mate_name,
+            </if>
+            <if test="mateIdtype != null">
+                mate_idtype,
+            </if>
+            <if test="mateIdnumber != null">
+                mate_idnumber,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="createName != null">
+                create_date,
+            </if>
+            <if test="createName != null">
+                update_name,
+            </if>
+            <if test="createName != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="ownershipNumber != null">
+                #{ownershipNumber},
+            </if>
+            <if test="houseNumber != null">
+                #{houseNumber},
+            </if>
+            <if test="applicantName != null">
+                #{applicantName},
+            </if>
+            <if test="applicantNature != null">
+                #{applicantNature},
+            </if>
+            <if test="idType != null">
+                #{idType},
+            </if>
+            <if test="idNumber != null">
+                #{idNumber},
+            </if>
+            <if test="nation != null">
+                #{nation},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="maritalStatus != null">
+                #{maritalStatus},
+            </if>
+            <if test="mateName != null">
+                #{mateName},
+            </if>
+            <if test="mateIdtype != null">
+                #{mateIdtype},
+            </if>
+            <if test="mateIdnumber != null">
+                #{mateIdnumber},
+            </if>
+            <if test="mobile != null">
+                #{mobile},
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createName != null">
+                sysdate,
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createName != null">
+                sysdate,
+            </if>
+        </trim>
+
+    </insert>
+
+    <!--产权人信息添加 -->
+    <insert id="addHousePropertyInfo" parameterType="java.util.List" useGeneratedKeys="false">
+        INSERT INTO
+        house_property
+        (id,
+        ownership_number,        
+        owner_name,
+        idtype,
+        idnumber,
+        create_date,
+        update_date)
+        <foreach item="item" index="index" collection="list" separator="union all">
+            (
+            SELECT
+            #{item.id},
+            #{item.ownershipNumber,jdbcType=VARCHAR},           
+            #{item.ownerName},
+            #{item.idType},
+            #{item.idNumber},
+            sysdate,
+            sysdate
+            FROM DUAL
+
+            )
+        </foreach>
+    </insert>
+    <!-- 获取房源信息-->
+    <select id="getHoueInfo" resultType="com.sys.houseverifi.entity.HouseInfoViewEntity">
+
+        SELECT a.id,
+        a.ownership_number as ownershipNumber,
+        a.register_date as registerDate,
+        a.total_number as totalNumber,
+        a.seat_layer as seatLayer,
+        a.building_area as buildingArea,
+        a.jacket_area as jacketArea,
+        a.apportioned_area as apportionedArea,
+        a.housing_use as housingUse,
+        a.housing_nature as housingNature,
+        a. land_code as landCode,
+        a.house_cseeion as houseCseeion,
+        a.land_usera as landUsera,
+        a.buding_date as budingDate,
+        a.land_way as landWay,
+        a.building_structure as buildingStructure,
+        a.house_address as houseAddress,
+        a.house_memo as houseMemo,
+        a.house_status as houseStatus,
+        a.trans_type as transType,
+        a.house_number as houseNumber,
+        a.is_on as isOn,
+        a.pro_status as proStatus,
+        to_char(a.pro_date, 'yyyy-mm-dd') as proDate,
+        c.applicant_name as applicantName,
+        c.applicant_nature as applicantNature,
+        c.idtype as idType,
+        c.idnumber as idNumber,
+        c.nation,
+        c.address,
+        c.marital_status as maritalStatus,
+        c.mate_name as mateName,
+        c.mate_idtype as mateIdtype,
+        c.mate_idnumber as mateIdnumber,
+        c.mobile,
+        b.owner_name as ownerName
+        from house_info a，proposer_info c,
+        (select bb.owner_name, bb.ownership_number
+        from house_property bb,
+        (select max(id) as id, ownership_number
+        from house_property
+        group by ownership_number) cc
+        where bb.id = cc.id) b
+        <include refid="where"></include>
+        ORDER BY a.update_date DESC
+
+    </select>
+    <!--根据条件获取房子信息总数-->
+    <select id="getHoueInfoCount" resultType="java.lang.Long">
+        SELECT COUNT(0) from (
+        SELECT a.id ,a.ownership_number as ownershipNumber,a.register_date as registerDate,
+        a.total_number as totalNumber,a.seat_layer as seatLayer,a.building_area as buildingArea,
+        a.jacket_area as jacketArea,a.apportioned_area as apportionedArea,a.housing_use as housingUse,
+        a.housing_nature as housingNature,a. land_code as landCode,
+        a.house_cseeion as houseCseeion,a.land_usera as landUsera,a.buding_date as budingDate,
+        a.land_way as landWay,a.building_structure as buildingStructure,
+        a.house_address as houseAddress,a.house_memo as houseMemo,a.house_status as houseStatus,
+        a.trans_type as transType,
+        a.house_number as houseNumber,
+        a.is_on as isOn,a.pro_status as proStatus,
+        to_char(a.pro_date,'yyyy-mm-dd') as proDate
+        from house_info a
+        <include refid="iswhere"></include>
+        )
+
+    </select>
+    <sql id="iswhere">
+        <where>
+
+            <if test="houseNum != null and houseNum != ''">
+                and a.ownership_number=#{houseNum}
+
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND a. pro_date &gt;= to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND a. pro_date &lt;= to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="type==0">
+                <if test="isPass != null and isPass != ''">
+                    AND a. pro_status = #{isPass}
+                </if>
+            </if>
+
+            <if test="type==1">
+                AND a. pro_status=1
+                AND a.house_status=0
+                AND a.is_on=1
+            </if>
+            <if test="orgCode == null or orgCode == ''">
+                <if test="roleCode != null">
+                    AND a. create_name = #{userCode}
+                </if>
+            </if>
+            <if test="orgCode != null and orgCode != ''">
+                AND a. org_code = #{orgCode}
+            </if>
+        </where>
+    </sql>
+    <sql id="where">
+        <where>
+           a.ownership_number=c.ownership_number
+            AND a.ownership_number=b.ownership_number
+            <if test="houseNum != null and houseNum != ''">
+                and a.ownership_number=#{houseNum}
+
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND a. pro_date &gt;= to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND a. pro_date &lt;= to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="type==0">
+                <if test="isPass != null and isPass != ''">
+                    AND a. pro_status = #{isPass}
+                </if>
+            </if>
+            <!--房源公示-->
+            <if test="type==1">
+                AND a. pro_status=1
+                AND a.house_status=0
+                AND a.is_on=1
+            </if>
+            <if test="orgCode == null or orgCode == ''">
+                <if test="roleCode != null">
+                    AND a. create_name = #{userCode}
+                </if>
+            </if>
+            <if test="orgCode != null and orgCode != ''">
+                AND a. org_code = #{orgCode}
+            </if>
+        </where>
+    </sql>
+    <!--房子权利人信息-->
+    <select id="getPropertyInfo" resultType="com.sys.houseverifi.entity.HouseInfoViewEntity">
+        SELECT b.id , a.ownership_number as ownershipNumber,b.owner_name as ownerName, b.idtype as ownweIdType,
+        b.idnumber as ownerIdNumber
+        FROM house_info a,house_property b
+        WHERE
+        a.ownership_number=b.ownership_number
+        <if test="houseNum != null and houseNum != ''">
+            and a.ownership_number=#{houseNum}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND a. pro_date &gt;= to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND a. pro_date &lt;= to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="type==0">
+            <if test="isPass != null and isPass != ''">
+                AND a. pro_status = #{isPass}
+            </if>
+        </if>
+
+        <if test="type==1">
+            AND a. pro_status=1
+            AND a.house_status=0
+            AND a.is_on=1
+        </if>
+        <if test="orgCode == null or orgCode == ''">
+            <if test="roleCode != null">
+                AND a. create_name = #{userCode}
+            </if>
+        </if>
+        <if test="orgCode != null and orgCode != ''">
+            AND a. org_code = #{orgCode}
+        </if>
+
+    </select>
+    <!--房产信息录入校验-->
+    <select id="isPro" resultType="java.lang.Long">
+        SELECT COUNT (0) FROM house_info
+        WHERE
+        1=1
+        <if test="ownershipNumber != null and ownershipNumber != ''">
+            AND ownership_number = #{ownershipNumber}
+        </if>
+        <if test="houseNumber != null and houseNumber != ''">
+            AND house_number = #{houseNumber}
+        </if>
+
+    </select>
+    <!-- 根据房产证号查询产权人详细信息-->
+    <select id="getPropertyInfoByNumber" resultType="com.sys.houseverifi.entity.HousePropertyEntity">
+         SELECT b.ownership_number as ownershipNumber,b.owner_name as ownerName,
+         b.idtype  as idType,  b.idnumber  as idNumber
+        FROM house_property b ,house_info  a
+        WHERE (b.ownership_number=a.ownership_number OR b.house_number=a.house_number)
+        AND a.id=#{id}
+    </select>
+
+    <!-- 根据房产证号查询房子详细信息-->
+    <select id="getHouseInfoByNumber" resultType="com.sys.houseverifi.entity.HouseInfoEntity">
+    SELECT a.id ,a.ownership_number as ownershipNumber,a.register_date as registerDate,
+    a.total_number as totalNumber,a.seat_layer as seatLayer,a.building_area as buildingArea,
+    a.jacket_area as jacketArea,a.apportioned_area as apportionedArea,a.housing_use as housingUse,
+    a.housing_nature as housingNature,a. land_code as landCode,
+    a.house_cseeion as houseCseeion,a.land_usera as landUsera,a.buding_date as budingDate,
+    a.land_way as landWay,a.building_structure as buildingStructure,
+    a.house_address as houseAddress,a.house_memo as houseMemo,a.house_status as houseStatus,
+    a.trans_type as transType,a.house_number as houseNumber,a.is_on as isOn,a.pro_status as proStatus,
+    to_char(a.pro_date,'yyyy-mm-dd') as proDate,a.pro_code as proCode
+    from house_info  a
+    WHERE  a.id=#{id}
+    </select>
+    <!-- 根据房产证号查询房子申请人详细信息-->
+    <select id="getProposeInfoByNumber" resultType="com.sys.houseverifi.entity.ProposerInfoEntity">
+ SELECT  c.applicant_name as applicantName,c.applicant_nature as applicantNature,
+    c.idtype as idType,c.idnumber as idNumber,c.nation ,c.address,c.marital_status as maritalStatus,
+    c.mate_name as mateName,c.mate_idtype as mateIdtype,c.mate_idnumber as mateIdnumber,c.mobile
+    FROM proposer_info  c,house_info  a
+    WHERE
+    (c.ownership_number=a.ownership_number OR c.house_number=a.house_number)
+    AND a.id=#{id}
+    </select>
+    <!-- 房子验证结果-->
+    <select id="getHouNoticeReu" resultType="com.sys.houseverifi.entity.HouseNoticeEntity">
+        SELECT ownership_number as ownershipNumber,house_number as houseNumber,
+        sequestration_stauts as sequestrationStauts ,
+        freeze_flag as freezeFlag,mortgage_status as mortgageStatus,
+        preview_status as previewStatus,sign_status as signStatus
+        FROM house_notice
+        WHERE
+
+        <if test="type ==0">
+            ownership_number=#{houseNum}
+        </if>
+        <if test="type ==1">
+            house_number=#{houseNum}
+        </if>
+        <!--<if test="ownerName != null and ownerName != ''">
+            AND owner_name=#{ownerName}
+        </if>-->
+
+
+    </select>
+    <!--房源验证结果通知-->
+    <update id="updateHouseProStatus">
+        UPDATE house_info SET
+        pro_status =#{proStatus},
+        <if test="proCode != null and proCode != ''">
+         pro_code = #{proCode,jdbcType=VARCHAR},
+        </if>
+        pro_date=sysdate,
+        update_name=#{proUser},
+        update_date=sysdate,
+        pro_user=#{proUser}
+        WHERE
+         <if test="type ==0">
+        ownership_number=#{houseNumber}
+         </if>
+        <if test="type ==1">
+            house_number=#{houseNumber}
+        </if>
+    </update>
+    <!--房源公示必须公示7以上天才能做业务-->
+    <select id="houseisOK" resultType="java.lang.Long">
+    SELECT count(0) FROM  house_info WHERE
+    pro_code =#{proCode}
+    AND pro_date &lt;=sysdate - interval '7' day
+    AND pro_status=1
+    AND house_status=0
+    </select>
+    <!--房屋状态更新-->
+    <update id="updateHouseStatus">
+        UPDATE house_info SET
+        house_status =#{houseStatus },
+        update_name=#{updateName},
+        update_date=sysdate
+        WHERE
+        pro_code=#{proCode}
+    </update>
+</mapper>

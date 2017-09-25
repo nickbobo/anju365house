@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用户考试记录管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试人登录名：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="userNameSerch" name="userName"></input></td>
+                            <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试人真实姓名：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="realUserNameSerch" name="realUserName"></input></td>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试名称：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="examNameSerch" name="examName"></input></td>
+                           <!-- <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试对象：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="examUserTypeSerch" name="examUserType"></input></td>
+                        	 -->
+                        	<td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">是否完成：</label></td>
+                            <td class="tbl-td-border"> 
+                         	‍‍<select class="easyui-combobox tbl-input-left"  id="isCompleteSerch" name = "isComplete">
+                                <option value="" selected="selected">全部</option>
+								<option value="0">未完成</option>
+								<option value="1">已完成</option>
+                         	</select>
+                         </td>
+                        </tr>
+                         <tr>
+                             <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">地区：</label></td>
+	                         <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="regionCodeSerch"name="regionCode"></input></td>
+                             <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试开始时间：</label></td>
+               			 	 <td class="tbl-td-border" ><input class="easyui-datetimebox tbl-input-left" id="createTimeBeg" name="createTimeBeg" editable="false" "></input>
+               			 	 </td>
+               			 	 <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试结束时间：</label></td>
+			        		 <td class="tbl-td-border" ><input class="easyui-datetimebox tbl-input-left" id="createTimeEnd" name="createTimeEnd" editable="false" ></input>
+	           			 	 </td> 
+                           </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                        <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadExamPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-export"  onclick="exportExcel()">统计</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<div id="toolbar">
+	    <!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addExam()" >新增</a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="publishExam()" >发布</a>
+	     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExam()" >删除</a> -->
+		<!--进度条-->
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+		</div>
+</div>
+
+    <script type="text/javascript">
+    
+    	var size = 10;
+    	var page = 1;
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '考试记录id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'examId', title: '考试id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'userId', title: '考试人员id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'examName', title: '考试名称',  align: 'left', halign: 'center'},
+                    {field: 'userName', title: '考试人登录名',  align: 'left', halign: 'center'},
+                    {field: 'realUserName', title: '考试人真实姓名',  align: 'left', halign: 'center'},
+                    {field: 'regionCode', title: '分公司地区编码',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'regionName', title: '地区',  align: 'left', halign: 'center'},
+                    {field: 'userType', title: '考试对象',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'userTypeName', title: '考试对象',  align: 'left', halign: 'center'},
+                    {field: 'examTime', title: '考试有效时间',  align: 'left', halign: 'center'},
+                    {field: 'examCount', title: '考试题数',  align: 'left', halign: 'center'},
+                    {field: 'examTimeLength', title: '考试时长',  align: 'left', halign: 'center',
+                    	formatter: function(value, row, index) {
+                    		return value+"分钟";
+                        }   
+                    },
+                    {field: 'score', title: '考试分数',  align: 'left', halign: 'center'},
+                    {field: 'beginTime', title: '考试时间',  align: 'left', halign: 'center'},
+                    {field: 'commitTime', title: '提交时间',  align: 'left', halign: 'center'},
+                    {field: 'isComplete', title: '是否完成',  align: 'left', halign: 'center',
+                    	formatter: function(value, row, index) {
+                            if(value == '0') {
+                            	var valueName="未完成";
+                            	return '<font color="blue">' + valueName + '</font>';
+                            } 
+                            if(value == '1') {
+                            	var valueName="已完成";
+                            	return '<font color="red">' + valueName + '</font>';
+                            }
+                        }   
+                    },{field: 'opt', title: '操作',align: 'center', halign: 'center',
+                    	formatter: function(value, row, index) {
+                    		var id = row.id;
+                    		var userId = row.userId;
+                    		var optionBtn = '<a href="javascript:void(0)" style="color:blue" onclick="parent.showItem(event,$(this),\'问题记录管理\',\'\',\'views/exam/examQuestionRecord.html?examRecordId='+id+'&userId='+userId+'\')">问题记录管理</a>';
+                    		return optionBtn;
+                    		}
+                    	}
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                }
+            }
+        }; 
+        getAllUserType();
+        
+        $('#examUserType').combobox({
+            valueField: 'userType',
+            textField: 'userTypeName',
+            enitable:true,
+            onLoadSuccess: function (data) {
+                 if (data.length > 0) {
+                    $('#examUserType').combobox('select', data[0].userTypeName);
+                } else {
+                    $(this).combobox('select', []);
+                }  
+            }
+        });
+        
+        /* 加载考试人员类型 */
+   	  function getAllUserType() {
+         var service = $.svc.getSVC("/examManager/getAllUserType");
+         service.call(
+                 function (response, status) {
+                     if (response.succ=true) {
+ 	                       $('#examUserType').combobox('loadData', response.result);
+                     } else {
+                     	  $.messager.alert('提示', '加载标签失败!', 'error');
+                     }
+                 });
+ 	    }
+        
+      /*查询考试人员类型     */
+   	  //getAllUserTypeSerch();
+      
+   	 /*  $('#examUserTypeSerch').combobox({
+          valueField: 'userType',
+          textField: 'userTypeName',
+          enitable:true,
+          onLoadSuccess: function (data) {
+               if (data.length > 0) {
+                  $('#examUserTypeSerch').combobox('select', data[0].userTypeName);
+              } else {
+                  $(this).combobox('select', []);
+              }  
+          }
+      }); */
+   	  
+       /* 加载考试人员类型 */
+ 	   /* function getAllUserTypeSerch() {
+       var service = $.svc.getSVC("/examManager/getAllUserType");
+       service.call(
+               function (response, status) {
+                   if (response.succ=true) {
+                  	 	   response.result.unshift({"userType":"","userTypeName":"全部"});
+	                       $('#examUserTypeSerch').combobox('loadData', response.result);
+                   } else {
+                   	  $.messager.alert('提示', '加载标签失败!', 'error');
+                   }
+               });
+	    } */
+      
+      
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadExamPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadExamPage(page, size);
+
+                }
+            });
+        });
+        function loadExamPage(page,size) {
+         	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var examName = $('#examNameSerch').val();
+            var realUserName = $('#realUserNameSerch').val();
+            var userName = $('#userNameSerch').val();
+        	//var examUserType = $('#examUserTypeSerch').combobox("getValue");
+        	var isComplete = $('#isCompleteSerch').combobox("getValue");
+        	var regionCode = $('#regionCodeSerch').val();
+        	 var createTimeBeg = $('#createTimeBeg').datebox("getValue");
+             var createTimeEnd = $('#createTimeEnd').datebox("getValue");
+        	
+            var service = $.svc.getSVC("/examManager/getAllUserExamRecordPage");
+            service.setPage(page, size)
+            .setParam("examName", examName)
+            .setParam("userName", userName)
+            .setParam("realUserName", realUserName)
+            .setParam("regionCode", regionCode)
+            .setParam("createTimeBeg", createTimeBeg)
+            .setParam("createTimeEnd", createTimeEnd)
+           // .setParam("examUserType", examUserType)
+            .setParam("isComplete", isComplete);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#examNameSerch').val(""); 
+        	$('#userNameSerch').val(""); 
+        	$('#realUserNameSerch').val(""); 
+        	//$('#examUserTypeSerch').combobox('setValue','');
+        	$('#isCompleteSerch').combobox('setValue','');
+        	$('#regionCodeSerch').val("");
+        	$('#createTimeBeg').datebox('setValue','');
+        	$('#createTimeEnd').datebox('setValue','');
+        	loadExamPage();
+        })
+        
+          	// 导出
+        function exportExcel() {
+        	
+     	    var examName = encodeURI(encodeURI($('#examNameSerch').val()));
+     	    var userName = encodeURI(encodeURI($('#userNameSerch').val()));
+     	    var realUserName = encodeURI(encodeURI($('#realUserNameSerch').val()));
+      		var regionName = encodeURI(encodeURI($('#regionNameSerch').val()));
+            //var examUserType = $('#examUserTypeSerch').combobox("getValue");
+            var isComplete = $('#isCompleteSerch').combobox("getValue");
+            var regionCode = $('#regionCodeSerch').combobox("getValue");
+            var createTimeBeg = $('#createTimeBeg').datebox("getValue");
+            var createTimeEnd = $('#createTimeEnd').datebox("getValue");
+      		var params = 'params={"examName":"' + examName
+ 			+ '","userName":"' + userName
+ 			//+ '", "examUserType":"' + examUserType
+ 			+ '", "isComplete":"' + isComplete
+ 			+ '", "realUserName":"' + realUserName
+ 			+ '","regionCode":"' + regionCode
+ 			+ '", "createTimeBeg":"' + createTimeBeg + '", "createTimeEnd":"' + createTimeEnd + '"}';	
+       	    window.location = '../../examManager/expoprtExcel.svc?'+params;
+       } 
+        
+        /*查询地区    */
+   	  getRegionCodeSerch();
+      
+   	  $('#regionCodeSerch').combobox({
+          valueField: 'regionCode',
+          textField: 'regionName',
+          enitable:true,
+          onLoadSuccess: function (data) {
+               if (data.length > 0) {
+                  $('#regionCodeSerch').combobox('select', data[0].userTypeName);
+              } else {
+                  $(this).combobox('select', []);
+              }  
+          }
+      });
+   	  
+       /* 加载地区*/
+ 	   function getRegionCodeSerch() {
+       var service = $.svc.getSVC("/examManager/getRegionCode");
+       service.call(
+               function (response, status) {
+                   if (response.succ=true) {
+                  	       response.result.unshift({"regionCode":"","regionName":"全部"});
+	                       $('#regionCodeSerch').combobox('loadData', response.result);
+	                       $('#regionCodeSerch').combobox('setValue','');
+                   } else {
+                   	  $.messager.alert('提示', '加载标签失败!', 'error');
+                   }
+               });
+	    }
+        
+    </script>
+</body>
+</html>

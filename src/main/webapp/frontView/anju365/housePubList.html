@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="安居365" />
+    <meta name="description" content="安居365" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+     <link rel="Shortcut icon" href="../../image-xm/logo.ico">
+     <link rel="stylesheet" href="../../frontJS/anju365/paging/paging.css"/>
+     <link rel="stylesheet" href="../../frontStyle/anju365/pubCSS.css"/>
+     <script type="text/javascript" src="../../frontJS/anju365/jquery.min-1.9.1.js"></script>
+     <script type="text/javascript" src="../../frontJS/anju365/My97DatePicker/WdatePicker.js"></script>
+     <script type="text/javascript" src="../../frontJS/anju365/housePubList.js"></script>
+     <script src="../../frontJS/anju365/base.js"></script>
+     <script type="text/javascript" src="../../frontJS/base-config/base.js"></script>
+     <script src="../../frontJS/anju365/paging/paging.js"></script>
+    <title>安居365-房源公示</title>
+ 
+
+</head>
+<body>
+<div class='nav'><img class='anjuText' src="../../frontStyle/image/anjuTitle.png" alt=""/></div>
+
+<div class="cont-xm houseVerifyList-cont">
+<div class='return'>
+	<div class="top-xm">
+	        <p class="p_after">
+	            <a class='afterArrow' href="http://www.anju-365.com">首页</a>
+	            <a class='afterArrow' href="javascript:void(0)">存量房交易挂牌公示</a>
+	            <a ng-click="ui.refresh()" href="javascript:window.location.reload();" class="reload">刷新</a>
+	        </p>
+	    </div>
+</div>
+ 	<div class="top-xm2 top-xm fund-div">
+        <p class="fund-p">
+            <select class='searchForBank select-style' id='cq' placeholder="按城区搜索">
+            	<option value selected='selected'>--请选择城区--</option>
+          		<option value="650109">米东区</option>
+          		<option value="650102">天山区</option>
+          		<option value="650103">沙依巴克区</option>
+          		<option value="650106">经济技术开发区(头屯河区)</option>
+          		<option value="650105">水磨沟区</option>
+          		<option value="650104">高新技术开发区</option>
+          		<option value="650107">达坂城区</option>
+          		<option value="650121">乌鲁木齐县</option>
+          		<option value="650130">甘泉堡经济技术开发区(工业区)</option>
+          		<option value="650122">其他</option>
+          	</select>
+            <input readonly='true' id="startTime" onclick="WdatePicker()" type="text" placeholder="按公示时间搜索(开始日期)" readonly="readonly"/>
+            <span class="line"></span>
+            <input readonly='true' id="endTime" onclick="WdatePicker()" type="text" placeholder="按公示时间搜索(结束日期)" readonly="readonly"/>
+            <span id="searchBtn" class="big"></span>
+            <p class='fund-p'><input id="wydz" type="text" placeholder="按房屋地址搜索"/></p>
+        </p>
+        
+    </div>
+    
+    
+    <div class="mid-xm houseVerifyList">
+         <table>
+	         <thead>
+		           	<tr class="tr_th">
+                 		<th>序号</th>
+	                    <th>房屋坐落</th>
+	                    <th>房屋面积（m²）</th>
+	                    <th>城区</th>
+	                    <th>建筑年代</th>
+	                    <th>公示开始时间</th>
+	                    <th>公示结束时间</th>
+                 	</tr>
+	            </thead>
+	            <tbody>
+	            </tbody>
+         </table>
+    </div>
+    <div class="bottom-xm">
+    	<p>共 <span class="totalCount"></span>条记录&nbsp&nbsp <span class="currentPage"></span>/<span class="totalPage"></span>页</p>
+            <div id="pageTool">
+            </div>
+    </div>
+</div>
+
+
+</body>
+</html>

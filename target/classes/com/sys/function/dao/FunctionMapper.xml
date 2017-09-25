@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sys.function.dao.FunctionMapper">
+	<!-- 页面操作按钮添加 -->
+	<insert id="addFunction">
+		insert into hdcs_function
+		values(#{id},#{menuCode},#{fnCode},#{fnName},#{fnMemo},#{userName},now(),#{userName})
+	</insert>
+
+	<!-- 页面操作按钮信息更新 -->
+	<update id="updateFunction">
+		update hdcs_function set
+		fn_name=#{fnName},fn_memo=#{fnMemo},update_name=#{userName},update_date=now()
+
+	</update>
+
+	<!-- 删除页面操作按钮 -->
+	<delete id="delFunction" parameterType="List">
+		delete from hdcs_function where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item.id}
+		</foreach>
+	</delete>
+
+	<!--根据功能code删除角色操作权限 -->
+	<delete id="delRoleFnPermsByFnCode" parameterType="List">
+		delete from
+		hdcs_role_function
+		where fn_code in
+		(select
+		fn_code from
+		hdcs_function
+		where fn_code
+		in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item.fnCode}
+		</foreach>
+		)
+	</delete>
+
+	<!-- 根据菜单code查询页面操作按钮 -->
+	<select id="getFnInfoByMc" resultType="com.sys.function.entity.FunctionEntity">
+		select id,menu_code as
+		menuCode,fn_code as fnCode,fn_name as
+		fnName,fn_memo
+		as fnMemo from
+		hdcs_function
+		where
+		1=1
+		<if test="menuCode != null and menuCode != '' ">
+			AND menu_code = #{menuCode}
+		</if>
+	</select>
+
+	<!-- 根据菜单和角色获取角色未配置的操作信息 -->
+	<select id="getUnFnPermsInfo" resultType="com.sys.function.entity.FunctionEntity">
+		select a.id,a.menu_code
+		as menuCode,a.fn_code as fnCode,a.fn_name as
+		fnName,a.fn_memo as fnMemo
+		from hdcs_function as a where not exists(select fn_code from
+		hdcs_role_function as b where
+		a.fn_code=b.fn_code and
+		b.role_code=#{roleCode})
+		and a.menu_code=#{menuCode}
+	</select>
+	<!-- 根据用户获取用户操作权限 -->
+	<select id="getFnPermsByUser" resultType="com.sys.function.entity.FunctionEntity">
+		select a.id,a.menu_code
+		as menuCode,a.fn_code as fnCode,
+		a.fn_name as fnName
+		from hdcs_function
+		as a ,hdcs_role_function as b
+		where
+		a.fn_code=b.fn_code and
+		b.role_code=#{roleCode}
+	</select>
+</mapper>

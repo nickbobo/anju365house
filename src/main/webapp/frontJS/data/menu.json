@@ -1,0 +1,32 @@
+[
+	{
+		"id": "vrevrew2ds4v",
+		"name": "房源公示",
+		"url":"",
+		"status":"true"
+	},
+	{
+		"id": "32few4f324",
+		"name": "贷款预受理",
+		"url":"",
+		"status":"false"
+	},
+	{
+		"id": "refwj929hvw",
+		"name": "网签受理",
+		"url":"",
+		"status":"false"
+	},
+	{
+		"id": "huview932h",
+		"name": "资金监管",
+		"url":"",
+		"status":"false"
+	},
+	{
+		"id": "huview932h",
+		"name": "抵押登记",
+		"url":"",
+		"status":"false"
+	}
+]

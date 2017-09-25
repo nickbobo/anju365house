@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sys.loan.dao.LoanInfoMapper">
+    <!--贷款预处理信息录入 -->
+    <insert id="addLoanInfo">
+        insert into lender_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="applicantName != null">
+                applicant_name,
+            </if>
+            <if test="applicantPhone != null">
+                applicant_phone,
+            </if>
+            <if test="idType != null">
+                idtype,
+            </if>
+            <if test="idNumber != null">
+                idnumber,
+            </if>
+            <if test="include != null">
+                include,
+            </if>
+            <if test="housingFund != null">
+                housing_fund,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="firstPay != null">
+                first_pay,
+            </if>
+            <if test="workAddress != null">
+                work_address,
+            </if>
+            <if test="contactAddress != null">
+                contact_address,
+            </if>
+            <if test="maritalStatus != null">
+                marital_status,
+            </if>
+            <if test="mateName != null">
+                mate_name,
+            </if>
+            <if test="mateIdtype != null">
+                mate_idtype,
+            </if>
+            <if test="mateIdnumber != null">
+                mate_idnumber,
+            </if>
+            <if test="proCode != null">
+                pro_code,
+            </if>
+            <if test="loanCode != null">
+                loan_code,
+            </if>
+            <if test="orgCode != null">
+                org_code,
+            </if>
+            <if test="roleCode != null">
+                role_code,
+            </if>
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="createName != null">
+                create_date,
+            </if>
+            <if test="createName != null">
+                update_name,
+            </if>
+            <if test="createName != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="applicantName != null">
+                #{applicantName},
+            </if>
+            <if test="applicantPhone != null">
+                #{applicantPhone},
+            </if>
+            <if test="idType != null">
+                #{idType},
+            </if>
+            <if test="idNumber != null">
+                #{idNumber},
+            </if>
+            <if test="include != null">
+                #{include},
+            </if>
+            <if test="housingFund != null">
+                #{housingFund},
+            </if>
+            <if test="price != null">
+                #{price},
+            </if>
+            <if test="firstPay != null">
+                #{firstPay},
+            </if>
+            <if test="workAddress != null">
+                #{workAddress},
+            </if>
+            <if test="contactAddress != null">
+                #{contactAddress},
+            </if>
+            <if test="maritalStatus != null">
+                #{maritalStatus},
+            </if>
+            <if test="mateName != null">
+                #{mateName},
+            </if>
+            <if test="mateIdtype != null">
+                #{mateIdtype},
+            </if>
+            <if test="mateIdnumber != null">
+                #{mateIdnumber},
+            </if>
+            <if test="proCode != null">
+                #{proCode},
+            </if>
+            <if test="loanCode != null">
+                #{loanCode},
+            </if>
+            <if test="orgCode != null">
+                #{orgCode},
+            </if>
+            <if test="roleCode != null">
+                #{roleCode},
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createName != null">
+                sysdate,
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createName != null">
+                sysdate,
+            </if>
+        </trim>
+    </insert>
+    <!-- 根据贷款单号更新贷款状态-->
+    <update id="updateLoanInfo">
+		UPDATE loan_info SET applicant_status=#{applicantStatus}
+		WHERE loan_code=#{loanCode}
+	</update>
+    <!-- 查询贷款信息-->
+    <select id="getLoanInfo" resultType="com.sys.loan.entity.LoanInfoEntity">
+        SELECT a.id,a.loan_code as loanCode,
+        a.applicant_name as applicantName,a.idnumber as idNumber,
+        a.include,a.housing_fund as housingFund,a.price ,
+        a.first_pay as firstPay,a.work_address as workAddress,
+        a.contact_address as contactAddress,a.marital_status as maritalStatus,
+        a.mate_name as mateName,a.mate_idtype as mateIdtype,
+        a.mate_idnumber as mateIdnumber,
+        a.applicant_bank as applicantBank,a.applicant_money as applicantMoney,
+        a.loan_term as loanTerm,a.pay_menthod as payMenthod,
+        a.pro_code as proCode, a.loan_code as loanCode,a.applicant_status as applicantStatus,
+        b.ownership_number as ownershipNumber,
+        b.house_number as houseNumber,
+        b.building_area as buildingArea,
+        b.house_address as houseAddress
+        FROM loan_info a ,house_info b
+        WHERE
+        a.pro_code =b.pro_code
+        <if test="proCode != null and proCode != ''">
+            and a.pro_code=#{proCode}
+        </if>
+        <if test="houseNum != null and houseNum != ''">
+            and (b.ownership_number=#{houseNum} OR b.house_number=#{houseNum})
+
+        </if>
+        <if test="loanCode != null and loanCode != ''">
+            and a.loan_code =#{loanCode}
+        </if>
+        <if test="idNumber != null and idNumber != ''">
+            and a.idnumber =#{idNumber}
+
+        </if>
+        <if test="applicantStatus != null'">
+            and a.applicantStatus =#{applicantStatus}
+
+        </if>
+
+
+    </select>
+    <!--根据房源验证码查询房子信息-->
+    <select id="getHouseInfoByProCode" resultType="com.sys.houseverifi.entity.HouseInfoEntity">
+        SELECT a.ownership_number as ownershipNumber,a.register_date as registerDate,
+        a.total_number as totalNumber,a.seat_layer as seatLayer,a.building_area as buildingArea,
+        a.jacket_area as jacketArea,a.apportioned_area as apportionedArea,a.housing_use as housingUse,
+        a.housing_nature as housingNature,a. land_code as landCode,
+        a.house_cseeion as houseCseeion,a.land_usera as landUsera,a.buding_date as budingDate,
+        a.land_way as landWay,a.building_structure as buildingStructure,
+        a.house_address as houseAddress,a.house_memo as houseMemo,a.house_status as houseStatus,
+        a.trans_type as transType,a.house_number as houseNumber,a.pro_status as proStatus,
+        a.pro_date as proDate,
+        a.pro_code as proCode
+        FROM house_info a
+        WHERE a.pro_code=#{proCode}
+
+    </select>
+    <!--根据房源验证码查询产权人信息-->
+    <select id="getPropertyByproCode" resultType="com.sys.houseverifi.entity.HousePropertyEntity">
+        SELECT   b.owner_name as ownerName, b.idtype as ownweIdType,
+        b.idnumber as ownerIdNumber
+        FROM house_property b,house_info a
+        WHERE
+        (a.ownership_number=b.ownership_number OR a.house_number=b.house_number)
+        AND a.pro_code=#{proCode}
+    </select>
+<!--
+    <select id="getHouseDetailed">
+
+    </select>
+
+    -->
+    <!--根据房源验证码查询产权人信息-->
+    <!--<select id="getLoanDetailed" resultType="com.sys.loan.entity.LoanInfoEntity">
+      SELECT a.id,a.loan_code as loanCode,
+        a.applicant_name as applicantName,a.idnumber as idNumber,
+        a.include,a.housing_fund as housingFund,a.price ,
+        a.first_pay as firstPay,a.work_address as workAddress,
+        a.contact_address as contactAddress,a.marital_status as maritalStatus,
+        a.mate_name as mateName,a.mate_idtype as mateIdtype,
+        a.mate_idnumber as mateIdnumber,a.marital_attest as maritalAttest,
+        a.applicant_bank as applicantBank,a.applicant_money as applicantMoney,
+        a.loan_term as loanTerm,a.pay_menthod as payMenthod,
+        a.pro_code as proCode, a.loan_code as loanCode,a.applicant_status as applicantStatus
+        FROM loan_info a
+    </select>-->
+
+</mapper>

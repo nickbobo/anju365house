@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>问题地域关系管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                         <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题名称：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="questionSerch" 
+	                                 name="question"></input></td>
+	                      <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">区划名称：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="regionNameSerch" 
+	                                 name="regionName"></input></td>
+                        </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                        <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadQuestionRegionPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+	
+    <script type="text/javascript">
+   
+    	var size = 10;
+    	var page = 1;
+        
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                //footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '关系id', align: 'center', halign: 'center',hidden:true},
+                    {field: 'questionId', title: '问题id',  align: 'center', halign: 'center',hidden:true},
+                    {field: 'question', title: '问题名称',  align: 'center', halign: 'center'},
+                    {field: 'regionId', title: '地域id', align: 'center', halign: 'center',hidden:true},
+                    {field: 'regionName', title: '区划名称',  align: 'center', halign: 'center'}
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                }
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadQuestionRegionPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadQuestionRegionPage(page, size);
+
+                }
+            });
+        });
+        function loadQuestionRegionPage(page,size) {
+        	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var regionName = $('#regionNameSerch').val();
+            var question = $('#questionSerch').val();
+      		
+            var service = $.svc.getSVC("/questionRegion/getAllQuestionRegionPage");
+            service.setPage(page, size)
+            .setParam("regionName", regionName)
+            .setParam("question", question);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        
+        
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#regionNameSerch').val(""); 
+        	$('#questionSerch').val(""); 
+        	loadQuestionRegionPage();
+        })
+      
+
+    </script>
+</body>
+</html>

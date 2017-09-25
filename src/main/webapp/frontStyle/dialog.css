@@ -1,0 +1,29 @@
+#dialog-cover {display:none;position: fixed;top:0;left: 0;right: 0;bottom:0;z-index: 10000;background-color: #000;opacity:.7;filter: alpha(opacity=70);}
+.dialog {display:none;position:absolute;top:0;left: 0;z-index: 100000;background-color: #fff;min-height: 300px;min-width: 500px;}
+
+.dialog-container {position:relative;overflow:hidden;}
+.item-container {padding:20px 0;}
+.subItem {height: 36px;width:350px;overflow: hidden;margin:0 auto;margin-bottom:20px;padding-right:20px;position:relative;}
+.subItem > label {width:100px;float: left;height: 36px;line-height: 36px;text-align: right;font-size:16px;color:#333;}
+.subItem > div {margin-left: 100px;display: block;}
+.subItem > div > input {height: 36px;line-height: 36px;width:100%;border:1px solid #ccc;padding:0 10px;font-size:16px;color:#666;}
+.subItem > span {position:absolute;top:0;right:0;bottom:0;width:10px;z-index:100;text-align:center;line-height:36px;color:#EA2424;}
+
+.head{background:#d7e4f0;border:1px solid #d2d3d2;width:100%;height:38px;line-height: 38px;padding:0 20px;}
+.head>a.add{display: inline-block;width:26px;height:26px;float:right;margin-right:25px; background: url("image/xm/add-icon.png") no-repeat 0 0;margin-top:6px;}
+.cont{font-size: 16px;color: #333; background:#ffffff;  border:2px solid #dddddd;  width:95%;  height:474px;margin:20px auto;overflow-y: scroll;}
+.ztree li span.button.switch {width:20px; height:20px}
+.ztree li{margin-top: 10px;}
+.ztree{padding-left:10px;}
+.footer {position:absolute;bottom:0;background:#d7e4f0;border:1px solid #d2d3d2;width:100%;height:50px;line-height: 50px;overflow: hidden;zoom:1;}
+.footer > * {float: right;height: 36px;line-height: 36px;padding:0 20px;border-radius: 4px;background-color: #5f95c6;display:inline-block;margin-right: 20px;margin-top: 7px;}
+
+
+#dialogMakeTrue {width:500px;}
+.item-container p {height:36px;line-height:36px;font-size:16px;text-align:center;padding:0 20px;color:#666;}
+.menu-dialog-btn {text-align:center;margin-top:40px;}
+.menu-item {padding-top:60px;}
+.menu-del {margin-top:30px;}
+.menu-del .menu-dialog-btn > a {margin:0 25px;}
+.menu-del p {width:400px;margin:0 auto;height:auto;height:72px;overflow:hidden;}
+.menu-del p.err {color:#EA2424;}

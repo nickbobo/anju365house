@@ -1,0 +1,38 @@
+[
+	{
+		"id": "ncdisr54g",
+		"name": "合同列表",
+		"url":"bankManage.html",
+		"status":"true"
+	},
+	{
+		"id": "frew432f52g",
+		"name": "增加合同",
+		"url":"bankAddAttract.html",
+		"status":"false"
+	},
+	{
+		"id": "frew432f56532g",
+		"name": "合同复核",
+		"url":"bankAddAttractCheck.html",
+		"status":"false"
+	},
+	{
+		"id": "gtr543",
+		"name": "付款管理",
+		"url":"payManage.html",
+		"status":"false"
+	},
+	{
+		"id": "54325432erre",
+		"name": "增加付款",
+		"url":"addPay.html",
+		"status":"false"
+	},
+	{
+		"id": "314321ewf",
+		"name": "银行对账",
+		"url":"bankAccountChecking.html",
+		"status":"false"
+	}
+]

@@ -1,0 +1,19 @@
+.normal .l {height: 60%;width: 100%;}
+.normal .r {height: 40%;width: 100%;}
+.asideLeftBtn {display: none;}
+.asideTopBtn {display: block;}
+.business-xy {/*padding-bottom: 20px;*/}
+.change .l {height: 100%;width: 100%;}
+
+.normal .asideTopBtn .icon-arrowdown {display: block;}
+.change .asideTopBtn .icon-arrowdown {display: none;}
+.normal .asideTopBtn .icon-arrowup {display: none;}
+.change .asideTopBtn .icon-arrowup {display: block;}
+
+.asideTopBtn span {font-size: 30px;position:absolute;height: 20px;line-height:20px;width: 20px;top:0;left: 50%;margin-left: -10px;}
+
+
+.normal .l .content-xy {margin-right: 0;}
+.change .l .content-xy {margin-right: 0;}
+
+.pop {overflow-y:scroll;}

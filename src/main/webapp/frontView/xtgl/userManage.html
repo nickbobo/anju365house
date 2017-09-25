@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta name="description" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+
+	<title>乌鲁木齐市存量房交易系统-新增用户</title>
+	
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/dialog.css" />
+	<link rel="stylesheet" type="text/css" href="../../frontStyle/frame.css" />
+	<script type="text/javascript" src="../../frontJS/jquery.min-1.9.1.js"></script>
+	<script type="text/javascript" src="../../frontJS/angular/angular-1.2.27.js"></script>
+	<script type="text/javascript" src="../../frontJS/base-config/base.js"></script>
+	<script type="text/javascript" src="../../frontJS/xtgl/userManage.js"></script>
+</head>
+<body ng-app="userManageApp">
+	<div ng-controller="userManageCtrl" class="inner-container">
+		
+		<div class="top-xm">
+	        <p class="p_after">
+	            <a href="javascript:void(0)">系统管理</a>
+	            <a href="javascript:void(0)">用户信息</a>
+	            <a ng-click="ui.refresh()" href="javascript:void(0);" class="reload">刷新</a>
+	        </p>
+	    </div>
+
+	    <form name="baseForm" novalidate>
+		<div class="very-container">
+
+
+			<div class="header">
+				<h1>用户信息</h1>
+			</div>
+
+			<div ng-show="!state.isShowLook" ng-click="ui.initErr()" class="cond-container user-manage">
+				<div class="single-item">
+					<div class="split">
+						<div class="item">
+							<label>用户登录名：</label>
+							<div>
+								<input ng-disabled="state.isShowModify" required ng-model="dataModel.userCode" name="userCode" ng-pattern="pattern.loginName" type="text" />
+							</div>
+							<span>*</span>
+						</div>
+					</div>
+					<div class="split">
+						<div class="item">
+							<label>用户名称：</label>
+							<div>
+								<input required ng-model="dataModel.userName" name="userName" ng-pattern="pattern.name" type="text" />
+							</div>
+							<span>*</span>
+						</div>
+					</div>
+					<div ng-hide="state.isShowModify" class="split">
+						<div class="item">
+							<label>用户密码：</label>
+							<div>
+								<input required ng-model="dataModel.password" name="password" ng-pattern="pattern.password" type="text" />
+							</div>
+							<span>*</span>
+						</div>
+					</div>
+					<div class="split">
+						<div class="item">
+							<label>证件号码：</label>
+							<div>
+								<input required ng-model="dataModel.idNumber" name="idNumber" ng-pattern="" type="text" />
+							</div>
+							<span>*</span>
+						</div>
+					</div>
+					<div class="split">
+						<div class="item">
+							<label>用户所属角色：</label>
+							<div>
+								<select required ng-model="dataModel.roleCode" name="roleCode" ng-options="item.roleCode as item.roleName for item in dictionary.roleCodeData"></select>
+								<i>▼</i>
+							</div>
+							<span>*</span>
+						</div>
+					</div>
+					<div class="split">
+						<div class="item">
+							<label>用户所属公司：</label>
+							<div>
+								<select ng-model="dataModel.orgCode" name="orgCode" ng-options="item.orgCode as item.shortName for item in dictionary.orgCodeData"></select>
+								<i>▼</i>
+							</div>
+						</div>
+					</div>
+					
+					<div ng-show="state.isShowModify">
+					
+						<div class="split ver-sel">
+							<div class="item">
+								<label>用户状态：</label>
+								<div>
+									<input ng-model="dataModel.userStatus" type="radio" name="userStatus" value="1" /><label>有效</label>
+									<input ng-model="dataModel.userStatus" type="radio" name="userStatus" value="0" /><label>无效</label>
+								</div>
+							</div>
+						</div>
+						<div class="split ver-sel">
+							<div class="item">
+								<label>是否锁：</label>
+								<div>
+									<input ng-model="dataModel.isLock" type="radio" name="isLock" value="1" /><label>是</label>
+									<input ng-model="dataModel.isLock" type="radio" name="isLock" value="0" /><label>否</label>
+								</div>
+							</div>
+						</div>
+						<div class="split user-other">
+							<div class="item item-other">
+								<label>备注信息：</label>
+								<div>
+									<textarea></textarea>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
+				</div>
+				
+			</div>
+			<div ng-show="state.isShowLook">
+				<table class="user-table">
+					<tr>
+						<td class="title">用户登录名：</td>
+						<td ng-bind="dataModel.userCode"></td>
+						<td class="title">用户名称：</td>
+						<td ng-bind="dataModel.userName"></td>
+						<td class="title">证件号码：</td>
+						<td ng-bind="dataModel.idNumber"></td>
+					</tr>
+					<tr>
+						<td class="title">用户所属角色：</td>
+						<td ng-bind="dataModel.roleCode"></td>
+						<td class="title">用户所属公司：</td>
+						<td ng-bind="dataModel.orgCode"></td>
+						<td class="title">用户状态：</td>
+						<td ng-bind="dataModel.userStatus"></td>
+					</tr>
+					
+					<tr>
+						<td class="title">是否锁：</td>
+						<td ng-bind="dataModel.isLock"></td>
+						<td class="title">创建人：</td>
+						<td ng-bind="dataModel.createName"></td>
+						<td class="title">创建时间：</td>
+						<td ng-bind="dataModel.createDate"></td>
+					</tr>
+					
+					<tr>
+						<td class="title">修改人：</td>
+						<td ng-bind="dataModel.updateName"></td>
+						<td class="title">修改时间：</td>
+						<td ng-bind="dataModel.updateDate"></td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td class="title">备注信息：</td>
+						<td ng-bind="dataModel.userMemo" colspan="5"></td>
+					</tr>
+					
+				</table>
+			</div>
+
+			<div class="err-tip" ng-bind="state.errTip"></div>
+			
+			<div class="btn-container ot-btn">
+				<button ng-show="state.isShowInit" ng-click="ui.save()">保存</button>
+				<button ng-show="state.isShowModify" ng-click="ui.saveModify()">保存</button>
+			</div>
+
+
+			<div class="footer"></div>
+
+		</div>
+		</form>
+
+	</div>
+	
+<div id="dialog-cover"></div>
+<div id="dialogMakeTrue" class="dialog">
+
+    <div class="dialog-container">
+        <div class="head">
+                                          系统提示
+            <!--<a href="#" class="add"></a>-->
+        </div>
+        <div class="item-container menu-item">
+        	<p id="userTip"></p>
+        	<div class="menu-dialog-btn">
+        		<a class="btn" onclick="window.location.href='userManageList.html'">确定</a>
+        	</div>
+            
+        </div>
+
+    </div>
+
+</div>	
+</body>
+</html>

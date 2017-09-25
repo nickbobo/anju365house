@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>关键字管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                         <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">关键字名称：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="keywordNameSerch" 
+	                                 name="keywordName"></input></td>
+	                        <td  style="padding: 1px; text-align: center;">
+	                         <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadKeywordPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                        </td>         
+	                       
+                        </tr>
+                    </table>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<div id="toolbar">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addUserInfo()" >添加</a>
+    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="exec4Delete()">删除</a>
+    	
+		<!--进度条-->
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+			<!-- <div id="pb" class="easyui-progressbar" style="width:400px;"></div> -->
+		</div>
+</div>
+
+    <!-- 弹出窗口定义 编辑信息 -->
+	<div id="tanchuang" class="easyui-dialog" title="编辑 信息" data-options="iconCls:'icon-edit'" closed="true" style="width:380px;height:300px;padding:10px;align-content: true">
+	    <form id="fm" method="post">
+	    	<input name="id" id="id" type='hidden'/>
+	        <table class="searchTable">
+	            <tr>
+				  <tr>
+	                <td >关键字名称:</td>
+	                <td><input class="easyui-validatebox" type="text" id="keywordName" name="keywordName" data-options="required:true" maxlength="20"></input></td>
+	            </tr>
+				<tr>
+	                <td colspan="2" align="center">
+	                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrUpdInfo()">确定</a>
+	                </td>
+	            </tr>
+	        </table>
+	    </form>
+	</div>
+	
+    <script type="text/javascript">
+   
+    	var size = 10;
+    	var page = 1;
+        
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '关键字id', align: 'center', halign: 'center',hidden:true},
+                    {field: 'keywordName', title: '关键字名称', align: 'center', halign: 'center'}/* ,
+                    {field: 'keywordRank', title: '关键字热度', width: 60, align: 'center', halign: 'center'} */
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                },
+                onDblClickRow:onDbClick
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadKeywordPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadKeywordPage(page, size);
+
+                }
+            });
+        });
+        function loadKeywordPage(page,size) {
+        	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var keywordName = $('#keywordNameSerch').val();
+      		
+            var service = $.svc.getSVC("/keyword/getAllKeywordsPage");
+            service.setPage(page, size)
+            .setParam("keywordName", keywordName);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        
+        
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#keywordNameSerch').val(""); 
+        	loadKeywordPage();
+        })
+        
+       //添加按钮
+        function addUserInfo(){
+          $('#fm input').removeAttr("disabled");
+          $('#fm').form('reset');
+          document.getElementById("id").value="";
+      	  $('#tanchuang').dialog('open').dialog('setTitle','添加');
+		 
+        }
+        
+  	  // 双击打开窗口（修改）
+  	  function onDbClick(rowIndex, rowData) {
+  		$('#fm').form('reset');
+  		  obj = null;
+  		  if (rowData){
+  			$('#fm input').removeAttr("disabled");
+  			$('#tanchuang').dialog('open').dialog('setTitle','编辑');
+          	$('#fm').form('load',rowData);
+  	          obj = rowData;
+  	          if(!obj)obj = new Object();
+  	          //为页面赋值
+  	          $('#fm').form('load',obj);
+  	      }
+  	  }
+        
+        // 编辑框 确定按钮
+        function saveOrUpdInfo(){
+        	
+          var id = $('#id').val();
+     	  var keywordName = $('#keywordName').val();
+     	  
+     	 if (keywordName == ''|| keywordName==null) {
+             $.messager.alert("提示信息", "请输入关键字名称！！！！");
+             return;
+         }
+     	  
+      	  var service = $.svc.getSVC("/keyword/saveOrUpdKeyword");
+          service
+          .setParam("keyword/id", id)
+          .setParam("keyword/keywordName", keywordName);
+          service.call(
+              function (data, status) {
+           	   if (data.succ == true) {
+                	  $.messager.alert('提示', '保存成功!', 'info');
+                	 loadKeywordPage();
+                      $('#tanchuang').dialog('close');
+                  } else {
+                	  $.messager.alert('提示', '保存失败!', 'error');
+                  }
+              });
+        }
+         
+     // 删除
+        function exec4Delete() {
+         	var row = $('#dg_cr').datagrid('getChecked');
+           if (row == '') {
+               $.messager.alert("提示信息", "请选择记录再删除！！！！", "error");
+               return;
+           }
+           var idList='';
+			for(var i=0;i<row.length;i++){
+				var id = row[i].id;
+				if(i==row.length-1){
+					idList+= id;
+				}else{
+					idList+= id+",";
+				}
+			}
+             $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {
+               if (data) {
+               	var service = $.svc.getSVC("/keyword/delKeyword");
+       	        service
+       	        .setParam("keyword/idList", idList);
+       	        service.call(
+                      function (data, status) {
+                   	   if (data.succ == true) {
+                        	  $.messager.alert('提示', '删除成功!', 'info');
+                        	  loadKeywordPage();
+                          } else {
+                              $.messager.alert('提示', '删除失败!', 'error');
+                          }
+                      });
+               }
+           });
+           
+       }
+
+    </script>
+</body>
+</html>

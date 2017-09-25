@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>问题管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                          <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题标题：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="contentSerch"name="content"></input></td>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题类型：</label></td>
+                            <td class="tbl-td-border"> 
+                         	‍‍<select class="easyui-combobox tbl-input-left"  id="questionTypeSerch" name = "questionType">
+                                <option value="" selected="selected">全部</option>
+								<option value="0">单选</option>
+								<option value="1">多选</option>
+								<option value="2">简答题</option>
+                         	</select>
+                         </td>
+                          <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题版本：</label></td>
+	                      <td class="tbl-td-border">
+	                      ‍‍<select class="easyui-combobox tbl-input-left"  id="editionSerch" name = "edition">
+                                <option value="" selected="selected">全部</option>
+								<option value="1.0">v1.0</option>
+								<option value="2.0">v2.0</option>
+                         	</select>
+                         	</td>
+                          
+                        </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                        <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadVisitQuestionPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<div id="toolbar">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addQuestionInfo()" >新增</a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="delQuestions()" >删除</a>
+		<!--进度条-->
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+		</div>
+</div>
+ <!-- 弹出窗口定义 编辑信息 -->
+	<div id="tanchuang" class="easyui-dialog" title="编辑 信息" data-options="iconCls:'icon-edit'" closed="true" style="width:500px;height:350px;padding:10px;align-content: true">
+		<form id="fm" method="post">
+	    	<input name="id" id="id" type='hidden'/>
+	        <table class="searchTable">
+	            <tr>
+				  <tr>
+	                <td >问题标题:</td>
+	                <td><input class="easyui-validatebox" type="text" id="content" style="width:300px;" name="content" data-options="required:true"/></td>
+	              </tr>
+	              <tr>
+				    <td >问题选择:</td>
+					<td><textarea  class="textarea easyui-validatebox validatebox-text" name="options" cols="45"  rows="5" id="options" onfocus="on_focus(this)" onblur="on_blur(this)">选项格式:{"A":"aa","B":"bb","C":"cc",...}</textarea></td>
+				  </tr>
+				  <tr>
+	                <td >问题版本:</td>
+	                <td>
+	                ‍‍<select class="easyui-combobox"  id="edition" name = "edition" style="width:300px;">
+								<option value="v1.0" selected="selected">v1.0</option>
+								<option value="v2.0">v2.0</option>
+                         	</select>
+	                </td>
+	              </tr>
+	               <tr>
+	                <td >问题排序:</td>
+	                <td><input placeholder="请输入正整数" class="easyui-validatebox" type="text" id="sortId" style="width:300px;" name="sortId" data-options="required:true" onkeyup="return ValidateNumber($(this),value)"/></td>
+	              </tr>
+	              
+				  <tr>
+	                <td >问题类型:</td>
+	                <td>
+	                 <input  type = "radio"  name="type"  value = "0" checked = "checked" />单选
+                     <input  type = "radio"  name="type"  value = "1" />多选
+                     <input  type = "radio"  name="type"  value = "2" />简答题
+                    </td>
+	              </tr>
+	              <!-- <tr style="color: red;font-size: 8px;">
+	              	<td >选项格式:</td>
+	              	<td >[{"A":"aa","B":"bb","C":"cc"}...]</td>
+	              </tr> -->
+				<tr>
+	                <td colspan="2" align="center">
+	                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrUpdInfo()">确定</a>
+	                </td>
+	            </tr>
+	        </table>
+	    </form>
+
+	</div>
+    <script type="text/javascript">
+    
+    //提示内容：（默认值）
+    var c = '选项格式:{"A":"aa","B":"bb","C":"cc",...}';
+     
+     function on_focus(obj){
+         obj.value = obj.value==(!!arguments[1]?arguments[1]:c)?'':obj.value;
+     } 
+     
+     function on_blur(obj)
+     {
+         obj.value = obj.value==''?(!!arguments[1]?arguments[1]:c):obj.value;
+     }
+    
+    
+    
+    	var size = 10;
+    	var page = 1;
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'type', title: '问题类型',  align: 'left', halign: 'center',
+                    	formatter: function(value, row, index) {
+                            if(value == '0') {
+                            	 var valueName =  "单选";
+                                 return '<font color="red">' + valueName + '</font>';
+                            } 
+                            if(value == '1') {
+                            	 var valueName =  "多选";
+                                 return '<font color="blue">' + valueName + '</font>';
+                            }
+                            if(value == '2') {
+                            	 var valueName =  "简答题";
+                                 return '<font color="#FF00FF">' + valueName + '</font>';
+                            }
+                        }   
+                    },
+                    {field: 'content', title: '问题标题',  align: 'left', halign: 'center'},
+                    {field: 'sortId', title: '问题排序',  align: 'left', halign: 'center'},
+                    {field: 'edition', title: '问题版本',  align: 'left', halign: 'center'},
+                    {field: 'options', title: '问题选项',  align: 'left', halign: 'center'}
+                  
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                },
+                onDblClickRow:onDbClick
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadVisitQuestionPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadVisitQuestionPage(page, size);
+
+                }
+            });
+        });
+        function loadVisitQuestionPage(page,size) {
+         	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var content = $('#contentSerch').val();
+            var edition = $('#editionSerch').combobox("getValue");
+      		var questionType = $('#questionTypeSerch').combobox("getValue");
+      		
+            var service = $.svc.getSVC("/visit/getVisitQuestionsPage");
+            service.setPage(page, size)
+            .setParam("content", content)
+            .setParam("type", questionType)
+            .setParam("edition", edition);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#contentSerch').val(""); 
+        	$('#questionTypeSerch').combobox('setValue','')
+        	$('#editionSerch').combobox('setValue','')
+        	loadVisitQuestionPage();
+        })
+         
+         //添加按钮
+        function addQuestionInfo(){
+          $('#fm input').removeAttr("disabled");
+          $('#fm').form('reset');
+          document.getElementById("id").value="";
+      	  $('#tanchuang').dialog('open').dialog('setTitle','添加');
+		 
+        }
+     // 双击打开窗口（修改）
+    	  function onDbClick(rowIndex, rowData) {
+    		$('#fm').form('reset');
+    		  obj = null;
+    		  if (rowData){
+    			$('#fm input').removeAttr("disabled");
+    			$('#tanchuang').dialog('open').dialog('setTitle','编辑');
+            	$('#fm').form('load',rowData);
+    	          obj = rowData;
+    	          if(!obj)obj = new Object();
+    	          //为页面赋值
+    	          $('#fm').form('load',obj);
+    	      }
+    	  }
+        // 编辑框 确定按钮
+        function saveOrUpdInfo(){
+          var id = $('#id').val();
+     	  var content = $('#content').val();
+     	  var options = $('#options').val();
+     	  var sortId = $('#sortId').val();
+     	  var edition = $('#edition').combobox('getValues')[0];
+     	  var type = $("input[name='type']:checked").val();
+     	  if(type==3)options='';
+     	  if (content == ''|| content==null) {
+             $.messager.alert("提示信息", "请输入问题标题！！！！");
+             return;
+          }
+      	  var service = $.svc.getSVC("/visit/saveOrUpdateQuestion");
+          service
+          .setParam("question/id", id)
+          .setParam("question/content", content)
+          .setParam("question/options", options)
+          .setParam("question/type", type)
+          .setParam("question/edition", edition)
+          .setParam("question/sortId", sortId);
+          service.call(
+              function (data, status) {
+            	  if (data.succ == true) {
+                	  $.messager.alert('提示', '保存成功!', 'info');
+                	  loadVisitQuestionPage();
+                      $('#tanchuang').dialog('close');
+                  } else {
+                	  $.messager.alert('提示', '保存失败!', 'error');
+                  }
+              }); 
+        }
+        
+     // 删除
+        function delQuestions() {
+        	var row = $('#dg_cr').datagrid('getChecked');
+            if (row == '') {
+              $.messager.alert("提示信息", "请选择要删除的数据！！！！", "error");
+              return;
+             }
+            var idList='';
+			for(var i=0;i<row.length;i++){
+				var id = row[i].id;
+				 if(i==row.length-1){
+					idList+= id;
+				 }else{
+					idList+= id+",";
+				 }
+				
+			}
+            $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {
+              if (data) {
+              	var service = $.svc.getSVC("/visit/delQuestions");
+      	        service
+      	        .setParam("question/idList", idList);
+      	        service.call(
+                     function (data, status) {
+                  	   if (data.succ == true) {
+                       	  $.messager.alert('提示', '更新成功!', 'info');
+                       	 loadVisitQuestionPage();
+                         } else {
+                             $.messager.alert('提示', '更新失败!', 'error');
+                         }
+                     });
+              }
+          });
+       }
+        function ValidateNumber(e, pnumber){
+          	if (!/^\d+$/.test(pnumber)){
+          	$(e).val(/^\d+/.exec($(e).val()));
+          	}
+          	return false;
+            }
+    </script>
+</body>
+</html>

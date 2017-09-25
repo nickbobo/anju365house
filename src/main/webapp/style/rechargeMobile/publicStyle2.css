@@ -1,0 +1,243 @@
+@charset "utf-8";
+/* 
+============= relaxMobile 公共样式库 v1.1 from 2015-11 ================================
+m2016-3-14 
+ 由于输入框的焦点适应在移动端的测试情况，如果内容框的position为absolute的话，
+ 会导致某些移动端浏览器定位显示有问题，特别是UC，目前更改为普通定位，把头部
+ 和底部更改为fixed定位
+
+m2016-6-23
+ 为body增加了overflow:auto属性，如果滚动条在body上，通过这个可以使用js的屏蔽，设置body
+ 的overflow:hidden即可。否则即使设置这个属性，移动端依然可以滚动
+ 
+m2016-9-10
+ 为对话框增加了非强制对话框miniDialog
+
+m2016-9-29
+ 增加通用按钮样式
+=======================================================================================
+*/
+
+/* reset */
+*{ font-family:"Microsoft YaHei","微软雅黑","Helvetica Neue",Helvetica,STHeiTi,sans-serif; box-sizing:border-box;}
+html,body,h1,h2,h3,h4,h5,h6,dl,dt,dd,p,ul,li,form,iframe,object,input{ margin:0px; padding:0px;}
+a{ text-decoration:none;}
+h1,h2,h3,h4,h5,h6,strong{ font-weight:normal;}
+ul,ol,dl{list-style: none outside none;}
+input,textarea,select{ font-family:inherit;}
+a:active, a:focus, input:active, input:focus, button:active, button:focus{ outline:none; -moz-outline:none;} /*去掉移动端firefox a标签的虚线框 PC chrome文本输入框的边框焦点时候的颜色 */
+input[type="button"]::-moz-focus-inner, input[type="submit"]::-moz-focus-inner, button::-moz-focus-inner{ border:none;} /*去掉移动端firefox 按钮获得焦点显示虚线框的样式 */
+table { border-collapse:collapse; border-spacing:0;}
+html,body{ position:relative; height:100%; width:100%; overflow:hidden;}
+/* 清除现代IE浏览器的输入框和密码框的默认交互按钮 */
+::-ms-clear, ::-ms-reveal{display: none;}
+/* reset end */
+
+/* 文字大小及颜色公共样式 */
+/* t打头 文字大小 c打头 文字颜色 */
+.t5{ font-size:20px;font-size:20px !important;}
+.t4{ font-size:18px;font-size:18px !important;}
+.t3{ font-size:16px;font-size:16px !important;}
+.t2{ font-size:14px;font-size:14px !important;}
+.t1{ font-size:12px;font-size:12px !important;}
+.c1{ color:#333;}
+.c2{ color:#666;}
+.c3{ color:#ccc;}
+.c4{ color:#fff;}
+
+header,nav{ position:fixed; z-index:500; top:0px; left:0px; width:100%; box-shadow:0px 0px 6px #ccc;}
+nav{ top:auto; bottom:0px; box-shadow:0px -1px 6px #ccc;}
+header > *,nav > *{ display:none; position:relative; width:100%; height:100%;}
+header h2{ text-align:center;}
+header h2.left{ text-align:left; padding-left:20%;}
+header .icon{ position:absolute; top:10px; z-index:550;}
+header .icon.left1{ left:5px;}
+header .icon.left2{ left:45px;}
+header .icon.right1{ right:5px;}
+header .icon.right2{ right:45px;}
+
+.content{ height:100%; width:100%;}
+.content .pages{ display:none; height:100%; width:100%; overflow:auto; position: relative;} /* 内容滚动条出现在这个元素上 */
+.content .pages iframe{ width:100%; height:100%; border:none;}
+/* 间隔条 */
+.splitBar{ display:block; width:100%;}
+/* 屏蔽层 */
+.mask{ display:none; position:fixed; top:0px; left:0px; z-index:1000; height:100%; width:100%; background:#000; opacity:0;filter:alpha(opacity=50);}
+/* 对话框[普通] */
+.extDialog{ display:none; position:absolute; top:0px; left:0px; z-index:1000; box-shadow:0px 0px 10px #000;}
+.extDialog .dialog-content{ word-break:break-all;}
+/* 对话框[扩展菜单] */
+.extMenu{ position:absolute; z-index:1000; box-shadow:0px 0px 10px #000; transition-property:transform; transition-duration:350ms;}
+/* 对话框[扩展菜单] 内部细节*/
+.extMenu.left{ top:0px; left:0px; height:100%;}
+.extMenu.left.hide{ 
+  transform:translateX(-110%);
+  -ms-transform:translateX(-110%);
+  -moz-transform:translateX(-110%);
+  -webkit-transform:translateX(-110%);
+  -o-transform:translateX(-110%);
+}
+.extMenu.right{ top:0px; right:0px; height:100%;}
+.extMenu.right.hide{ 
+  transform:translateX(110%);
+  -ms-transform:translateX(110%);
+  -moz-transform:translateX(110%);
+  -webkit-transform:translateX(110%);
+  -o-transform:translateX(110%);
+}
+.extMenu.top{ top:0px; left:0px; width:100%; overflow:hidden;}
+.extMenu.top.hide{ 
+  transform:translateY(-110%);
+  -ms-transform:translateY(-110%);
+  -moz-transform:translateY(-110%);
+  -webkit-transform:translateY(-110%);
+  -o-transform:translateY(-110%);
+}
+.extMenu.bottom{ bottom:0px; left:0px; width:100%; overflow:hidden;}
+.extMenu.bottom.hide{ 
+  transform:translateY(110%);
+  -ms-transform:translateY(110%);
+  -moz-transform:translateY(110%);
+  -webkit-transform:translateY(110%);
+  -o-transform:translateY(110%);
+}
+.extMenu.show{ 
+  transform:none;
+  -ms-transform:none;
+  -moz-transform:none;
+  -webkit-transform:none;
+  -o-transform:none;
+}
+/* 对话框[扩展页面] */
+.extPage{ position:absolute; top:0px; right:0px; z-index:1000; height:100%; width:100%; box-shadow:0px 0px 1px #000; transition-property:transform; transition-duration:350ms;}
+/* 对话框[扩展页面] 内部细节*/
+.extPage.hide{ 
+  transform:translateX(105%);
+  -ms-transform:translateX(105%); 	/* IE 9 */
+  -moz-transform:translateX(105%); 	/* Firefox */
+  -webkit-transform:translateX(105%); /* Safari 和 Chrome */
+  -o-transform:translateX(105%); 	/* Opera */
+}
+.extPage.show{ 
+  transform:none;
+  -ms-transform:none;
+  -moz-transform:none;
+  -webkit-transform:none;
+  -o-transform:none;
+}
+
+/* 非强制对话框，一般用于非重要信息的提示 */
+/* modify by relax 2016/9/10 */
+.miniDialog{ display:none; position:fixed; left:0px; z-index:1000; width:100%; text-align:center; padding:5%;}
+.miniDialog.top{ top:3%;}
+.miniDialog.bottom{ bottom:3%;}
+.miniDialog .dialogInside{ display:inline-block; text-align:left; box-shadow:0px 0px 10px #000; word-break:break-all;}
+
+/* 对话框按钮样式 */
+.bntInline,.bntBlock{ display:inline-block; border:1px solid #999;}
+.bntBlock{ display:block; clear:both; margin:0 auto;}
+.bntBlock:active,.bntInline:active{}
+/* 对话框内部布局样式 */
+.dialog-title{ position:relative; border-bottom:1px solid #000;}
+.dialog-title h4{ height:100%; text-align:center;}
+.dialog-title h4.left{ text-align:left; margin-left:20%;}
+.dialog-title .mui-icon{ position:absolute; top:12px;}
+.dialog-title .mui-icon.left{ left:12px;}
+.dialog-title .mui-icon.right{ right:12px;}
+.dialog-title .iconfont{ position:absolute; top:12px;}
+.dialog-title .iconfont.left{ left:12px;}
+.dialog-title .iconfont.right{ right:12px;}
+.dialog-content{ border-top:1px solid #666;}
+.dialog-buttonBar{ text-align:center;}
+.extDialog .dialog-content,.extMenu .dialog-content,.extPage .dialog-content{ overflow:auto;}
+.extPage .dialog-title{ position:absolute; top:0px; left:0px; z-index:1100; width:100%;}
+.extPage .dialog-buttonBar{ position:absolute; bottom:0px; left:0px; z-index:1100; width:100%;}
+.extPage .dialog-content{ position:absolute; left:0px; z-index:1050; width:100%;}
+
+/* 元素通用样式 v1.0 by relax 2016/9/29 */
+
+/* 按钮通用化样式 */
+/* 注意 移动端hover和active的效果会有问题，表现在手指点击某个按钮后，按钮最终样式会停留在hover所指定的样式上，这个不是所希望的，应该是回归到普通样式*/
+/* 移动端建议去除hover的样式定义 */
+.rexDeepButton, .rexDeepButton3D, .rexLightButton, .rexLightButton3D{
+	display:inline-block; font-size:inherit; border:1px solid transparent; background-repeat:no-repeat; padding:0.6em 0.8em; cursor:pointer; border-radius:0.42em; line-height:1; position:relative;
+	/* 文本选中禁止，IE下有些问题 IE10 IE11部分支持，选择从按钮开始则无法选择，从可选择元素可以则可以选择 IE9,IE8不支持 */
+	user-select:none; -ms-user-select:none; -moz-user-select:none; -webkit-user-select:none;
+}
+	
+.rexDeepButton{ border-color:#e70606; background-color:#e70606; color:#fff;}
+.rexDeepButton:hover{ background-color:#e18b8b; border-color:#e18b8b;}
+.rexDeepButton:active{ background-color:#fff; color:#e70606;}
+.rexDeepButton3D{ border-color:#e70606; background-color:#e70606; color:#fff; background-image:linear-gradient(rgba(255,255,255,0.4) 0%, transparent 60%);}
+.rexDeepButton3D:hover{ background-color:#e18b8b; border-color:#e18b8b;}
+.rexDeepButton3D:active{ background-image:none; background-color:#fff; color:#e70606;}
+.rexDeepButton[disabled="disabled"], .rexDeepButton3D[disabled="disabled"]{ background-image:none; background-color:#f38080; color:#ffcccc; border-color:#f38080; box-shadow:none;}
+
+.rexLightButton{ border-color:#999; background-color:#f0f0f0; color:#333;}
+.rexLightButton:hover{ background-color:#eee; border-color:#eee; color:#666;}
+.rexLightButton:active{ background-color:#e70606; border-color:#e70606; color:#fff;}
+.rexLightButton3D{ border-color:#999; background-color:#f0f0f0; color:#333; background-image:linear-gradient(rgba(255,255,255,0.4) 0%, transparent 60%);}
+.rexLightButton3D:hover{ background-color:#eee; border-color:#eee;}
+.rexLightButton3D:active{ background-image:none; background-color:#e70606; border-color:#e70606; color:#fff;}
+.rexLightButton[disabled="disabled"], .rexLightButton3D[disabled="disabled"]{ background-image:none; background-color:#f0f0f0; color:#ccc; border-color:#ccc; box-shadow:none;}
+
+/* 按钮图标 */
+.buttonIconLeft:before, .buttonIconRight, .buttonIcon{
+	/* 引用图标文字信息 */
+	font-family:"iconfont" !important;
+	font-style:normal;
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-stroke-width: 0.2px;
+	-moz-osx-font-smoothing: grayscale;
+}
+.buttonIcon{ padding-left:0; padding-right:0; width:3em;}
+.buttonIconLeft{ padding-left:2em;}
+.buttonIconRight{ padding-right:2em;}
+.buttonIcon:before{ position:absolute; left:0.52em; top:0.3em; font-size:1.4em;}
+.buttonIconLeft:before{ position:absolute; left:0.5em; top:0.6em; font-size:1em;}
+.buttonIconRight:before{ position:absolute; right:0.5em; top:0.6em; font-size:1em;}
+
+/* 按钮阴影，用于用户自主选择是否需要 */
+.buttonShadow{ box-shadow:0px 2px 3px rgba(0,0,0,0.4);}
+.buttonShadow:active{ box-shadow:none;}
+
+/* --------------------------- 需要修改，请复制一下内容，在内容基础上进行修改 --------------------------------*/
+header{ height:44px; background-color:#f7f7f7;}
+nav{ height:50px; background-color:#f7f7f7;}
+.content{ padding-top:44px; padding-bottom:50px;}
+.content .pages{ background-color:#fff;}
+/* 间隔条 */
+.splitBar{ height:10px; background-color:#eee; border-top:1px solid #ccc; border-bottom:1px solid #ccc;}
+/* 通用对话框 */
+.extDialog{ background-color:#333; width:80%; max-width:550px; min-width:280px; border-radius:6px;}
+/* 对话框之扩展菜单 */
+.extMenu{ background-color:#333;}
+.extMenu.left{ width:80%;}
+.extMenu.right{ width:80%;}
+.extMenu.top{ height:40%;}
+.extMenu.bottom{ height:40%;}
+.extPage{ background-color:#fff;}
+/* 非强制对话框 */
+/* modify by relax 2016/9/10 */
+.miniDialog{ font-size:14px;}
+.miniDialog .dialogInside{ border-radius:6px; background-color:#333; color:#fff;}
+
+.bntInline,.bntBlock{ height:36px; margin-top:4px; padding:0px 10px; line-height:34px; border-radius:6px; background-color:#f2f2f2; color:#666; font-size:14px;}
+.bntBlock:active,.bntInline:active{ background-color:#999; color:#fff; border-color:#333;}
+.bntInline{ margin:0px 5px; min-width:115px; max-width:240px; width:45%;}
+.bntBlock{ min-width:240px; max-width:520px; width:80%}
+
+.dialog-title{ height:44px; position:relative;}
+.dialog-title h4{ line-height:44px;}
+.dialog-content{}
+.dialog-buttonBar{ height:50px;}
+.extMenu .dialog-content{}
+.extPage .dialog-title{ border-bottom:none; background-color:#f7f7f7; box-shadow:0px 0px 6px #ccc;}
+.extPage .dialog-buttonBar{ background-color:#f7f7f7; box-shadow:0px -1px 6px #ccc;}
+.extPage .dialog-content{ border-top:none; top:44px; bottom:50px;}
+
+
+.mainNav{ width:100%; height:100%; text-align:center; font-size:0px; line-height:0xp;}
+.navButton{ display:inline-block; height:100%; width:25%;}
+.navButton .mui-icon{ margin-top:2px; font-size:28px; display:block;}
+.navButton strong{ font-weight:300; display:block; margin-top:-2px;}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta name="description" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+
+    <title>乌鲁木齐市存量房交易系统-角色管理</title>
+
+    <link rel="stylesheet" type="text/css" href="../../frontJS/paging/paging.css" />
+    <link rel="stylesheet" type="text/css" href="../../frontStyle/countState.css" />
+    <link rel="stylesheet" type="text/css" href="../../frontStyle/dialog-xm.css" />
+    <script type="text/javascript" src="../../frontJS/jquery.min-1.9.1.js"></script>
+    <script type="text/javascript" src="../../frontJS/paging/paging.js"></script>
+    <script type="text/javascript" src="../../frontJS/xtgl/roleManageList.js"></script>
+</head>
+<body>
+<div class="tb_container">
+    <div class="top-xm fund-div">
+        <p>
+            <input class='s_roleName' type="text" placeholder="按角色名称搜索"/>
+              <input class='s_roleCode' type="text" placeholder="按角色ID搜索"/>
+            <a href="#" class="big"></a>
+        </p>
+        <p class="p_after">
+            <a href="javascript:void(0)" class="afterArrow">系统管理</a>
+            <a href="javascript:void(0)" class="afterArrow">角色管理</a>
+            <a href="javascript:window.location.reload();" class="reload">刷新</a>
+            <a id='addRole' class="add reload">新增角色</a>
+        </p>
+    </div>
+    <div class="table-border">
+        <table>
+            <thead>
+            <tr class="tr_th">
+                <th>序号</th>
+                <th>角色名称</th>
+                <th>角色ID</th>
+                <th>创建时间</th>
+                <th>状态</th>
+                <th>权限设置</th>
+                <th>角色设置</th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            </tbody>
+        </table>
+
+
+        <div id="dialog-cover"></div>
+        <!-- 角色删除弹出框 -->
+        <div id="dialogDel" class="dialog">
+            <div class="dialog-container">
+                <div class="head">
+                    系统提示
+                </div>
+                <div class="item-container menu-del">
+                    <p id="tip-info"></p>
+                </div>
+            </div>
+            <div class="footer">
+                  	 	<button  onclick="closeRightManage()" >取消</button>
+                    	<button onclick="delMenu()">确定</button>
+               	  </div>
+        </div>
+
+        <!--添加角色 弹窗 -->
+        <div id="dialog3" class="dialog">
+            <div class="container">
+                <div class="head">
+                    添加角色
+                    <!--<a href="#" class="add"></a>-->
+                </div>
+                <div class="item-container">
+                    <div class="subItem">
+                        <label>角色名称：</label>
+                        <div>
+                            <input class='nameInput' type="text" name="" /><span class="req">*</span>
+                        </div>
+                    </div>
+                    <div class="subItem">
+                        <label>角色CODE：</label>
+                        <div>
+                            <input class='codeInput' type="text" name="" /><span class="req">*</span>
+                        </div>
+                    </div>
+                    <div id="add-err" class="errtip"></div>
+                </div>
+                 <div class="footer">
+                    <button id='cancel-btn'>取消</button>
+                    <button id="selBtn3" >确定</button>
+                </div>
+            </div>
+        </div>
+            
+ 
+            <!-- 角色修改弹窗 -->
+            <div id="dialogModify" class="dialog">
+                <div class="dialog-container">
+                    <div class="head">
+                        角色修改
+                    </div>
+                    <div class="item-container">
+                        <div class="subItem">
+                            <label>角色名称：</label>
+                            <div>
+                                <input id="roleName" type="text" name="" />
+                            </div>
+                           
+                        </div>
+                        <div class="subItem">
+                            <label>角色CODE：</label>
+                            <div>
+                                <input disabled="disabled" id="roleCode" type="text" name="" />
+                            </div>
+                        </div>
+                        <div id="add-err" class="errtip"></div>
+                    </div>
+
+                </div>
+                <div class="footer">
+                    <button id='cancel-btn' onclick="closeRightManage()">取消</button>
+                    <button onclick="modifyMenu()">确定</button>
+                </div>
+            </div>
+            
+                   <!-- 确认弹框 -->
+<div id="dialogMakeTrue" class="dialog">
+    <div class="dialog-container">
+        <div class="head">
+                                      系统提示  
+            <!--<a href="#" class="add"></a>-->
+        </div>
+        <div class="item-container menu-item">
+        	<p id="userTip"></p>
+        	<div class="menu-dialog-btn">
+        		<a class="btn" onclick="closeRightManage()">确定</a>
+        	</div>
+        </div>
+    </div>
+</div>	
+            <!--底部分页-->
+            <div class="foot">
+                <p>共 <span class="totalCount"></span>条记录&nbsp&nbsp <span class="currentPage">1</span>/<span class="totalPage"></span>页</p>
+                <div id="pageTool">
+
+                </div>
+            </div>
+        
+    </div>
+</div>
+</body>
+</html>

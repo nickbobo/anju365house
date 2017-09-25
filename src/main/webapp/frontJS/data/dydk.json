@@ -1,0 +1,26 @@
+[
+	{
+		"id": "3r32fwre",
+		"name": "抵押登记申请",
+		"url":"loanSubmit.html",
+		"status":"true"
+	},
+	{
+		"id": "432f432fwr",
+		"name": "抵押登记列表",
+		"url":"loanList.html",
+		"status":"true"
+	},
+	{
+		"id": "432f432fwr",
+		"name": "抵押登记复核",
+		"url":"loanCheck.html",
+		"status":"true"
+	},
+	{
+		"id": "432f432fwr",
+		"name": "受理审批",
+		"url":"loanReCheck.html",
+		"status":"true"
+	}
+]

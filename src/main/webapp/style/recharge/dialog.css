@@ -1,0 +1,18 @@
+.extDialog{ background-color:#273a49;}
+#dialogLoading.extDialog{ background-color:#d8edfe; color:#064e86; text-align:center;}
+#dialogLoading.extDialog img{ vertical-align:middle; margin-right:5px;}
+.miniDialog .dialogInside{ background-color:#273a49; color:#fff;}
+
+.rexInnerDialog{ position:absolute; padding:10px; color:#064e86; background-color:#d8edfe; border:1px solid #999; box-shadow:0 0 10px rgba(0,0,0,0.6); border-radius:6px; z-index:1000; top:0; left:0; display:none; text-align:center;}
+.rexInnerDialog .text{ margin-right:5px; display:inline-block; text-align:left;}
+.rexInnerDialog .myButton{ margin:5px 3px 0px 3px; display:none;}
+.rexInnerDialog.loading{ background-color:#fff; border-color:#22b297; color:#666666;}
+.rexInnerDialog.loading .text{ background:url(images/loading.gif) no-repeat; vertical-align:middle; padding-left:25px;}
+.rexInnerDialog.warning{ background-color:#ffecd3; border:2px solid #f90; color:#975602;}
+.rexInnerDialog.warning .text{ width:100%; border-bottom:1px solid #e79d3d;}
+.rexInnerDialog.error{ background-color:#ffefef; border:2px solid #f00; color:#d60202;}
+.rexInnerDialog.error .text{ width:100%; border-bottom:1px solid #c25c5c;}
+.rexInnerDialog.ok{ background-color:#eaffe6; border-color:#107100; color:#107100;}
+
+.mask.white{ background-color:#fff; opacity:0.6;}
+.mask.black{ background-color:#000; opacity:0.5;}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>问题是否有用统计</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                         <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">问题标题：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="titleSerch" name="title"></input></td>
+	                       <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">用户姓名：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="userNameSerch" name="userName"></input></td>
+	                      <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">评论状态：</label></td>
+                         <td class="tbl-td-border"> 
+                         	‍‍<select class="easyui-combobox tbl-input-left"  id="isUsefulSerch" name = "isUseful">
+                                <option value="" selected="selected">全部</option>
+								<option value="1">有用</option>
+								<option value="0">无用</option>
+                         	</select>
+                         </td>
+                           </tr>
+                           <tr>
+                              <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">评论开始时间：</label></td>
+               			 	  <td class="tbl-td-border" ><input class="easyui-datetimebox tbl-input-left" id="createTimeBeg" name="createTimeBeg" editable="false" "></input>
+               			 	  </td>
+               			 	  <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">评论结束时间：</label></td>
+			        		  <td class="tbl-td-border" ><input class="easyui-datetimebox tbl-input-left" id="createTimeEnd" name="createTimeEnd" editable="false" ></input>
+	           			 	  </td> 
+                           </tr>
+                    </table>  
+                    <div style="padding: 5px; text-align: center;">
+                     <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadUserEvaluatePage()">查询</a>
+                     <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+                     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-export"  onclick="exportExcel()">统计</a>
+                   </div>     
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<!-- <div id="toolbar">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addUserInfo()" >添加</a>
+    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="exec4Delete()">删除</a>
+    	
+		进度条
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+			<div id="pb" class="easyui-progressbar" style="width:400px;"></div>
+		</div>
+</div> -->
+    <script type="text/javascript">
+   
+    	var size = 10;
+    	var page = 1;
+        
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                //footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: 'id', align: 'left', halign: 'center',hidden:true},
+                    {field: 'questionId', title: '问题id', align: 'left', halign: 'center',hidden:true},
+                    {field: 'title', title: '问题标题', align: 'left', halign: 'center'} ,
+                    {field: 'userId', title: '用户id', align: 'left', halign: 'center',hidden:true} ,
+                    {field: 'userName', title: '用户姓名', align: 'left', halign: 'center'} ,
+                    {field: 'isUseful', title: '是否有用',  align: 'left', halign: 'center',formatter: function(value, row, index) {
+                    	if(value == '0') {
+                            var valueName="无用";
+                        	return '<font color="blue">' + valueName + '</font>';
+                       } 
+                       if(value == '1') {
+                        	var valueName="有用";
+                       	return '<font color="red">' + valueName + '</font>';
+                       }
+                    }   },
+                    {field: 'createDate', title: '评论时间',align: 'left', halign: 'center'},
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                }
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadUserEvaluatePage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadUserEvaluatePage(page, size);
+
+                }
+            });
+        });
+        function loadUserEvaluatePage(page,size) {
+        	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var title = $('#titleSerch').val();
+            var userName = $('#userNameSerch').val();
+            var isUseful = $('#isUsefulSerch').combobox("getValue");
+            var createTimeBeg = $('#createTimeBeg').datebox("getValue");
+            var createTimeEnd = $('#createTimeEnd').datebox("getValue");
+            var service = $.svc.getSVC("/question/getAllUserEvaluatesPage");
+            service.setPage(page, size)
+            .setParam("title", title)
+            .setParam("userName", userName)
+            .setParam("isUseful", isUseful)
+            .setParam("createTimeBeg", createTimeBeg)
+            .setParam("createTimeEnd", createTimeEnd);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        
+       	// 导出
+        function exportExcel() {
+     	    var title = encodeURI(encodeURI($('#titleSerch').val()));
+      		var userName = encodeURI(encodeURI($('#userNameSerch').val()));
+            var isUseful = $('#isUsefulSerch').combobox("getValue");
+            var createTimeBeg = $('#createTimeBeg').datebox("getValue");
+            var createTimeEnd = $('#createTimeEnd').datebox("getValue");
+      		var params = 'params={"title":"' + title
+ 			+ '","userName":"' + userName
+ 			+ '", "isUseful":"' + isUseful + '", "createTimeBeg":"' + createTimeBeg + '", "createTimeEnd":"' + createTimeEnd + '"}';	
+       	    window.location = '../../question/userEvaluatesReport.svc?'+params;
+       } 
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#titleSerch').val("");
+        	$('#userNameSerch').val("");
+        	$('#isUsefulSerch').combobox('setValue','')
+        	$('#createTimeEnd').datebox('setValue','')
+        	$('#createTimeBeg').datebox('setValue','')
+        	loadUserEvaluatePage();
+        })
+
+    </script>
+</body>
+</html>

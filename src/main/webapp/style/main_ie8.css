@@ -1,0 +1,4 @@
+@charset "utf-8";
+.menu .level1 > .txt:after{ content:'▼'; font-size:10px; color:#fa4c4c;}
+.menu .level1.sel > .txt:after{ content:'▲'; }
+.menu .level1.sel > .txt[href]:after{ content:'';}

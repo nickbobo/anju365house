@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="keywords" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta name="description" content="乌鲁木齐市存量房交易系统,乌鲁木齐房产交易,存量房交易系统" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+    <link rel="Shortcut icon" href="../image/logo.ico">
+
+	<title>乌鲁木齐市存量房交易系统-首页</title>
+
+	<link rel="stylesheet" type="text/css" href="../frontStyle/frame.css" />
+	<script type="text/javascript" src="../frontJS/jquery.min-1.9.1.js"></script>
+	<script type="text/javascript" src="../frontJS/angular/angular-1.2.27.js"></script>
+    <script type="text/javascript" src="../frontJS/data/data.js"></script>
+	<script type="text/javascript" src="../frontJS/index.js"></script>
+</head>
+<body ng-app="indexApp">
+	<div id="menu-err" class="menu-err" onclick="window.location.reload()"></div>
+	<div ng-controller="menuCtrl" ng-cloak class="container">
+		<div class="header-container">
+			<img src="../image/xy/logo.png" alt="乌鲁木齐市存量房交易系统logo" />
+			<ul class="menu">
+				<li ng-repeat="item in dataModel.menu | orderBy:'sortIndex'" ng-class="{'sel':item.checked}" ng-click="ui.menuClick0(item)">{{ item.name }}<i ng-click="ui.removeMenu(item)">&times;</i></li><!--ng-class="{'sel':item.status == 'true'}"-->
+			</ul>
+			<div class="info">
+				<span>欢迎您，<span id="userName"></span></span>
+				<a href="javascript:void(0)">设置<i class="arrow-down"></i>
+				</a>
+				<a ng-click="ui.logout()" href="javascript:void(0)">退出</a>
+				
+				<ul style="display:none;">
+					<li>修改密码</li>
+				</ul>
+			</div>
+		</div>
+		<div class="section-container">
+			<div id="menuContent" class="aside-left">
+				<dl ng-repeat="item in dataModel.menuChild | orderBy:'sortIndex'" ng-class="{'sel':item.checked}">
+					<dt ng-click="ui.menuClick1(item)" class="left-1" ng-class="{'sel':item.checked}">{{ item.name }}</dt>
+					<dd ng-repeat="subItem in item.children | orderBy:'sortIndex'" ng-click="ui.menuClick2(subItem)">{{ subItem.name }}</dd>
+				</dl>
+			</div>
+			<div class="aside-right">
+				<div id="iframe">
+					<iframe name="myIframe" src="welcome.html" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

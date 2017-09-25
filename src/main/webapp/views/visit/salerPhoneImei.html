@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>销售手机串号管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+ 	<style type="text/css">.notes{color:#0000FF; font-size: 12px;}</style> 
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">销售名称：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="salerNameSerch" name="salerName"></input></td>
+                        </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                        <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadImeiPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+
+    <script type="text/javascript">
+    
+    	var size = 10;
+    	var page = 1;
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                toolbar: '#searchbar',
+                striped: true,
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: 'id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'salerId', title: '销售id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'salerName', title: '销售名称',  align: 'left', halign: 'center'},
+                    {field: 'imei', title: '手机串号',  align: 'left', halign: 'center'},
+                    {field: 'ids', title: '操作', align: 'center', halign: 'center',formatter: function (value, rowData,index) {
+	                    return "<a href='#' onclick=del('"+ rowData["id"] +"') class='notes' >删除</a>";  
+	                }}
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                }
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadImeiPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadImeiPage(page, size);
+
+                }
+            });
+        });
+        function loadImeiPage(page,size) {
+         	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var salerName= $('#salerNameSerch').val();
+      		
+            var service = $.svc.getSVC("/visit/getSalerPhoneImeiPage");
+            service.setPage(page, size)
+            .setParam("salerName", salerName);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#salerNameSerch').val(""); 
+        	loadImeiPage();
+        })
+     
+     // 删除
+		function del(id) {
+			if (id != '' || id != undefined) {
+				$.messager.confirm("操作提示", "您确定要执行操作吗？", function(data) {
+					if (data) {
+						var service = $.svc.getSVC("/visit/delSalerPhoneImei");
+						service.setParam("salerPhoneImei/id", id);
+						service.call(function(data, status) {
+							if (data.succ == true) {
+								$.messager.show({ title : '提示', msg : '删除成功!' });
+								loadImeiPage();
+							} else {
+								$.messager.show({ title : '提示', msg : '删除失败!' });
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert("提示信息", "请选择要删除的记录！！！", "error");
+			}
+		}
+    </script>
+</body>
+</html>

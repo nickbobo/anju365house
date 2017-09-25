@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用户搜索关键字记录</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                         <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">关键字名称：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="keywordNameSerch" 
+	                                 name="keywordName"></input></td>
+	                      <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">搜索人姓名：</label></td>
+	                      <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="userNameSerch" 
+	                                 name="userName"></input></td>
+	                        <td  style="padding: 1px; text-align: center;">
+	                         <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadKeywordPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                        </td>         
+	                       
+                        </tr>
+                    </table>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<!-- <div id="toolbar">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addUserInfo()" >添加</a>
+    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="exec4Delete()">删除</a>
+    	
+		进度条
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+			<div id="pb" class="easyui-progressbar" style="width:400px;"></div>
+		</div>
+</div> -->
+    <script type="text/javascript">
+   
+    	var size = 10;
+    	var page = 1;
+        
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                //footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '关键字id', align: 'center', halign: 'center',hidden:true},
+                    {field: 'keyword', title: '关键字名称', align: 'center', halign: 'center'} ,
+                    {field: 'userName', title: '搜索人姓名', align: 'center', halign: 'center'} ,
+                    {field: 'userId', title: '用户id', align: 'center', halign: 'center',hidden:true} ,
+                    {field: 'createDate', title: '搜索时间', align: 'center', halign: 'center',formatter:function(value){
+                   	 if(value==''||value==null){
+		        		  return '';
+		        	  }else{
+		        		  return value.substring(0,10);
+		        	  }
+		            }}
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                }
+            }
+        }; 
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadKeywordPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadKeywordPage(page, size);
+
+                }
+            });
+        });
+        function loadKeywordPage(page,size) {
+        	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var keywordName = $('#keywordNameSerch').val();
+            var userName = $('#userNameSerch').val();
+            var service = $.svc.getSVC("/keyword/getAllUserKeywords");
+            service.setPage(page, size)
+            .setParam("userName", userName)
+            .setParam("keyword", keywordName);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        
+        
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#keywordNameSerch').val("");
+        	$('#userNameSerch').val("");
+        	loadKeywordPage();
+        })
+
+    </script>
+</body>
+</html>

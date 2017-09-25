@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>考试管理</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../js/datagrid-cellediting.js"></script>
+    <script type="text/javascript" src="../../js/jquery-form.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/comm_check.js"></script>
+    <script type="text/javascript" src="../../js/relax_function.js"></script>
+    
+
+</head>
+<body>
+    <!-- 查询条件 -->
+    <div id="searchbar">
+            <fieldset>
+                <legend>查询条件</legend>
+                    <table id="tblSearch" cellpadding="0" cellspacing="0" border="0" class="tbl-border">
+                        <tr>
+                           <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试名称：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="examNameSerch" name="examName"></input></td>
+                        	    <td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">考试人员类型：</label></td>
+	                       <td class="tbl-td-border"><input class="easyui-validatebox tbl-input-left" id="examUserTypeSerch" name="examUserType"></input></td>
+                        	
+                        	<td class="tbl-td-bg-color tbl-td-border"><label class="tbl-label-right">是否发布：</label></td>
+                            <td class="tbl-td-border"> 
+                         	‍‍<select class="easyui-combobox tbl-input-left"  id="isPublishSerch" name = "isPublish">
+                                <option value="" selected="selected">全部</option>
+								<option value="0">未发布</option>
+								<option value="1">已发布</option>
+                         	</select>
+                         </td>
+                        </tr>
+                    </table>
+	                    <div style="padding: 5px; text-align: center;">
+	                        <a href="#" class="easyui-linkbutton" icon="icon-search" onclick="loadExamPage()">查询</a>
+	                         <a href="javascript:void(0)" class="easyui-linkbutton" icon="icon-reload" id="resetSearch">重置</a>
+	                    </div>
+            </fieldset>
+    </div>
+
+    <!-- 用户信息 -->
+    <table  id="dg_cr" class="easyui-datagrid">
+    </table>
+    
+<!-- 工具栏 -->
+<div id="toolbar">
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addExam()" >新增</a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="publishExam()" >发布</a>
+	     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExam()" >删除</a>
+		<!--进度条-->
+		<div id="div_pb" style="position: absolute; width: 400px; height: 50px; right: 20%; left: 25%; top: 35%; bottom: 20%; margin-left: 50px; margin-top: 25px; display: none; text-align: center;">
+	    	<img src="../../images/loading.gif" />
+		</div>
+</div>
+
+<!-- 弹出窗口定义 编辑信息 -->
+	<div id="tanchuang" class="easyui-dialog" title="编辑 信息" data-options="iconCls:'icon-edit'" closed="true" style="width:450px;height:350px;padding:10px;align-content: true">
+		<form id="fm" method="post">
+	    	<input name="id" id="id" type='hidden'/>
+	        <table class="searchTable">
+	            <tr>
+				  <tr>
+	                <td >试卷名称:</td>
+	                <td><input class="easyui-validatebox" type="text" id="examName" style="width:200px;" name="examName"  data-options="required:true"/></td>
+	              </tr>
+	              <tr>
+	                <td >有效开始时间:</td>
+	                <td><input  class="easyui-datetimebox" type="text" id="validBeginTime" style="width:205px;" name="validBeginTime" data-options="required:true"/></td>
+	              </tr>
+	               <tr>
+	                <td >有效结束时间:</td>
+	                <td><input  class="easyui-datetimebox" type="text" id="validEndTime" style="width:205px;" name="validEndTime" data-options="required:true"/></td>
+	              </tr>
+	              <tr>
+	                <td >考试时长:</td>
+	                <td><input class="easyui-validatebox" type="text" id="examTimeLength" style="width:200px;" name="examTimeLength" data-options="required:true" onkeyup="return ValidateNumber($(this),value)"/></td>
+	              </tr>
+	              <tr>
+	                <td >考试题数:</td>
+	                <td><input  class="easyui-validatebox" type="text" id="examCount" style="width:200px;" name="examCount" data-options="required:true" onkeyup="return ValidateNumber($(this),value)"/></td>
+	              </tr>
+	              <tr>
+	                <td >人员类型:</td>
+	                <td><input class="easyui-validatebox" type="text" id="examUserType" style="width:205px;" name="examUserType" data-options="required:true"/></td>
+	              </tr>
+				<tr>
+	                <td colspan="2" align="center">
+	                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrUpdInfo()">确定</a>
+	                </td>
+	            </tr>
+	        </table>
+	    </form>
+
+	</div>
+    <script type="text/javascript">
+    
+    	var size = 10;
+    	var page = 1;
+        var conf = {
+              options: {
+                singleSelect: false,
+                ctrlSelect: true,
+                showFooter: true,
+                fit: true,
+                fitColumns: true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                footer: '#toolbar',
+                toolbar: '#searchbar',
+                striped: true,
+                columns: [[
+                    {field: 'ck', checkbox: true},
+                    {field: 'id', title: '考试id',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'examName', title: '考试名称',  align: 'left', halign: 'center'},
+                    {field: 'examUserType', title: '考试对象',  align: 'left', halign: 'center',hidden:true},
+                    {field: 'examUserTypeName', title: '考试对象',  align: 'left', halign: 'center'},
+                    {field: 'examTime', title: '考试时间',  align: 'left', halign: 'center'},
+                    {field: 'examCount', title: '考试题数',  align: 'left', halign: 'center'},
+                    {field: 'examTimeLength', title: '考试时长',  align: 'left', halign: 'center',
+                    	formatter: function(value, row, index) {
+                    		return value+"分钟";
+                        }   
+                    },
+                    {field: 'isPublish', title: '是否发布',  align: 'left', halign: 'center',
+                    	formatter: function(value, row, index) {
+                            if(value == '0') {
+                                 var valueName="未发布";
+                             	return '<font color="blue">' + valueName + '</font>';
+                            } 
+                            if(value == '1') {
+                             	var valueName="已发布";
+                            	return '<font color="red">' + valueName + '</font>';
+                            }
+                        }   
+                    },
+                    {field: 'createTime', title: '创建时间',  align: 'left', halign: 'center'}
+                    
+                ]],
+                pagination: true,
+                pageSize: size,
+                pageList: [size * 1, size * 2, size * 3, size * 5],
+                pageNumber: 1,
+                rownumbers: true,
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                },
+                rowStyler: function (index, row) {
+                },
+                onDblClickRow:onDbClick
+            }
+        }; 
+        getAllUserType();
+        
+        $('#examUserType').combobox({
+            valueField: 'id',
+            textField: 'userTypeName',
+            enitable:true,
+            onLoadSuccess: function (data) {
+                 if (data.length > 0) {
+                    $('#examUserType').combobox('select', data[0].userTypeName);
+                } else {
+                    $(this).combobox('select', []);
+                }  
+            }
+        });
+        
+        /* 加载考试人员类型 */
+   	  function getAllUserType() {
+         var service = $.svc.getSVC("/examManager/getAllUserType");
+         service.call(
+                 function (response, status) {
+                     if (response.succ=true) {
+ 	                       $('#examUserType').combobox('loadData', response.result);
+                     } else {
+                     	  $.messager.alert('提示', '加载标签失败!', 'error');
+                     }
+                 });
+ 	    }
+        
+   	 /*查询考试人员类型     */
+   	  getAllUserTypeSerch();
+      
+   	  $('#examUserTypeSerch').combobox({
+          valueField: 'id',
+          textField: 'userTypeName',
+          enitable:true,
+          onLoadSuccess: function (data) {
+               if (data.length > 0) {
+                  $('#examUserTypeSerch').combobox('select', data[0].userTypeName);
+              } else {
+                  $(this).combobox('select', []);
+              }  
+          }
+      });
+   	  
+       /* 加载考试人员类型 */
+ 	   function getAllUserTypeSerch() {
+       var service = $.svc.getSVC("/examManager/getAllUserType");
+       service.call(
+               function (response, status) {
+                   if (response.succ=true) {
+                  	       response.result.unshift({"id":"","userTypeName":"全部"});
+	                       $('#examUserTypeSerch').combobox('loadData', response.result);
+	                       $('#examUserTypeSerch').combobox('setValue','');
+                   } else {
+                   	  $.messager.alert('提示', '加载标签失败!', 'error');
+                   }
+               });
+	    }
+        
+        $(function () {
+            $('#pb').progressbar({
+                onChange: function (value) {
+                    $('.progressbar-value').css('background-color', 'red');
+                }
+            });
+            $('#dg_cr').datagrid({footer: '#toolbar'}).datagrid('subgrid', conf);
+            loadExamPage(page, size);
+            $('#dg_cr').datagrid('getPager').pagination({
+                loadMsg: '正在加载数据...',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                onSelectPage: function (page, size) {
+                	loadExamPage(page, size);
+
+                }
+            });
+        });
+        function loadExamPage(page,size) {
+         	page = page || 1;
+            size = size || 10;
+            $('#dg_cr').datagrid("loading");
+            var examName = $('#examNameSerch').val();
+        	var examUserType = $('#examUserTypeSerch').combobox("getValue");
+        	var isPublish = $('#isPublishSerch').combobox("getValue");
+      		
+            var service = $.svc.getSVC("/examManager/getAllExamInfoPage");
+            service.setPage(page, size)
+            .setParam("examName", examName)
+            .setParam("examUserType", examUserType)
+            .setParam("isPublish", isPublish);
+            service.call(
+                    function (response, status) {
+                        if (response.getResult().length == '0') {
+                            $('#dg_cr').datagrid("loadData", []);
+                        } else {
+                            $('#dg_cr').datagrid("loadData", response.getResult());
+                        }
+                        $('#dg_cr').datagrid("loaded");
+                    });
+        }
+        //重置
+        $('#resetSearch').click(function(){
+        	$('#examNameSerch').val(""); 
+        	$('#examUserTypeSerch').combobox('setValue','');
+        	$('#isPublishSerch').combobox('setValue','');
+        	loadExamPage();
+        })
+         
+          //添加按钮
+        function addExam(){
+          $('#fm input').removeAttr("disabled");
+          $('#fm').form('reset');
+          document.getElementById("id").value="";
+      	  $('#tanchuang').dialog('open').dialog('setTitle','添加');
+		 
+        }
+     // 双击打开窗口（修改）
+    	  function onDbClick(rowIndex, rowData) {
+    	 console.log(rowData);
+    		$('#fm').form('reset');
+    		  obj = null;
+    		  if (rowData){
+    			$('#fm input').removeAttr("disabled");
+    			$('#tanchuang').dialog('open').dialog('setTitle','编辑');
+            	$('#fm').form('load',rowData);
+    	          obj = rowData;
+    	          if(!obj)obj = new Object();
+    	          //为页面赋值
+    	          $('#fm').form('load',obj);
+    	      }
+    	  }
+        // 编辑框 确定按钮
+        function saveOrUpdInfo(){
+        	
+          var id = $('#id').val();
+     	  var examName = $('#examName').val();
+     	  var examTimeLength = $('#examTimeLength').val();
+     	  var examCount = $('#examCount').val();
+     	  var examUserType = $('#examUserType').combobox('getValues')[0];
+     	  var validBeginTime = $('#validBeginTime').datebox('getValues')[0];
+     	  var validEndTime = $('#validEndTime').datebox('getValues')[0];
+     	  
+     	/*  if (examName == ''|| examName==null) {
+             $.messager.alert("提示信息", "请输入考试名称！！！！");
+             return;
+          }
+     	 if (validBeginTime == ''|| validBeginTime==null) {
+             $.messager.alert("提示信息", "请输入考试有效开始时间！！！！");
+             return;
+          }
+      	 if (validEndTime == ''|| validEndTime==null) {
+             $.messager.alert("提示信息", "请输入考试有效结束时间！！！！");
+             return;
+          }
+      	 if (validBeginTime!= null && validEndTime!=null) {
+      		 if(validBeginTime>validEndTime){
+      			$.messager.alert("提示信息", "考试有效开始时间不能大于考试有效结束时间！！！！");
+                 return;
+      		 }
+           }
+     	 if (examTimeLength == ''|| content==null) {
+             $.messager.alert("提示信息", "请输入考试时长！！！！");
+             return;
+          }
+     	 if (examCount == ''|| examCount==null) {
+             $.messager.alert("提示信息", "请输入考试题数！！！！");
+             return;
+          }
+     	 if (examUserType == ''|| examUserType==null) {
+             $.messager.alert("提示信息", "请输入考试人员类型！！！！");
+             return;
+          } */
+     	
+     	  
+      	  var service = $.svc.getSVC("/examManager/saveOrUpdateExam");
+          service
+          .setParam("exam/id", id)
+          .setParam("exam/examName", examName)
+          .setParam("exam/examTimeLength", examTimeLength)
+          .setParam("exam/examCount", examCount)
+          .setParam("exam/examUserType", examUserType)
+          .setParam("exam/validBeginTS", validBeginTime)
+          .setParam("exam/validEndTS", validEndTime);
+          service.call(
+              function (data, status) {
+            	  if (data.succ == true) {
+                	  $.messager.alert('提示', '保存成功!', 'info');
+                	  loadExamPage();
+                      $('#tanchuang').dialog('close');
+                  } else {
+                	  $.messager.alert('提示', '保存失败!', 'error');
+                  }
+              }); 
+        }
+        
+        
+     // 发布新考试
+        function publishExam() {
+         	var row = $('#dg_cr').datagrid('getChecked');
+             if (row == '') {
+               $.messager.alert("提示信息", "请选择要发布的考试数据！！！！", "error");
+               return;
+              }
+             var id = row[0].id;
+             var isPublish=row[0].isPublish;
+             if(isPublish==1){
+            	 $.messager.alert("提示信息", "请选择未发布的考试数据！！！！", "error");
+                 return;
+             }
+             $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {
+               if (data) {
+               	var service = $.svc.getSVC("/examManager/publishExam");
+       	        service
+       	        .setParam("exam/id", id);
+       	        service.call(
+                      function (data, status) {
+                   	   if (data.succ == true) {
+                        	  $.messager.alert('提示', '发布成功!', 'info');
+                        	  $('#examUserTypeSerch').combobox('setValue','');
+                        	  loadExamPage();
+                          } else {
+                              $.messager.alert('提示', '发布失败!', 'error');
+                          }
+                      });
+               }
+           });
+           
+       }
+     // 删除
+        function deleteExam() {
+         	var row = $('#dg_cr').datagrid('getChecked');
+           if (row == '') {
+               $.messager.alert("提示信息", "请选择记录再删除！！！！", "error");
+               return;
+           }
+           var idList='';
+			for(var i=0;i<row.length;i++){
+				var id = row[i].id;
+				if(i==row.length-1){
+					idList+= id;
+				}else{
+					idList+= id+",";
+				}
+			}
+             $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {
+               if (data) {
+               	var service = $.svc.getSVC("/examManager/delExam");
+       	        service
+       	        .setParam("exam/idList", idList);
+       	        service.call(
+                      function (data, status) {
+                   	   if (data.succ == true) {
+                        	  $.messager.alert('提示', '删除成功!', 'info');
+                        	  loadExamPage();
+                          } else {
+                              $.messager.alert('提示', '删除失败!', 'error');
+                          }
+                      });
+               }
+           });
+           
+       }
+        function ValidateNumber(e, pnumber){
+        	if (!/^\d+$/.test(pnumber)){
+        	$(e).val(/^\d+/.exec($(e).val()));
+        	}
+        	return false;
+          }
+    </script>
+</body>
+</html>

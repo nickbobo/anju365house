@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sys.annex.dao.UserAttMapper">
+    <!--附件信息添加-->
+    <insert id="addAttInfo" parameterType="java.util.List" useGeneratedKeys="false">
+        INSERT INTO
+        user_att
+        (id,att_type,att_name,user_code,att_url,file_type)
+        <foreach item="item" index="index" collection="list" separator="union all">
+            (
+            SELECT
+            #{item.id},
+            #{item.attType},
+            #{item.attName},
+            #{item.userCode},
+            #{item.attUrl},
+            #{item.fileType}
+            FROM DUAL
+            )
+        </foreach>
+    </insert>
+    <!--附件信息删除-->
+    <delete id="delAttInfo">
+        DELETE FROM user_att
+        WHERE user_code=#{userCode}
+        AND att_type=#{attType}
+    </delete>
+    <!--附件信息查询-->
+    <select id="getUserAttInfo" resultType="com.sys.annex.entity.UserAttEntity">
+      SELECT att_type as attType,att_name as attName,att_url as attUrl
+      FROM user_att
+      WHERE user_code=#{userCode}
+      AND att_type=#{attType}
+    </select>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sys.role.dao.RoleMapper">
+
+    <!-- 角色列表 -->
+    <select id="findRoleInfoPage" resultType="com.sys.role.entity.RoleEntity">
+        select id,role_code as roleCode,role_name as roleName,create_date as createDate,is_del as isDel
+        from role where 1=1
+        <if test="roleCode != null and roleCode != ''">
+            and role_code=#{roleCode}
+        </if>
+        <if test="roleName != null and roleName != ''">
+            and role_name=#{roleName}
+        </if>
+        order by create_date desc
+    </select>
+
+    <!-- 角色添加 -->
+    <insert id="addRole">
+        insert into role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleCode != null">
+                role_code,
+            </if>
+            <if test="roleName != null">
+                role_name,
+            </if>
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="createName != null">
+                create_date,
+            </if>
+            <if test="createName != null">
+                update_name,
+            </if>
+            <if test="createName != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="roleCode != null">
+                #{roleCode},
+            </if>
+            <if test="roleName != null">
+                #{roleName},
+            </if>
+
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createName != null">
+                sysdate,
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createName != null">
+                sysdate,
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 角色修改 -->
+    <update id="updateRole">
+		update role set role_name=#{roleName},update_name=#{createName} where id=#{id}
+	</update>
+
+    <!-- 角色逻辑删除 修改状态 -->
+    <update id="deleteRoleByCode">
+		update role set is_del=1,update_name=#{updateName},update_date=sysdate where role_code=#{roleCode}
+	</update>
+
+    <!--删除时 查询该角色下是否有用户 -->
+    <select id="checkRole" resultType="java.lang.Long">
+		select count(0) from user_info where role_code=#{roleCode} AND is_lock=0
+		AND user_status=1
+	</select>
+
+    <!--新增时 查询是否已存在该角色-->
+    <select id="RoleCodeIsApprove" resultType="java.lang.Long">
+		select count(0) from role where role_code=#{roleCode}
+	</select>
+
+
+</mapper>

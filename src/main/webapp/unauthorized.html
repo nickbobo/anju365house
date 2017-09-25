@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title>运营商业务信息提示</title>
+	<link rel="stylesheet" type="text/css" href="http://front.517eshop.com:11680/frontDoc/quote/style/publicStyle3.css"/>
+	<link rel="stylesheet" type="text/css" href="http://front.517eshop.com:11680/frontDoc/quote/fonts/font/iconfont.css"/>
+<style type="text/css">
+body{ overflow:auto;}
+.outframe{ width:100%; height:100%; min-height:420px; min-width:800px; background-color:#fff;}
+.outframe:before{ content:""; display:inline-block; height:100%; width:0px; vertical-align:middle; font-size:0; overflow:hidden;}
+.inside{ display:inline-block; width:100%; height:60%; min-height:420px; max-height:704px; vertical-align:middle;}
+.showContent{ background-color:#fa4c4d; background-image:url(frontStyle/images/beijing.gif); background-repeat:no-repeat; background-position:center top; height:100%; border-top:60px solid #f0f0f0; border-bottom:80px solid #f2f2f2; z-index:0; box-shadow:0 0 20px rgba(0,0,0,0.3);}
+.showContent2{ width:800px; height:100%; position:relative; margin:0 auto;}
+.logo{ position:absolute; top:-53px; left:0; height:50px; z-index:100;}
+.logo img{ display:block; height:100%;}
+.title{ position:absolute; top:-44px; right:0; font-size:24px; color:#eb4243; z-index:100;}
+.bottomMsg{ position:absolute; left:0px; bottom:-65px; width:100%; text-align:center;}
+.extword{ position:relative; font-size:12px; padding-left:25px; padding-right:20px; color:#999;}
+.extword:before{ content:''; position:absolute; width:20px; height:20px; left:0px; top:50%; margin-top:-10px;}
+.extword a{ color:#999;}
+.extword a:hover{ color:#069dc8;}
+.extword.nopadding{ padding-left:0;}
+.license:before{ background: url(http://front.517eshop.com:11680/frontDoc/quote/style/images/license.png) no-repeat;}
+.icp:before{ background: url(http://front.517eshop.com:11680/frontDoc/quote/style/images/ShanghaiIC.png) no-repeat;}
+.newbeian:before{ background:url(http://www.beian.gov.cn/img/ghs.png) no-repeat;}
+.text1{ padding-top:10px;}
+.text1>*{ padding:0 5px; color:#666;}
+.text1 .small{ font-size:12px; color:#999;}
+.text1 a{ color:#5b85ef;}
+.text1 a:hover{ color:#fa4c4d;}
+.c-red{ color:#fa4c4d;}
+.showMessage{ text-align:center; display:table; height:100%;}
+.showMessage>*{ display:table-cell; vertical-align:top; padding-top:5%; text-align:center;}
+h1{ font-size:26px; color:#ffd0d0; padding:10px;}
+.showMessage p{ display:inline-block; text-align:justfy; font-size:18px; color:#fff; padding-bottom:15px; padding-left:50px; position:relative;}
+.showMessage .iconfont{ font-size:40px; position:absolute; top:50%; left:0; margin-top:-26px;}
+.showMessage .rexButton{ font-size:16px; width:200px; background-color:#d20709; border-color:#d20709; color:#fff;}
+.showMessage .rexButton:hover{ background-color:#fff; color:#d20709;}
+.codeShow{ position:absolute; width:100%; left:0px; bottom:10px; padding:10px 0px; text-align:center;}
+.codeShow>span{ display:inline-block; vertical-align:middle; padding:10px; color:#ffd0d0;}
+.codeShow img{ vertical-align:middle; margin-right:5px;}
+.codeShow img+span{ position:relative; top:4px;}
+.showCodeDetails{ cursor:pointer; position:relative;}
+.showCodeDetails .bm{ display:none; background-color:#fff; padding:5px 2px 5px 6px; color:#666; box-shadow:0 0 5px rgba(0,0,0,0.5);}
+.showCodeDetails:hover .bm{ display:block; position:absolute; right:50px; bottom:0;}
+.bigImage{ display:block; width:220px; border:1px solid #000;}
+
+@media screen and (min-height:780px){
+	.showMessage>*{ padding-top:6%;}
+	h1{ font-size:26px;}
+	.showMessage p{ font-size:20px;}
+	.showMessage .rexButton{ font-size:17px;}
+}
+
+@media screen and (min-height:880px){
+	.showMessage>*{ padding-top:7%;}
+	h1{ font-size:28px;}
+	.showMessage p{ font-size:22px;}
+	.showMessage .rexButton{ font-size:18px;}
+}
+@media screen and (min-height:950px){
+	.showMessage>*{ padding-top:10%;}
+	h1{ font-size:30px;}
+	.showMessage p{ font-size:24px;}
+	.showMessage .rexButton{ font-size:18px;}
+}
+
+@media screen and (max-width:780px){
+	body{ overflow:hidden;}
+	.outframe{ position:fixed; top:0; bottom:0; width:100%; height:auto; min-height:inherit; min-width:inherit; background-color:#f2f2f2; overflow:auto;}
+	.outframe:before{ display:none;}
+	.inside{ display:block; width:100%; height:100%; min-height:inherit; max-height:inherit;}
+	.showContent{ height:100%; border-bottom:60px solid #f2f2f2; box-shadow:none;}
+	.showContent2{ width:100%;}
+	.bottomMsg{ bottom:-50px; }
+	.bottomMsg .text2{ display:none;}
+	.bottomMsg .text1>*{ display:none; font-size:14px;}
+	.bottomMsg .text1 .small{ display:block;}
+	.bottomMsg .text1 .small span{ display:block;}
+	.codeShow{ display:none;}
+	.title{ right:5px; top:-36px; font-size:18px;}
+	.showMessage>*{ display:table-cell; vertical-align:middle; padding-top:0;}
+	.showMessage p{ padding-left:60px; padding-right:10px; text-align:justify;}
+	.showMessage .iconfont{ left:10px;}
+}
+
+
+
+#tt{ position:fixed; top:10px; left:10px; padding:5px; background-color:#444; color:#fff;}
+
+</style>
+<!--[if lt IE 9]>
+<![endif]-->
+</head>
+<body>
+	<div class="outframe"><div class="inside">
+		<div class="showContent">
+			<div class="showContent2">
+				<div class="logo"><img src="http://front.517eshop.com:11680/frontDoc/quote/style/images/logo.png" alt="易销科技" title="上海易销科技股份有限公司"/></div>
+				<div class="title">销售助手</div>
+				<div class="bottomMsg">
+					<div class="text2">
+						<span class="extword license">网络经营许可证</span>
+						<span class="extword icp">上海工商</span>
+						<span class="extword nopadding">沪ICP备11019199号</span>
+						<span class="extword newbeian"><a class="noborder" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010702002437">沪公网安备 31010702002437号</a></span>
+					</div>
+					<div class="text1">
+						<a href="http://www.517eshop.com" target="_blank">关于易销</a>
+						<span>全国客服电话 <span class="c-red">400-6076-517</span></span>
+						<span class="small"><span>上海易销科技股份有限公司</span><span>© 2012-2019 517eshop.com 版权所有</span></span>
+					</div>
+				</div>
+				<div class="showMessage">
+					<div>
+						<h1>提示信息</h1>
+						<p class="nopower"><span class="iconfont icon-moren_cuowu"></span>您登录的用户没有访问该业务的权限，请咨询系统管理员或以具有该权限的身份重新登录。</p>
+						<span id="reload" class="rexButton">重新登录</span>
+					</div>
+				</div>
+				<div class="codeShow">
+					<span>销售助手APP下载</span>
+					<span class="showCodeDetails">
+						<img src="frontStyle/images/pingguo-bai.png"/><span>IOS(苹果)</span>
+						<div class="bm"><a href=""><img src="http://front.517eshop.com:11680/frontDoc/quote/style/images/zhushouIOS.png" class="bigImage"/></a><div>易销助手苹果版</div></div>
+					</span>
+					<span class="showCodeDetails">
+						<img src="frontStyle/images/anzhuo-bai.png"/><span>Android(安卓)</span>
+						<div class="bm"><a href=""><img src="http://front.517eshop.com:11680/frontDoc/quote/style/images/zhushouAnd.png" class="bigImage"/></a><div>易销助手安卓版</div></div>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div></div>
+<script src="http://front.517eshop.com:11680/frontDoc/quote/jquery/jquery-1.9.1.min.js"></script>
+<script src="./js/app.js"></script>
+<script src="http://front.517eshop.com:11680/frontDoc/quote/relax_function.min.js"></script>
+<script src="http://front.517eshop.com:11680/frontDoc/quote/relax_ajax.min.js"></script>
+<script src="frontJS/visit_pub.js"></script>
+<script>
+$(function(){
+	$("#reload").click(function(){
+		opLocalstorage("saler","",{id:"",username:"",realname:"",pwd:""});
+		phone.getInfor("clearUser");
+		setTimeout(function(){
+			top.location.href=ctx+"/sso/logoutWithGoto.svc";
+		},1000);
+	});
+});
+</script>
+</body>
+</html>

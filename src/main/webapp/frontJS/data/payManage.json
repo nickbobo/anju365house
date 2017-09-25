@@ -1,0 +1,29 @@
+{
+  "total":30,
+  "info":[
+    {
+      "action":"付款",
+      "startTime":"2017.07.06",
+      "superviseCount":"20170708000",
+      "bankName":"中国银行",
+      "countYy":"0",
+      "countY":1000000,
+      "countF":1000000,
+      "toTime":"20170708",
+      "contractNum":"201707090005",
+      "payTime":"2017.07.09"
+    },
+    {
+      "action":"付款",
+      "startTime":"2017.07.06",
+      "superviseCount":"20170708000",
+      "bankName":"中国银行",
+      "countYy":"0",
+      "countY":1000000,
+      "countF":1000000,
+      "toTime":"20170708",
+      "contractNum":"201707090005",
+      "payTime":"2017.07.09"
+    }
+  ]
+}
